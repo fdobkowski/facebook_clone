@@ -17,6 +17,7 @@
 
 ## Styling
 
+- Navbar
 - Login page
 - Homepage
 - User Profile
