@@ -5,6 +5,7 @@
 - Navbar
 - Login page 
 - Register/Login form
+  - Data validation
 - Homepage
 - Posts
 - User profile
@@ -19,6 +20,7 @@
 
 - Navbar
 - Login page
+  - Put register on top of login
 - Homepage
 - User Profile
 - Chat 
