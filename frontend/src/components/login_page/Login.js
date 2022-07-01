@@ -1,3 +1,5 @@
+import "../../styles/Login.scss"
+import logoSvg from "../../assets/logo.svg"
 import {Field, Form, Formik} from "formik";
 import {useState} from "react";
 import Register from "./Register";
@@ -11,15 +13,13 @@ const Login = () => {
     }
 
     return (
-        <div>
-            <div className={"login_logo"}>
-                facebook_clone
-            </div>
+        <div className={"login_container"}>
+            <img src={logoSvg} alt={"logo"} className={"login_logo"}/>
             <Formik initialValues={{
                 login: "",
                 password: ""
             }} onSubmit={(values) => handleLogin(values)}>
-                <Form>
+                <Form className={"login_form"}>
                     <Field name={"login"} placeholder={"Username or email"} />
                     <Field name={"password"} placeholder={"Password"} type={"password"} />
                     <button type={"submit"}>Log in</button>

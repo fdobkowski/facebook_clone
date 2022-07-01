@@ -1,0 +1,23 @@
+.login_container {
+  display: flex;
+  justify-content: space-around;
+  background-color: rgb(247,247,247);
+
+  .login_logo {
+    width: 30vw;
+  }
+
+  .login_form {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: white;
+
+    button {
+      color: rgb(60,90,153);
+      background-color: transparent;
+    }
+  }
+}
