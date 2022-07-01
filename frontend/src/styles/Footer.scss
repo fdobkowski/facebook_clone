@@ -1,0 +1,23 @@
+.footer {
+  margin-top: auto;
+  height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 810px;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    width: 60vh;
+    border-radius: 50%;
+
+    a {
+      img  {
+        width: 5vh;
+      }
+    }
+  }
+}
+

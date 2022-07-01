@@ -4,16 +4,18 @@ import Login from "./components/login_page/Login";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
 import Navbar from "./components/Navbar";
+import Footer from "./components/footer";
 
 function App() {
   return (
     <Router>
-        <Navbar/>
+        <Navbar />
       <Routes>
         <Route path={"/login"} element={<Login/>}/>
         <Route path={"/"} element={<Home/>}/>
         <Route path={"/profile/:id"} element={<Profile/>}/>
       </Routes>
+        <Footer />
     </Router>
   );
 }

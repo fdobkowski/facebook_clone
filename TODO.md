@@ -11,6 +11,7 @@
 - User profile
 - Friends list
 - Chat
+- ~~Footer~~
 
 ## Backend
 
@@ -24,3 +25,4 @@
 - Homepage
 - User Profile
 - Chat 
+- ~~Footer~~

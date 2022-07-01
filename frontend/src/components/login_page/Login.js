@@ -12,6 +12,9 @@ const Login = () => {
 
     return (
         <div>
+            <div className={"login_logo"}>
+                facebook_clone
+            </div>
             <Formik initialValues={{
                 login: "",
                 password: ""
