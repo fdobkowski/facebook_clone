@@ -42,17 +42,17 @@ const Register = ( { visible }) => {
                         <div className={"birthday"}>
                             <Field name={"month"} as={"select"}>
                                 {months.map(x => (
-                                    <option value={x} label={x}/>
+                                    <option value={x} label={x} key={x}/>
                                 ))}
                             </Field>
                             <Field name={"day"} as={"select"}>
                                 {[...Array(31)].map((x, i) => (
-                                    <option value={i + 1} label={(i + 1).toString()}/>
+                                    <option value={i + 1} label={(i + 1).toString()} key={i}/>
                                 ))}
                             </Field>
                             <Field name={"year"} as={"select"}>
                                 {[...Array(118)].map((x, i) => (
-                                    <option value={-(i - 2022)} label={(-(i - 2022)).toString()}/>
+                                    <option value={-(i - 2022)} label={(-(i - 2022)).toString()} key={i}/>
                                 ))}
                             </Field>
                         </div>
