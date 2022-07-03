@@ -5,6 +5,7 @@ const userRoute = require('./users/users')
 const app = express()
 
 app.use(express.json())
+app.use(require('cors')())
 app.use('/api/users', userRoute)
 
 const { Client } = require('pg')
@@ -34,13 +35,13 @@ client.connect().then(async () => {
                     if (err) throw err
                     console.log("Created table users")
                 })
-                await pool.query(queries.profiles_table, (err) => {
+                await pool.query(queries.profiles_table, async (err) => {
                     if (err) throw err
                     console.log("Created table profiles")
-                })
-                await pool.query(queries.posts_table, (err) => {
-                    if (err) throw err
-                    console.log("Created table posts")
+                    await pool.query(queries.posts_table, (err) => {
+                        if (err) throw err
+                        console.log("Created table posts")
+                    })
                 })
             })
         }

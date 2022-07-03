@@ -20,7 +20,7 @@ const profiles_table = 'CREATE TABLE IF NOT EXISTS profiles (\n' +
 
 const posts_table = 'CREATE TABLE IF NOT EXISTS posts (\n' +
     '\tid serial PRIMARY KEY,\n' +
-    '\tprofile_id INTEGER REFERENCES profiles ,\n' +
+    '\tprofile_id integer REFERENCES profiles(id),\n' +
     '\tcontent TEXT,\n' +
     '\tdate DATE NOT NULL\n' +
     ');'
