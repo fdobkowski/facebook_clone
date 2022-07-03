@@ -1,9 +1,14 @@
 const express = require('express')
+const userRoute = require('./users/users')
+
+
 const app = express()
 
 app.use(express.json())
+app.use('/api/users', userRoute)
 
 const { Client } = require('pg')
+const pool = require('./Pool')
 
 require('dotenv').config()
 const dbConnData = {
@@ -16,13 +21,27 @@ const dbConnData = {
 
 const client = new Client(dbConnData)
 
-client.connect().then(() => {
-    client.query("SELECT datname FROM pg_database;", (err, result) => {
+const queries = require('./init_queries')
+
+client.connect().then(async () => {
+    await client.query("SELECT datname FROM pg_database;", async (err, result) => {
         if (err) throw err
         if (result.rows.find(x => x['datname'] === 'facebook_db') === undefined) {
-            client.query("CREATE DATABASE facebook_db;", (err1) => {
-                if (err1) throw err1
+            await client.query(queries.create_database, async (err) => {
+                if (err) throw err
                 console.log("Created database facebook_db")
+                await pool.query(queries.users_table, (err) => {
+                    if (err) throw err
+                    console.log("Created table users")
+                })
+                await pool.query(queries.profiles_table, (err) => {
+                    if (err) throw err
+                    console.log("Created table profiles")
+                })
+                await pool.query(queries.posts_table, (err) => {
+                    if (err) throw err
+                    console.log("Created table posts")
+                })
             })
         }
     })
