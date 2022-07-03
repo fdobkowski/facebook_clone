@@ -1,12 +1,15 @@
 const express = require('express')
 const userRoute = require('./users/users')
-
+const profileRoute = require('./profiles/profiles')
+const postRoute = require('./posts/posts')
 
 const app = express()
 
 app.use(express.json())
 app.use(require('cors')())
 app.use('/api/users', userRoute)
+app.use('/api/profiles', profileRoute)
+app.use('/api/posts', postRoute)
 
 const { Client } = require('pg')
 const pool = require('./Pool')
