@@ -3,10 +3,12 @@ import logoSvg from "../../assets/logo.svg"
 import {Field, Form, Formik} from "formik";
 import {useState} from "react";
 import Register from "./Register";
+import {useNavigate} from "react-router-dom";
 
 const Login = () => {
 
     const axios = require('axios')
+    const navigate = useNavigate()
     const [register, setRegister] = useState(false)
 
     const handleLogin = (values) => {
@@ -14,7 +16,8 @@ const Login = () => {
             username: values.login,
             password: values.password
         }).then((response) => {
-            alert(response.data)
+            alert("Welcome")
+            navigate("/")
         }).catch(err => alert(err.response.data))
     }
 
