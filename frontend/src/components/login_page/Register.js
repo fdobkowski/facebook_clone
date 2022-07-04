@@ -2,10 +2,25 @@ import {Field, Form, Formik} from "formik";
 
 const Register = ( { visible }) => {
 
+    const axios = require('axios')
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
-    const handleRegister = (values) => {
-        console.log(values)
+    const handleRegister = async (values) => {
+        await axios.post("http://localhost:5000/api/users", {
+            email: values.email,
+            number: values.number,
+            password: values.password
+        }).then(async (response) => {
+            await axios.post("http://localhost:5000/api/profiles", {
+                first_name: values.first_name,
+                last_name: values.last_name,
+                birthday: `${values.year}-${values.month}-${values.day}`,
+                gender: values.gender,
+                custom_gender: values.custom_gender,
+                pronoun: values.pronoun
+            }).then((response) => alert(response.data)).catch(error => console.error(error))
+        }).catch(error => console.error(error))
+
     }
 
     return (

@@ -2,7 +2,6 @@ const create_database = "CREATE DATABASE facebook_db;"
 
 const users_table = 'CREATE TABLE IF NOT EXISTS users (\n' +
     '\tid serial PRIMARY KEY,\n' +
-    '\tusername VARCHAR(255) UNIQUE NOT NULL,\n' +
     '\temail VARCHAR(255) UNIQUE NOT NULL,\n' +
     '\tnumber VARCHAR(255) UNIQUE NOT NULL,\n' +
     '\tpassword VARCHAR(255) NOT NULL\n' +
