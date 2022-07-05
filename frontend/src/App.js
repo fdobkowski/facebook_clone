@@ -7,6 +7,11 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/footer";
 import {useCookies} from "react-cookie";
 import {useEffect} from "react";
+import Protected from "./components/Protected";
+import PrivateRoute from "./components/ProtectedRoute";
+import keycloak from "./Keycloak";
+import { ReactKeycloakProvider } from "@react-keycloak/web";
+
 
 function App() {
 
@@ -17,15 +22,22 @@ function App() {
     }, [])
 
   return (
-    <Router>
-        <Navbar />
-      <Routes>
-        <Route path={"/login"} element={<Login/>}/>
-        <Route path={"/"} element={<Home/>}/>
-        <Route path={"/profile/:id"} element={<Profile/>}/>
-      </Routes>
-        <Footer />
-    </Router>
+      <ReactKeycloakProvider authClient={keycloak._kc}>
+        <Router>
+                <Navbar />
+              <Routes>
+                <Route path={"/login"} element={<Login/>}/>
+                <Route path={"/"} element={<Home/>}/>
+                <Route path={"/profile/:id"} element={<Profile/>}/>
+                <Route path={"/protected"} element={
+                    <PrivateRoute>
+                        <Protected/>
+                    </PrivateRoute>
+                }/>
+              </Routes>
+                <Footer />
+        </Router>
+      </ReactKeycloakProvider>
   );
 }
 
