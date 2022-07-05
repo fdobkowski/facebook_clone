@@ -5,25 +5,26 @@ const app = express()
 
 app.use(require('cors')())
 
-const tokenEndpoint = "http://localhost:8080/realms/facebook_clone/protocol/openid-connect/token"
+const tokenEndpoint = 'http://localhost:8080/realms/facebook_clone/protocol/openid-connect/token'
 
 const apiProtectedEnpoint = "http://localhost:5000/api/protected/profiles"
 
 const clientId = "post_manager"
-const clientSecret = "vLdnQXcikJzh1RrcFDxveu7C9DodL6JY"
+const clientSecret = "yRoOU4ZZkaudWFxKetReLWCR13FPndh6"
 
-app.get('/', async (req, res) => {
+app.post('/', async (req, res) => {
     const params = new URLSearchParams()
 
-    params.append('grant_type', 'client_credentials')
     params.append('client_id', clientId)
     params.append('client_secret', clientSecret)
+    params.append('grant_type', 'client_credentials')
+
 
     await axios.post(tokenEndpoint, params).then(async response => {
 
         const accessToken = response.data.access_token || ''
 
-        await axios.post(apiProtectedEnpoint,{email: req.body.email}, {
+        await axios.post(apiProtectedEnpoint,{login: req.body.login}, {
             headers: {
                 'Authorization': 'Bearer ' + accessToken
             }
@@ -31,7 +32,7 @@ app.get('/', async (req, res) => {
             res.send(response.data.rows)
         }).catch(error => console.error(error))
     }).catch(error => {
-        res.status(401).send(error.response.data)
+        res.status(401).send(error)
     })
 
 })

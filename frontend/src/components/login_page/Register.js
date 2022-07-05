@@ -17,12 +17,11 @@ const Register = ( { visible }) => {
 
         const token = Buffer.from(`${id}:${values.email}:${values.number}:${values.password}`, 'utf8').toString('base64')
 
-
         await axios.get("http://localhost:5000/api/users", {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
-        }).then(async (response) => {
+        }).then(async () => {
             await axios.post("http://localhost:5000/api/profiles", {
                 id: id,
                 first_name: values.first_name,

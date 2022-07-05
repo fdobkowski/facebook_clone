@@ -4,7 +4,6 @@ import {Field, Form, Formik} from "formik";
 import {useState} from "react";
 import Register from "./Register";
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
 import {useCookies} from "react-cookie";
 import { Buffer } from 'buffer'
 
@@ -24,6 +23,7 @@ const Login = () => {
             }
         }).then((response) => {
                 setCookies("profile_id", response.data)
+                navigate('/')
             }).catch(error => console.error(error))
     }
 

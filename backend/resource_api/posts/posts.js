@@ -11,6 +11,13 @@ router.post('/', async (req, res) => {
     })
 })
 
+router.get('/', async (req, res) => {
+    await pool.query(queries.get_all_posts, (err, result) => {
+        if (err) throw err
+        res.status(200).send(result.rows)
+    })
+})
+
 router.get("/:id", async (req, res) => {
     await pool.query(queries.get_single_post(req.params.id), (err, result) => {
         if (err) throw err
