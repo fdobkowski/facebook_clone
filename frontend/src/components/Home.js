@@ -3,7 +3,14 @@ import {useState} from "react";
 
 const Home = () => {
 
+    const axios = require('axios')
+
     const [createPost, setCreatePost] = useState(false)
+    const [content, setContent] = useState("")
+
+    const submitPost = () => {
+
+    }
 
     return (
         <div className={"home_container"}>
@@ -40,7 +47,7 @@ const Home = () => {
                         </div>
                     </div>
                     <div className={"post_container"}>
-                        <textarea placeholder={"What do you think about?"}/>
+                        <textarea placeholder={"What do you think about?"} onChange={(event) => setContent(event.target.value)}/>
                     </div>
                     <div className={"post_button"}>
                         <button>Post</button>

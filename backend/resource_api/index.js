@@ -4,6 +4,7 @@ const profileRoute = require('./profiles/profiles')
 const postRoute = require('./posts/posts')
 const loginRoute = require('./login/login')
 const protectedUserRoute = require('./protected/protected_users')
+const protectedProfileRoute = require('./protected/protected_profiles')
 
 const app = express()
 
@@ -14,6 +15,7 @@ app.use('/api/profiles', profileRoute)
 app.use('/api/posts', postRoute)
 app.use('/api/login', loginRoute)
 app.use('/api/protected/users', protectedUserRoute)
+app.use('/api/protected/profiles', protectedProfileRoute)
 
 const { Client } = require('pg')
 const pool = require('./Pool')
