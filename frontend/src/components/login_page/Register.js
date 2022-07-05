@@ -25,6 +25,7 @@ const Register = ( { visible }) => {
             }).then((response) => alert(response.data)).catch(error => console.error(error))
         }).catch(error => console.error(error))
 
+        visible.setVisible(false)
     }
 
     return (

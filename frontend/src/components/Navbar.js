@@ -1,3 +1,4 @@
+import '../styles/Navbar.scss'
 import {useLocation, useNavigate} from 'react-router-dom'
 
 const Navbar = () => {
@@ -8,7 +9,7 @@ const Navbar = () => {
     return (
         <div>
         {(location.pathname !== '/login') ?
-            <nav>
+            <nav className={"navbar_container"}>
                 <button onClick={() => navigate("/")}>Home</button>
                 <button onClick={() => navigate("/login")}>Login</button>
                 <button onClick={() => navigate("/profile/5")}>Profile</button>
