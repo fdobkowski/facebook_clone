@@ -6,12 +6,15 @@
   align-items: center;
   justify-content: space-between;
   min-width: 810px;
+  background-color: rgb(240, 242, 245);
 
   div {
     display: flex;
     justify-content: space-between;
     width: 60vh;
     border-radius: 50%;
+    padding-bottom: 10px;
+    color: gray;
 
     a {
       img  {

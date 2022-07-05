@@ -31,9 +31,9 @@ const Login = () => {
                 <Form className={"login_form"}>
                     <Field name={"login"} placeholder={"Email or mobile number"} />
                     <Field name={"password"} placeholder={"Password"} type={"password"} />
-                    <button type={"submit"}>Log in</button>
-                    <button>Forgot password?</button>
-                    <button onClick={() => setRegister(!register)}>Create new account</button>
+                    <button type={"submit"} className={"login_button"}>Log in</button>
+                    <button className={"forgot_password_button"}>Forgot password?</button>
+                    <button className={"new_acc_button"} onClick={() => setRegister(!register)}>Create new account</button>
                 </Form>
             </Formik>
             {(register) ?
