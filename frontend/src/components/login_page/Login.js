@@ -12,23 +12,23 @@ const Login = () => {
     const [register, setRegister] = useState(false)
 
     const handleLogin = (values) => {
-        axios.post("http://localhost:5000/api/login", {
-            username: values.login,
-            password: values.password
-        }).then((response) => {
-            alert("Welcome")
-            navigate("/")
-        }).catch(err => alert(err.response.data))
+        // axios.post("http://localhost:5000/api/login", {
+        //     username: values.login,
+        //     password: values.password
+        // }).then((response) => {
+        //     alert("Welcome")
+        //     navigate("/")
+        // }).catch(err => alert(err.response.data))
     }
 
     return (
         <div className={"login_container"}>
-            <img src={logoSvg} alt={"logo"} className={"login_logo"}/>
+            <img src={logoSvg} alt={"logo"} className={"login_logo"} id={`register_${register}`}/>
             <Formik initialValues={{
                 login: "",
                 password: ""
             }} onSubmit={(values) => handleLogin(values)}>
-                <Form className={"login_form"}>
+                <Form className={"login_form"} id={`register_${register}`}>
                     <Field name={"login"} placeholder={"Email or mobile number"} />
                     <Field name={"password"} placeholder={"Password"} type={"password"} />
                     <button type={"submit"} className={"login_button"}>Log in</button>

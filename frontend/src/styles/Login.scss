@@ -14,7 +14,7 @@
     flex-direction: column;
     border: 1px solid transparent;
     border-radius: 8px;
-    padding: 10px;
+    padding: 15px;
     background-color: white;
     width: 20vw;
     height: 40vh;
@@ -78,10 +78,16 @@
       height: 15%;
       border-radius: 8px;
       margin-top: 7.5%;
+      font-size: 20px;
     }
 
     .new_acc_button:hover {
       background-color: rgb(54, 164, 32);;
     }
   }
+}
+
+#register_true {
+  pointer-events: none;
+  filter: blur(5px);
 }

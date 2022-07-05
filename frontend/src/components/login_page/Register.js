@@ -1,9 +1,13 @@
+import '../../styles/Register.scss'
 import {Field, Form, Formik} from "formik";
+import {useState} from "react";
 
 const Register = ( { visible }) => {
 
     const axios = require('axios')
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
+    const [customGender, setCustomGender] = useState("Female")
 
     const handleRegister = async (values) => {
         await axios.post("http://localhost:5000/api/users", {
@@ -24,17 +28,19 @@ const Register = ( { visible }) => {
     }
 
     return (
-        <div>
-            <div>
-                <h2>Sign Up</h2>
-                <h4>It's quick and easy.</h4>
+        <div className={"register_container"} id={customGender}>
+            <div className={"register_header"}>
+                <div>
+                    <h2>Sign Up</h2>
+                    <h5>It's quick and easy.</h5>
+                </div>
+                <button onClick={() => visible.setVisible(false)}>X</button>
             </div>
-            <button onClick={() => visible.setVisible(false)}>X</button>
             <Formik initialValues={{
                 first_name: "",
                 last_name: "",
                 email: "",
-                number: 0,
+                number: "",
                 password: "",
                 re_password: "",
                 month: "",
@@ -45,15 +51,16 @@ const Register = ( { visible }) => {
                 custom_gender: ""
             }} onSubmit={(values) => handleRegister(values)}>
                 {({ values, setFieldValue }) => (
-                    <Form>
+                    <Form className={"register_form"}>
                         <div className={"names"}>
-                            <Field name={"first_name"} placeholder={"First name"}/>
-                            <Field name={"last_name"} placeholder={"Last name"}/>
+                            <Field className={"type_form"} name={"first_name"} placeholder={"First name"}/>
+                            <Field className={"type_form"} name={"last_name"} placeholder={"Last name"}/>
                         </div>
-                        <Field name={"email"} placeholder={"Email"}/>
-                        <Field name={"number"} placeholder={"Mobile number"}/>
-                        <Field name={"password"} placeholder={"New password"} type={"password"}/>
-                        <Field name={"re_password"} placeholder={"Confirm password"} type={"password"}/>
+                        <Field className={"type_form"} name={"email"} placeholder={"Email"}/>
+                        <Field className={"type_form"} name={"number"} placeholder={"Mobile number"}/>
+                        <Field className={"type_form"} name={"password"} placeholder={"New password"} type={"password"}/>
+                        <Field className={"type_form"} name={"re_password"} placeholder={"Confirm password"} type={"password"}/>
+                        <span>Birthday</span>
                         <div className={"birthday"}>
                             <Field name={"month"} as={"select"}>
                                 {months.map(x => (
@@ -71,27 +78,36 @@ const Register = ( { visible }) => {
                                 ))}
                             </Field>
                         </div>
+                        <span>Gender</span>
                         <div className={"gender"}>
-                            <div>
-                                <Field type={"radio"} value={"Female"} name={"gender"} onChange={() => {
+                            <div className={"m_or_f"}>
+                                <div onClick={() => {
                                     setFieldValue("pronoun", "She")
                                     setFieldValue("gender", "Female")
-                                }}/>
-                                Female
-                            </div>
-                            <div>
-                                <Field type={"radio"} value={"Male"} name={"gender"} onChange={() => {
+                                    setCustomGender("Female")
+                                }}>
+                                    <Field type={"radio"} value={"Female"} name={"gender"} />
+                                    Female
+                                </div>
+                                <div onClick={() => {
                                     setFieldValue("pronoun", "He")
                                     setFieldValue("gender", "Male")
-                                }}/>
-                                Male
+                                    setCustomGender("Male")
+                                }}>
+                                    <Field type={"radio"} value={"Male"} name={"gender"}/>
+                                    Male
+                                </div>
                             </div>
-                            <div>
+                            <div className={"custom_radio"} onClick={() => {
+                                setFieldValue("gender", "Custom")
+                                setCustomGender("Custom")
+                            }}>
                                 <Field type={"radio"} value={"Custom"} name={"gender"}/>
                                 Custom
                             </div>
                             {(values.gender === "Custom") ?
                             <div className={"custom_gender"}>
+                                <span>Pronoun</span>
                                 <Field name={"pronoun"} as={"select"} placeholder={"Select your pronoun"}>
                                     <option value={"She"} label={'She: "Wish her a happy birthday!"'}/>
                                     <option value={"He"} label={'He: "Wish him a happy birthday!"'}/>
@@ -100,7 +116,7 @@ const Register = ( { visible }) => {
                                 <Field name={"custom_gender"} placeholder={"Gender (optional)"}/>
                             </div> : null}
                         </div>
-                        <button type={"submit"}>Sign up</button>
+                        <button className={"submit_button"} type={"submit"}>Sign up</button>
                     </Form>
                 )}
             </Formik>
