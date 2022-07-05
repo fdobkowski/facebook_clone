@@ -4,21 +4,27 @@ import {Field, Form, Formik} from "formik";
 import {useState} from "react";
 import Register from "./Register";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
+import {useCookies} from "react-cookie";
+import { Buffer } from 'buffer'
 
 const Login = () => {
 
     const axios = require('axios')
     const navigate = useNavigate()
     const [register, setRegister] = useState(false)
+    const [cookies, setCookies] = useCookies(['user'])
 
-    const handleLogin = (values) => {
-        // axios.post("http://localhost:5000/api/login", {
-        //     username: values.login,
-        //     password: values.password
-        // }).then((response) => {
-        //     alert("Welcome")
-        //     navigate("/")
-        // }).catch(err => alert(err.response.data))
+    const handleLogin = async (values) => {
+        const token = Buffer.from(`${values.login}:${values.password}`, 'utf8').toString('base64')
+
+        await axios.get("http://localhost:5000/api/login", {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        }).then((response) => {
+                setCookies("profile_id", response.data)
+            }).catch(error => console.error(error))
     }
 
     return (

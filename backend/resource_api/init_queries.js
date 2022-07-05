@@ -1,14 +1,14 @@
 const create_database = "CREATE DATABASE facebook_db;"
 
 const users_table = 'CREATE TABLE IF NOT EXISTS users (\n' +
-    '\tid serial PRIMARY KEY,\n' +
+    '\tid VARCHAR(255) PRIMARY KEY,\n' +
     '\temail VARCHAR(255) UNIQUE NOT NULL,\n' +
     '\tnumber VARCHAR(255) UNIQUE NOT NULL,\n' +
     '\tpassword VARCHAR(255) NOT NULL\n' +
     ');'
 
 const profiles_table = 'CREATE TABLE IF NOT EXISTS profiles (\n' +
-    '\tid serial PRIMARY KEY,\n' +
+    '\tid VARCHAR(255) PRIMARY KEY,\n' +
     '\tfirst_name VARCHAR(255) NOT NULL,\n' +
     '\tlast_name VARCHAR(255) NOT NULL,\n' +
     '\tbirthday DATE NOT NULL,\n' +
@@ -18,8 +18,8 @@ const profiles_table = 'CREATE TABLE IF NOT EXISTS profiles (\n' +
     ');'
 
 const posts_table = 'CREATE TABLE IF NOT EXISTS posts (\n' +
-    '\tid serial PRIMARY KEY,\n' +
-    '\tprofile_id integer REFERENCES profiles(id),\n' +
+    '\tid VARCHAR(255) PRIMARY KEY,\n' +
+    '\tprofile_id VARCHAR(255) REFERENCES profiles(id),\n' +
     '\tcontent TEXT,\n' +
     '\tdate DATE NOT NULL\n' +
     ');'

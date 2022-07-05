@@ -3,11 +3,20 @@ const router = Router()
 const pool = require('../Pool')
 const queries = require('./login_queries')
 
-router.post("/", (req, res) => {
-    pool.query(queries.auth_user(req.body), (error, response) => {
+router.get("/", async (req, res) => {
+
+    const base64auth = (req.headers.authorization || "").split(" ")[1] || ""
+    const [login, password] = Buffer.from(base64auth, "base64").toString().split(":")
+
+    pool.query(queries.auth_user({login: login, password: password}), (error, response) => {
         if (error) throw error
-        if (response.rows[0].exists) res.status(200).send("Authorized")
-        else res.status(403).send("Unauthorized")
+        if (response.rows[0].exists) {
+            pool.query(queries.get_profile_id({login: login}), (error, response) => {
+                if (error) throw error
+                res.status(200).send(response.rows[0].id)
+            })
+        }
+        else res.status(401).send("Wrong credentials")
     })
 })
 

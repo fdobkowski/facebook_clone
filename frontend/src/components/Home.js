@@ -8,7 +8,7 @@ const Home = () => {
     const [createPost, setCreatePost] = useState(false)
     const [content, setContent] = useState("")
 
-    const submitPost = () => {
+    const submitPost = async () => {
 
     }
 

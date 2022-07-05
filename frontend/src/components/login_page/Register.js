@@ -1,6 +1,8 @@
 import '../../styles/Register.scss'
 import {Field, Form, Formik} from "formik";
 import {useState} from "react";
+import { Buffer } from 'buffer'
+import { v4 as uuidv4 } from 'uuid'
 
 const Register = ( { visible }) => {
 
@@ -10,12 +12,19 @@ const Register = ( { visible }) => {
     const [customGender, setCustomGender] = useState("Female")
 
     const handleRegister = async (values) => {
-        await axios.post("http://localhost:5000/api/users", {
-            email: values.email,
-            number: values.number,
-            password: values.password
+
+        const id = uuidv4()
+
+        const token = Buffer.from(`${id}:${values.email}:${values.number}:${values.password}`, 'utf8').toString('base64')
+
+
+        await axios.get("http://localhost:5000/api/users", {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
         }).then(async (response) => {
             await axios.post("http://localhost:5000/api/profiles", {
+                id: id,
                 first_name: values.first_name,
                 last_name: values.last_name,
                 birthday: `${values.year}-${values.month}-${values.day}`,
@@ -44,9 +53,9 @@ const Register = ( { visible }) => {
                 number: "",
                 password: "",
                 re_password: "",
-                month: "",
-                day: 0,
-                year: 0,
+                month: "1",
+                day: 1,
+                year: 1,
                 gender: "Female",
                 pronoun: "",
                 custom_gender: ""
