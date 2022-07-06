@@ -138,38 +138,33 @@ Konfiguracja keycloak'a:
 Konfiguracja reacta:
 
 ```javascript
-import Keycloak from "keycloak-js";
-
 const _kc = new Keycloak({
-    url: "http://localhost:8080/auth",
+    url: "http://localhost:8080",
     realm: "facebook_clone",
-    clientId: "spa_client"
+    clientId: "spa_client",
+    flow: 'implicit'
 })
-
-export default _kc
 ```
 
 ```javascript
-useEffect(async () => {
-        await _kc.init({
-            onLoad: "login-required",
-            redirectUri: "http://localhost:3000/protected",
-            checkLoginIframe: false,
-            pkceMethod: 'S256',
-        })
-            .then((authenticated) => {
-                if (!authenticated) console.log("user is not authenticated..!")
-                axios.get('http://localhost:5000/api/protected/posts', {
-                    headers: {
-                        'Authorization': 'Bearer ' + _kc.token
-                    }
-                }).then(result => setData(result.data)).catch(error => console.error(error))
-            })
-            .catch(error => console.error(error))
-    })
+const { keycloak } = useKeycloak()
+const { authenticated } = keycloak
 
-    const { keycloak } = useKeycloak()
-    const { authenticated } = keycloak
+
+const handleLogin = useCallback(() => {
+    keycloak.login()
+}, [keycloak])
+
+useEffect(() => {
+    if (keycloak.token) {
+        axios.get('http://localhost:5000/api/protected/posts', {
+            headers: {
+                'Authorization': 'Bearer ' + keycloak.token
+            }
+        }).then(response => {
+            setData(response.data)
+        }).catch(err => console.error(err))
+    }}, [keycloak.token])
 ```
 
 Konfiguracja api do Implicit Grant:
@@ -184,23 +179,18 @@ MIICqzCCAZMCBgGByt4hjjANBgkqhkiG9w0BAQsFADAZMRcwFQYDVQQDDA5mYWNlYm9va19jbG9uZTAe
 
 ```javascript
 const accessToken = (req.headers.authorization || '').split(' ')[1] || '';
-
 if (!accessToken) {
     return res.status(401).end();
 }
 
-const payload = jwt.verify(accessToken, realmPemCert, { algorithms: ['RS256']}, (err) => {
-    if (err) throw err
-})
+const payload = jwt.verify(accessToken, realmPemCert, { algorithms: ['RS256']})
 
-if (payload.exp) {
+if (payload.exp < Date.now()) {
     pool.query(queries.get_posts, (err, result) => {
         if (err) throw err
         res.status(200).send(result.rows)
     })
-}
-
-res.status(401).end()
+} else res.status(401).end()
 ```
 
 Flow aplikacji:
@@ -271,11 +261,15 @@ Możliwość dodawania postów, które są dodawane przez api do bazy danych
 
 !["kc9"](assets/keycloak(9).png)
 
-Możliwość obejrzenia wszystkich informacji o postach dla "administratora" (nie działa z keycloak'iem)
+Możliwość obejrzenia wszystkich informacji o postach dla "administratora"
 
 ```javascript
-<button onClick={() => keycloak.login()}>Log in</button>
+const handleLogin = useCallback(() => {
+    keycloak.login()
+}, [keycloak])
 ```
+
+!["kc13"](assets/keycloak(13).png)
 
 !["kc10"](assets/keycloak(10).png)
 

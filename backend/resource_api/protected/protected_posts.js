@@ -12,24 +12,21 @@ MIICqzCCAZMCBgGByt4hjjANBgkqhkiG9w0BAQsFADAZMRcwFQYDVQQDDA5mYWNlYm9va19jbG9uZTAe
 -----END CERTIFICATE-----`
 
 router.get('/', (req, res) => {
-    const accessToken = (req.headers.authorization || '').split(' ')[1] || '';
 
+    const accessToken = (req.headers.authorization || '').split(' ')[1] || '';
     if (!accessToken) {
         return res.status(401).end();
     }
 
-    const payload = jwt.verify(accessToken, realmPemCert, { algorithms: ['RS256']}, (err) => {
-        if (err) throw err
-    })
+    const payload = jwt.verify(accessToken, realmPemCert, { algorithms: ['RS256']})
 
-    if (payload.exp) {
+    if (payload.exp < Date.now()) {
         pool.query(queries.get_posts, (err, result) => {
             if (err) throw err
             res.status(200).send(result.rows)
         })
-    }
+    } else res.status(401).end()
 
-    res.status(401).end()
 })
 
 module.exports = router
