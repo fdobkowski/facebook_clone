@@ -7,10 +7,9 @@ const axios = require('axios')
 const queries = require('./protected_profiles_queries')
 
 const introspectionEndpoint = 'http://localhost:8080/realms/facebook_clone/protocol/openid-connect/token/introspect'
-const userInfoEndpoint = 'http://localhost:8080/realms/facebook_clone/protocol/openid-connect/userinfo'
 
 const postId = 'post_manager'
-const postSecret = 'vLdnQXcikJzh1RrcFDxveu7C9DodL6JY'
+const postSecret = 'yRoOU4ZZkaudWFxKetReLWCR13FPndh6'
 
 router.post('/', async (req, res) => {
 

@@ -4,6 +4,7 @@ const axios = require('axios')
 const app = express()
 
 app.use(require('cors')())
+app.use(express.json())
 
 const tokenEndpoint = 'http://localhost:8080/realms/facebook_clone/protocol/openid-connect/token'
 
@@ -19,7 +20,6 @@ app.post('/', async (req, res) => {
     params.append('client_secret', clientSecret)
     params.append('grant_type', 'client_credentials')
 
-
     await axios.post(tokenEndpoint, params).then(async response => {
 
         const accessToken = response.data.access_token || ''
@@ -29,7 +29,7 @@ app.post('/', async (req, res) => {
                 'Authorization': 'Bearer ' + accessToken
             }
         }).then(response => {
-            res.send(response.data.rows)
+            res.send({id: response.data.rows[0].id})
         }).catch(error => console.error(error))
     }).catch(error => {
         res.status(401).send(error)

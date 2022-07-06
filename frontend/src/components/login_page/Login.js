@@ -1,7 +1,7 @@
 import "../../styles/Login.scss"
 import logoSvg from "../../assets/logo.svg"
 import {Field, Form, Formik} from "formik";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Register from "./Register";
 import {useNavigate} from "react-router-dom";
 import {useCookies} from "react-cookie";
@@ -21,11 +21,21 @@ const Login = () => {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
-        }).then((response) => {
-                setCookies("profile_id", response.data)
-                navigate('/')
+        }).then(async (response) => {
+                await axios.post('http://localhost:4001', {
+                    login: values.login
+                }).then(response => {
+                    setCookies("profile_id", response.data.id)
+                    navigate('/')
+                }).catch(error => console.log(error))
             }).catch(error => console.error(error))
     }
+
+    useEffect(() => {
+        if (cookies["profile_id"]) {
+            navigate('/')
+        }
+    }, [])
 
     return (
         <div className={"login_container"}>

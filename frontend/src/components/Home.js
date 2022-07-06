@@ -23,6 +23,7 @@ const Home = () => {
         }).then(response => {
             alert("Post added")
             setCreatePost(false)
+            navigate(0)
         }).catch(error => console.error(error))
     }
 
