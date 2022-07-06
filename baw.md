@@ -24,6 +24,7 @@ Aplikacja dzieli się na 5 części:
 - cors - v2.8.5
 - express - v4.18.1
 - pg - v8.7.3
+- crypto-js - v4.1.1
 
 ##### Baza danych
 - PostgreSQL - v14.2
@@ -133,6 +134,75 @@ Konfiguracja keycloak'a:
 
 !["kc6"](assets/keycloak(6).png)
 
+
+Konfiguracja reacta:
+
+```javascript
+import Keycloak from "keycloak-js";
+
+const _kc = new Keycloak({
+    url: "http://localhost:8080/auth",
+    realm: "facebook_clone",
+    clientId: "spa_client"
+})
+
+export default _kc
+```
+
+```javascript
+useEffect(async () => {
+        await _kc.init({
+            onLoad: "login-required",
+            redirectUri: "http://localhost:3000/protected",
+            checkLoginIframe: false,
+            pkceMethod: 'S256',
+        })
+            .then((authenticated) => {
+                if (!authenticated) console.log("user is not authenticated..!")
+                axios.get('http://localhost:5000/api/protected/posts', {
+                    headers: {
+                        'Authorization': 'Bearer ' + _kc.token
+                    }
+                }).then(result => setData(result.data)).catch(error => console.error(error))
+            })
+            .catch(error => console.error(error))
+    })
+
+    const { keycloak } = useKeycloak()
+    const { authenticated } = keycloak
+```
+
+Konfiguracja api do Implicit Grant:
+
+```javascript
+const spaClientId = 'spa_client'
+const jwt = require('jsonwebtoken')
+const realmPemCert = `-----BEGIN CERTIFICATE-----
+MIICqzCCAZMCBgGByt4hjjANBgkqhkiG9w0BAQsFADAZMRcwFQYDVQQDDA5mYWNlYm9va19jbG9uZTAeFw0yMjA3MDQyMDE3NDRaFw0zMjA3MDQyMDE5MjRaMBkxFzAVBgNVBAMMDmZhY2Vib29rX2Nsb25lMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr/rEZx4PnEyU6WppVw2D1PiXjAioJe3tiO1QET2U5mWlKwRSxYKB872PcCz+mbPdz8YZZ6CL/+l5nggyybeJhhTDym2QxodJ8SXTQa9r+pKuD644qt7P7HhYR9Cmkmv6GPyAFvDPrJqstrSDvavRi6G7AdFYAZ/2q7uhyzuSoTopwKafmqhqwV73k2hF9rjLD7z5ApOIORrJQ9kJ4qxkfYK7py7FI2nGo5mrmL5YpbuaaCLdVL3eN0z0/g8cuhji44MtDm5wRH8ISXAEtYxesXRA6byWp+wzd+W3FnH436NMEwKsNAHkM/vFQJKhmA1j3Bk9tfKI8vkTPrgLn6OpxwIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQCLI3d6byiU+rFvOkzLV1dfroO+qOLOvi1otm8bno/Ut+jOwLyUFcr118iTsGwuwqI0Zmy7i24JfMGVYL5XfLSKseFHYPVCvesvG31wLBuzNXIuDNlpbXZrtJeF1+RlX8K7i749pVKMTmU5Me/m937GGYhfuLxM/e7GmOIbfYGfwDKLa2JQSWGGo90QwLWwmWzqx7EU3EoUf7dGoupWJZPJx9HTzJkm9dZetpUUJ1vCfGy+1z1bUZTuSdKkKRueSr0LpaHq0DWYgMn6SDSh8ygGA97E+nbUsdaPOO31nvcdxjFl6q5PcRcaxCMCCVQZStBUC7jI/wWRL2X1507fRYmR
+-----END CERTIFICATE-----`
+```
+
+```javascript
+const accessToken = (req.headers.authorization || '').split(' ')[1] || '';
+
+if (!accessToken) {
+    return res.status(401).end();
+}
+
+const payload = jwt.verify(accessToken, realmPemCert, { algorithms: ['RS256']}, (err) => {
+    if (err) throw err
+})
+
+if (payload.exp) {
+    pool.query(queries.get_posts, (err, result) => {
+        if (err) throw err
+        res.status(200).send(result.rows)
+    })
+}
+
+res.status(401).end()
+```
+
 Flow aplikacji:
 
 Aplikacja posiada możliwość rejestracji (BasicAuth):
@@ -156,6 +226,43 @@ const token = Buffer.from(`${id}:${values.email}:${values.number}:${values.passw
             }).then((response) => alert(response.data)).catch(error => console.error(error))
         }).catch(error => console.error(error))
 ```
+
+Api (hasło jest hashowane):
+```javascript
+const base64auth = (req.headers.authorization || "").split(" ")[1] || ""
+const [id, email, number, password] = Buffer.from(base64auth, "base64").toString().split(":")
+
+const encrypt = CryptoJS.AES.encrypt(password, "274989hash")
+
+await pool.query(queries.post_user({
+    id: id,
+    email: email,
+    number: number,
+    password: encrypt
+}), (err, result) => {
+    if (err) throw err
+    res.status(200).send("Successful")
+})
+```
+
+```javascript
+const base64auth = (req.headers.authorization || "").split(" ")[1] || ""
+const [login, password] = Buffer.from(base64auth, "base64").toString().split(":")
+
+pool.query(queries.auth_user({login: login, password: password}), async (error, response) => {
+    if (error) throw error
+    const decrypt = CryptoJS.AES.decrypt(response.rows[0].password, '274989hash')
+    if (password === decrypt.toString(CryptoJS.enc.Utf8)) {
+        await pool.query(queries.get_profile_id({login: login}), (error, response) => {
+            if (error) throw error
+            res.status(200).send(response.rows[0].id)
+        })
+    }
+    else res.status(401).send("Wrong credentials")
+})
+```
+
+
 
 !["kc7"](assets/keycloak(7).png)
 !["kc8"](assets/keycloak(8).png)
@@ -188,26 +295,53 @@ const apiProtectedEnpoint = "http://localhost:5000/api/protected/profiles"
 const clientId = "post_manager"
 const clientSecret = "yRoOU4ZZkaudWFxKetReLWCR13FPndh6"
 ```
+
 ```javascript
 const params = new URLSearchParams()
 
-    params.append('client_id', clientId)
-    params.append('client_secret', clientSecret)
-    params.append('grant_type', 'client_credentials')
+const params = new URLSearchParams()
 
+params.append('client_id', clientId)
+params.append('client_secret', clientSecret)
+params.append('grant_type', 'client_credentials')
 
-    await axios.post(tokenEndpoint, params).then(async response => {
+await axios.post(tokenEndpoint, params).then(async response => {
 
-        const accessToken = response.data.access_token || ''
+    const accessToken = response.data.access_token || ''
 
-        await axios.post(apiProtectedEnpoint,{login: req.body.login}, {
-            headers: {
-                'Authorization': 'Bearer ' + accessToken
-            }
-        }).then(response => {
-            res.send(response.data.rows)
-        }).catch(error => console.error(error))
-    }).catch(error => {
-        res.status(401).send(error)
-    })
+    await axios.post(apiProtectedEnpoint,{login: req.body.login}, {
+        headers: {
+            'Authorization': 'Bearer ' + accessToken
+        }
+    }).then(response => {
+        res.send({id: response.data.rows[0].id})
+    }).catch(error => console.error(error))
+}).catch(error => {
+    res.status(401).send(error)
+})
 ```
+
+Zastosowanie backendu w aplikacji reactowej:
+
+```javascript
+const handleLogin = async (values) => {
+        const token = Buffer.from(`${values.login}:${values.password}`, 'utf8').toString('base64')
+
+        await axios.get("http://localhost:5000/api/login", {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        }).then(async (response) => {
+                await axios.post('http://localhost:4001', {
+                    login: values.login
+                }).then(response => {
+                    setCookies("profile_id", response.data.id)
+                    navigate('/')
+                }).catch(error => console.log(error))
+            }).catch(error => console.error(error))
+    }
+```
+
+Backend służy do pobrania z zabezpieczonego api id użytkownika, który się zalogował i zapisanie go do cookies.
+
+!["kc12"](assets/keycloak(12).png)

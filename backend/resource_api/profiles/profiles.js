@@ -6,7 +6,6 @@ const queries = require('./profile_queries')
 router.post('/', async (req, res) => {
     await pool.query(queries.post_profile(req.body), (err, result) => {
         if (err) throw err
-        console.log(result)
         res.status(200).send("OK")
     })
 })

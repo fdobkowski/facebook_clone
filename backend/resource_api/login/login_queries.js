@@ -1,6 +1,6 @@
-const auth_user = (body) => `SELECT EXISTS (SELECT 1 FROM users WHERE (email = '${body.login}' OR number = '${body.login}') AND password = '${body.password}')`
-const get_profile_id = (body) => `SELECT id FROM users WHERE (email = '${body.login}' OR number = '${body.login}')`
-const get_profile_name = (id) => `SELECT first_name FROM profiles WHERE (id = '${id.id}')`
+const auth_user = (body) => `SELECT password FROM users WHERE (email = '${body.login}' OR number = '${body.login}');`
+const get_profile_id = (body) => `SELECT id FROM users WHERE (email = '${body.login}' OR number = '${body.login}');`
+const get_profile_name = (id) => `SELECT first_name FROM profiles WHERE (id = '${id.id}');`
 module.exports = {
     auth_user,
     get_profile_id,
