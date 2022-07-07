@@ -2,11 +2,11 @@ const { Pool } = require('pg')
 
 require('dotenv').config()
 const dbConnData = {
-    host: process.env.PGHOST || '127.0.0.1',
-    port: process.env.PGPORT || 5432,
-    database: process.env.PGDATABASE || 'facebook_db',
-    user: process.env.PGUSER || 'postgres',
-    password: process.env.PGPASSWORD
+    host: process.env.POSTGRES_HOST,
+    port: process.env.POSTGRES_PORT,
+    database: 'facebook_db',
+    user: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD
 }
 const pool = new Pool(dbConnData)
 
