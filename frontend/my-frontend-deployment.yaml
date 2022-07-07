@@ -1,0 +1,19 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: facebook-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: facebook-frontend
+  template:
+    metadata:
+      labels:
+        app: facebook-frontend
+    spec:
+      containers:
+        - name: facebook-frontend
+          image: fdobkowski/facebook_frontend
+          imagePullPolicy: Always
+      restartPolicy: Always
