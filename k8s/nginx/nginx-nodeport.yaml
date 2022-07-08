@@ -12,3 +12,4 @@ spec:
       nodePort: 31000
   selector:
     app: my-nginx
+    type: frontend

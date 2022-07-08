@@ -13,4 +13,4 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: '/run/desktop/mnt/host/c/users/florian/Desktop/Projects/React/facebook_clone/postgres/data'
+    path: '/run/desktop/mnt/host/c/users/florian/Desktop/Projects/React/facebook_clone/k8s/postgres/data'

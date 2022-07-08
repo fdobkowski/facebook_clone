@@ -1,18 +1,12 @@
 import '../styles/Navbar.scss'
 import {useLocation, useNavigate} from 'react-router-dom'
 import {useCookies} from "react-cookie";
-import {useKeycloak} from "@react-keycloak/web";
-import {useCallback, useEffect} from "react";
+import {useEffect} from "react";
 
 const Navbar = () => {
 
     const navigate = useNavigate()
     const location = useLocation()
-    const { keycloak } = useKeycloak()
-
-    const handleLogout = useCallback(() => {
-        if (keycloak.authenticated) keycloak.logout()
-    }, [keycloak])
 
 
     const [cookies, setCookies, removeCookies] = useCookies(['user'])
@@ -32,7 +26,6 @@ const Navbar = () => {
                 <button onClick={() => {
                     removeCookies('profile_id')
                     navigate(0)
-                    handleLogout()
                 }}>Logout</button>
             </nav> : null }
         </div>

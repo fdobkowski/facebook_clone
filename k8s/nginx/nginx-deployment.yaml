@@ -22,5 +22,5 @@ spec:
     spec:
       containers:
         - name: nginx-container
-          image: fdobkowski/facebook_nginx
+          image: fdobkowski/facebook-nginx
           imagePullPolicy: "IfNotPresent"

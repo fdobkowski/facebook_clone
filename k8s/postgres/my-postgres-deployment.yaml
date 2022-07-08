@@ -30,23 +30,22 @@ spec:
             - name: POSTGRES_USER
               valueFrom:
                 configMapKeyRef:
-                  name: postgres-config
+                  name: my-postgres-config
                   key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
-                  key: POSTGRES_PASSWORD
+                  name: my-postgres-secret
+                  key: PG_PASSWORD
             - name: POSTGRES_DATABASE
               valueFrom:
                 configMapKeyRef:
-                  name: postgres-config
+                  name: my-postgres-config
                   key: POSTGRES_DATABASE
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgresdb
-              subPath: postgres
       volumes:
         - name: postgresdb
           persistentVolumeClaim:
-            claimName: postgres-pv-claim
+            claimName: my-postgres-pvc

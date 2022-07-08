@@ -20,6 +20,7 @@ app.post('/', async (req, res) => {
     params.append('client_secret', clientSecret)
     params.append('grant_type', 'client_credentials')
 
+
     await axios.post(tokenEndpoint, params).then(async response => {
 
         const accessToken = response.data.access_token || ''

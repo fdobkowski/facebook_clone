@@ -22,7 +22,7 @@ spec:
       containers:
         - name: my-api-container
           image: fdobkowski/api_image
-          imagePullPolicy: Never
+          imagePullPolicy: "IfNotPresent"
 
           env:
             - name: POSTGRES_USER
