@@ -15,6 +15,9 @@ const Login = () => {
     const [cookies, setCookies] = useCookies(['user'])
 
     const handleLogin = async (values) => {
+
+        if (values.login === "" || values.password === "") return
+
         const token = Buffer.from(`${values.login}:${values.password}`, 'utf8').toString('base64')
 
         await axios.get("http://localhost:5000/api/login", {
