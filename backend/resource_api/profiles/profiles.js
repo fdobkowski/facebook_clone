@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
 router.get("/:id", async (req, res) => {
     await pool.query(queries.get_single_profile(req.params.id), (err, result) => {
         if (err) throw err
-        res.send(result.rows)
+        res.send(result.rows[0])
     })
 })
 

@@ -24,6 +24,13 @@ router.get("/:id", async (req, res) => {
     })
 })
 
+router.get("/profile/:profile_id", async (req, res) => {
+    await pool.query(queries.get_profile_posts(req.params.profile_id), (err, result) => {
+        if (err) throw err
+        res.send(result.rows)
+    })
+})
+
 router.delete("/:id", async (req, res) => {
     await pool.query(queries.delete_post(req.params.id), (err) => {
         if (err) throw err
