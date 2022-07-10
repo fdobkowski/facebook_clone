@@ -67,7 +67,7 @@ const Home = () => {
                         )
                     })}
                 </ul>
-                <button onClick={() => navigate('/protected')}>Show post details</button>
+                <button onClick={() => navigate('/protected')}>Administration panel</button>
                 {(createPost) ?
                 <div className={"create_post_container"}>
                     <div className={"post_header"}>

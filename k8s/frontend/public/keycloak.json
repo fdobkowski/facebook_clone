@@ -1,6 +1,0 @@
-{
-  "realm": "facebook_clone",
-  "auth-server-url": "http://localhost:8080/auth",
-  "ssl-required": "external",
-  "public-client": true
-}

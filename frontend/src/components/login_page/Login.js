@@ -24,14 +24,11 @@ const Login = () => {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
-        }).then(async (response) => {
-                await axios.post('http://localhost:4001', {
-                    login: values.login
-                }).then(response => {
-                    setCookies("profile_id", response.data.id)
-                    navigate('/')
-                }).catch(error => console.log(error))
-            }).catch(error => console.error(error))
+        }).then(response => {
+            alert('Logging in')
+            setCookies("profile_id", response.data.id)
+            navigate('/')
+        }).catch(error => alert(error.response.data))
     }
 
     useEffect(() => {

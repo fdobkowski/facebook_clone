@@ -11,7 +11,6 @@ const Protected = () => {
 
     const { authenticated } = keycloak
 
-
     const handleLogin = useCallback(() => {
         keycloak.login()
     }, [keycloak])
@@ -45,6 +44,7 @@ const Protected = () => {
                         )
                     })}
                 </ul>
+                <button onClick={() => keycloak.logout()}>Logout</button>
             </div>}
         </div>
     )
