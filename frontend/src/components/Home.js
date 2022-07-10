@@ -55,7 +55,7 @@ const Home = () => {
                 }}>
                     <img alt={'profile_picture'} src={require('../assets/fb_profile_picture.png')}/>
                     <div>
-                        <span onClick={() => setCreatePost(!createPost)}>What do you think about?</span>
+                        <span onClick={() => setCreatePost(!createPost)}>What's on your mind, {cookies['profile_first_name']}?</span>
                     </div>
                 </div>
                 <ul className={"posts"} id={`post_${createPost}`} onClick={() => {
@@ -77,11 +77,11 @@ const Home = () => {
                         </div>
                         <div className={"post_info"}>
                             <img alt={'profile_picture'} src={require('../assets/fb_profile_picture.png')}/>
-                            <span>First_name Last_name</span>
+                            <span>{cookies['profile_first_name']} {cookies['profile_last_name']}</span>
                         </div>
                     </div>
                     <div className={"post_container"}>
-                        <textarea placeholder={"What do you think about?"} onChange={(event) => setContent(event.target.value)}/>
+                        <textarea placeholder={`What's on your mind, ${cookies['profile_first_name']}?`} onChange={(event) => setContent(event.target.value)}/>
                     </div>
                     <div className={"post_button"}>
                         <button onClick={() => submitPost()}>Post</button>
