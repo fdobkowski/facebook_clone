@@ -13,9 +13,17 @@ router.get("/", async (req, res) => {
         if (error) throw error
         const decrypt = CryptoJS.AES.decrypt(response.rows[0].password, '274989hash')
         if (password === decrypt.toString(CryptoJS.enc.Utf8)) {
-            await pool.query(queries.get_profile_id({login: login}), (error, response) => {
+            const data = {}
+            await pool.query(queries.get_profile_id({login: login}), async (error, response) => {
                 if (error) throw error
-                res.status(200).send(response.rows[0].id)
+                data.id = response.rows[0].id
+                await pool.query(queries.get_profile_name(data.id), (error, response) => {
+                    if (error) throw error
+                    data.first_name = response.rows[0].first_name
+                    data.last_name = response.rows[0].last_name
+
+                    res.status(200).send(data)
+                })
             })
         }
         else res.status(401).send("Wrong credentials")

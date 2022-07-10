@@ -3,7 +3,6 @@ import {Field, Form, Formik} from "formik";
 import {useState} from "react";
 import { Buffer } from 'buffer'
 import { v4 as uuidv4 } from 'uuid'
-import Yup from "yup";
 
 const Register = ( { visible }) => {
 

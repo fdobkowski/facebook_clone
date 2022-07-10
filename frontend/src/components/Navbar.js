@@ -31,6 +31,8 @@ const Navbar = () => {
                 <button onClick={() => navigate("/login")}>Login</button>
                 <button onClick={() => {
                     removeCookies('profile_id')
+                    removeCookies('profile_first_name')
+                    removeCookies('profile_last_name')
                     navigate(0)
                     handleLogout()
                 }}>Logout</button>

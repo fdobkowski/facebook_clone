@@ -28,7 +28,7 @@ const Home = () => {
     }
 
     useEffect(() => {
-        if (cookies['profile_id'] === undefined) {
+        if (cookies['profile_id'] === undefined || cookies['profile_first_name'] === undefined || cookies['profile_last_name'] === undefined) {
             navigate('/login')
         }
     }, [])
