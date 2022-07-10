@@ -7,6 +7,18 @@
   background-color: white;
   padding: 20px;
   width: 30vw;
+  height: 60vh;
+  overflow: scroll;
+
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: darkgray;
+    border-radius: 100px;
+  }
+
 
   .register_header {
     display: flex;
@@ -168,9 +180,26 @@
     .submit_button:hover {
       background-color: rgb(54, 164, 32);;
     }
+
+    .error {
+      color: red;
+      font-size: 12px;
+      margin-bottom: 15px;
+    }
+
+    #is_error {
+      border: 2px solid red;
+    }
+
   }
 }
 
 #customGender {
   height: 80vh;
+}
+
+.register_container:hover {
+  &::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
 }
