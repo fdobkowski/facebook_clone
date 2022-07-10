@@ -73,7 +73,7 @@ const Register = ( { visible }) => {
                 day: 1,
                 year: 1,
                 gender: "Female",
-                pronoun: "",
+                pronoun: "She",
                 custom_gender: ""
             }} onSubmit={(values) => handleRegister(values)}
             validateOnChange={false} validateOnBlur={true} validationSchema={yup_schema}
