@@ -6,7 +6,7 @@ const delete_post = (id) => `DELETE FROM posts WHERE id = '${id}';`
 const patch_post = (body) => `UPDATE posts 
                               SET content = '${body.content}', date = '${body.date}' WHERE id = '${body.id}'`
 const get_single_post = (id) => `SELECT * FROM posts WHERE id = '${id}'`
-const get_profile_posts = (id) => `SELECT * FROM posts WHERE profile_id=${id}`
+const get_profile_posts = (id) => `SELECT * FROM posts WHERE profile_id='${id}'`
 
 module.exports = {
     post_user,
