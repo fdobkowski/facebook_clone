@@ -1,3 +1,4 @@
+import '../styles/Profile.scss'
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
@@ -39,11 +40,11 @@ const Profile = () => {
                 <img alt={'profile img'} src={require('../assets/fb_profile_picture.png')}/>
                 <span>{cookies['profile_first_name']} {cookies['profile_last_name']}</span>
             </div>
-            <div>
+            <div className={'profile_body'}>
                 <div className={'profile_data'}>
                     <span>First name: {profileData.first_name}</span>
                     <span>Last name: {profileData.last_name}</span>
-                    <span>Birthday: {profileData.birthday}</span>
+                    <span>Birthday: {new Date(profileData.birthday).toLocaleDateString()}</span>
                     <span>Gender: {(profileData.gender === 'Custom') ?
                         (profileData.custom_gender ? profileData.custom_gender : profileData.gender) : profileData.gender}</span>
                     <span>Pronoun: {profileData.pronoun}</span>
