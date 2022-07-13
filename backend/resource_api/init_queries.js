@@ -21,7 +21,7 @@ const posts_table = 'CREATE TABLE IF NOT EXISTS posts (\n' +
     '\tid VARCHAR(255) PRIMARY KEY,\n' +
     '\tprofile_id VARCHAR(255) REFERENCES profiles(id),\n' +
     '\tcontent TEXT,\n' +
-    '\tdate DATE NOT NULL\n' +
+    '\tdate TIMESTAMP NOT NULL\n' +
     ');'
 
 module.exports = {

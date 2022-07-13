@@ -2,7 +2,7 @@ import '../styles/Home.scss'
 import {useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
-import { v4 as uuidv4 } from 'uuid'
+import CreatePost from "./CreatePost";
 
 const Home = () => {
 
@@ -11,21 +11,7 @@ const Home = () => {
     const navigate = useNavigate()
 
     const [createPost, setCreatePost] = useState(false)
-    const [content, setContent] = useState("")
     const [posts, setPosts] = useState([])
-
-    const submitPost = async () => {
-        await axios.post('http://localhost:5000/api/posts', {
-            id: uuidv4(),
-            profile_id: cookies['profile_id'],
-            content: content,
-            date: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDay()}`
-        }).then(response => {
-            alert("Post added")
-            setCreatePost(false)
-            navigate(0)
-        }).catch(error => console.error(error))
-    }
 
     useEffect(() => {
         if (cookies['profile_id'] === undefined || cookies['profile_first_name'] === undefined || cookies['profile_last_name'] === undefined) {
@@ -68,25 +54,7 @@ const Home = () => {
                     })}
                 </ul>
                 <button onClick={() => navigate('/protected')}>Administration panel</button>
-                {(createPost) ?
-                <div className={"create_post_container"}>
-                    <div className={"post_header"}>
-                        <div className={"post_utils"}>
-                            <span>Create post</span>
-                            <button onClick={() => setCreatePost(false)}>X</button>
-                        </div>
-                        <div className={"post_info"}>
-                            <img alt={'profile_picture'} src={require('../assets/fb_profile_picture.png')}/>
-                            <span>{cookies['profile_first_name']} {cookies['profile_last_name']}</span>
-                        </div>
-                    </div>
-                    <div className={"post_container"}>
-                        <textarea placeholder={`What's on your mind, ${cookies['profile_first_name']}?`} onChange={(event) => setContent(event.target.value)}/>
-                    </div>
-                    <div className={"post_button"}>
-                        <button onClick={() => submitPost()}>Post</button>
-                    </div>
-                </div> : null }
+                {(createPost) ? <CreatePost visible={setCreatePost}/> : null }
             </div>
             <div className={"friends_list"} id={`post_${createPost}`} onClick={() => {
                 if (createPost) setCreatePost(false)
