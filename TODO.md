@@ -2,27 +2,27 @@
 
 ## Frontend
 
-- Navbar
-- Login page 
-- Register/Login form
-  - Data validation
+- ~~Navbar~~
+- ~~Login page~~ 
+- ~~Register/Login form~~
+  - ~~Data validation~~
 - Homepage
-- Posts
-- User profile
+- ~~Posts~~
+- ~~User profile~~
 - Friends list
 - Chat
 - ~~Footer~~
 
 ## Backend
 
-- User database
+- ~~User database~~
 
 ## Styling
 
-- Navbar
-- Login page
-  - Put register on top of login
+- ~~Navbar~~
+- ~~Login page~~
+  - ~~Put register on top of login~~
 - Homepage
-- User Profile
+- ~~User Profile~~
 - Chat 
 - ~~Footer~~
