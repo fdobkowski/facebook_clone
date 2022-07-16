@@ -1,3 +1,29 @@
 .navbar_container {
+  display: flex;
+  align-items: center;
   height: 5vh;
+  justify-content: space-between;
+
+  img {
+    height: 4vh;
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  button {
+    background: transparent;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-size: 20px;
+    color: rgb(1, 101, 225);
+    font-weight: bold;
+    margin-right: 15px;
+    padding: 5px 25px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: rgb(245, 246, 247);
+  }
+
 }
