@@ -26,11 +26,11 @@ const Searchbar = () => {
     }, [])
 
     return (
-        <div className={'searchbar'} ref={searchbar_ref}>
+        <div className={'searchbar'}>
             <input type={"text"} placeholder={'Search...'} onChange={(e) => {
                 const regex = new RegExp(`^${e.target.value}.*`, 'i')
                 setProfileFilter(regex)
-            }} onFocus={() => setFocused(true)}/>
+            }} onFocus={() => setFocused(true)} ref={searchbar_ref}/>
             {(focused) ?
             <ul className={'searchbar_ul'}>
                 {(profiles) ?
