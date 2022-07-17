@@ -133,6 +133,21 @@
         }
 
       }
+
+      .empty_posts {
+        font-size: 75px;
+        font-weight: bold;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin: 0 0 10vh;
+        background-color: white;
+        border-radius: 20px;
+        box-shadow: 0 0 10px rgb(219, 221, 224);
+      }
     }
 
     .profile_posts:hover {

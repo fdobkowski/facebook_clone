@@ -27,7 +27,7 @@ const Profile = () => {
                 if (createPost) setCreatePost(false)
             }}>
                 <img alt={'profile img'} src={require('../assets/fb_profile_picture.png')}/>
-                <span>{cookies['profile_first_name']} {cookies['profile_last_name']}</span>
+                <span>{profile.first_name} {profile.last_name}</span>
             </div>
             {(profile) ?
             <div className={'profile_body'}>
@@ -44,14 +44,16 @@ const Profile = () => {
                 <div className={'profile_posts'} id={`post_${createPost}`} onClick={() => {
                     if (createPost) setCreatePost(false)
                 }}>
+                    {(id === cookies['profile_id']) ?
                     <div className={"create_post"}>
                         <img alt={'profile_picture'} src={require('../assets/fb_profile_picture.png')}/>
                         <div>
                             <span onClick={() => setCreatePost(!createPost)}>What's on your mind, {cookies['profile_first_name']}?</span>
                         </div>
-                    </div>
-                    <ul>
-                        {(profile_posts ? profile_posts.reverse().map(x => {
+                    </div> : null}
+                    {(profile_posts.length !== 0 ?
+                        <ul>
+                            {profile_posts.reverse().map(x => {
                             return (
                                 <li key={x.id} className={'profile_post_container'}>
                                     <div className={'post_data'}>
@@ -66,8 +68,8 @@ const Profile = () => {
                                     </div>
                                 </li>
                             )
-                        }) : null)}
-                    </ul>
+                        })}
+                        </ul> : <span className={'empty_posts'}>Such empty</span>)}
                 </div>
                 {(createPost) ? <CreatePost visible={setCreatePost}/> : null }
             </div>
