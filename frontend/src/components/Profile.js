@@ -1,5 +1,5 @@
 import '../styles/Profile.scss'
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
 import CreatePost from "./CreatePost";
@@ -11,8 +11,9 @@ const Profile = () => {
     const navigate = useNavigate()
     const [createPost, setCreatePost] = useState(false)
 
-    const profile = useSelector((state) => state.profiles.profiles.find(x => x.id === cookies['profile_id']))
-    const profile_posts = useSelector((state) => state.posts.posts.filter(x => x.profile_id === cookies['profile_id']))
+    const { id } = useParams()
+    const profile = useSelector((state) => state.profiles.profiles.find(x => x.id === id))
+    const profile_posts = useSelector((state) => state.posts.posts.filter(x => x.profile_id === id))
 
     useEffect(() => {
         if (cookies['profile_id'] === undefined) {

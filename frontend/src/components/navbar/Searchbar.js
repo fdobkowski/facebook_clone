@@ -23,7 +23,6 @@ const Searchbar = () => {
                 setFocused(false)
             }
         })
-        // console.log(searchbar_ref.current)
     }, [])
 
     return (
