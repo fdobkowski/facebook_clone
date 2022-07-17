@@ -1,5 +1,6 @@
 import {useSelector} from "react-redux";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 const Searchbar = () => {
 
@@ -7,33 +8,42 @@ const Searchbar = () => {
     const profiles = useSelector((state) => state.profiles.profiles.filter(x => profileFilter.test(x.first_name) || profileFilter.test(x.last_name)
         || profileFilter.test(`${x.first_name} ${x.last_name}`)))
 
-    useEffect(() => {
-        console.log(profiles)
-    }, [profiles])
+    const [focused, setFocused] = useState(false)
+    const navigate = useNavigate()
+    const searchbar_ref = useRef()
 
     // useEffect(() => {
-    //     profiles.map(x => {
-    //         console.log(profileFilter.test(x.first_name))
-    //     })
+    //     console.log(profiles)
     // }, [profiles])
 
+
+    useEffect(() => {
+        document.addEventListener("click", (e) => {
+            if (!searchbar_ref.current.contains(e.target)) {
+                setFocused(false)
+            }
+        })
+        // console.log(searchbar_ref.current)
+    }, [])
+
     return (
-        <div className={'searchbar'}>
+        <div className={'searchbar'} ref={searchbar_ref}>
             <input type={"text"} placeholder={'Search...'} onChange={(e) => {
                 const regex = new RegExp(`^${e.target.value}.*`, 'i')
                 setProfileFilter(regex)
-            }}/>
-            <ul>
+            }} onFocus={() => setFocused(true)}/>
+            {(focused) ?
+            <ul className={'searchbar_ul'}>
                 {(profiles) ?
-                profiles.slice(0, 10).map(x => {
+                profiles.slice(0, 5).map(x => {
                     return (
-                        <li key={x.id}>
+                        <li key={x.id} onClick={() => navigate(`/profile/${x.id}`)}>
                             {x.first_name} {x.last_name}
                         </li>
                     )
                 })
                 : null}
-            </ul>
+            </ul> : null}
         </div>
     )
 }

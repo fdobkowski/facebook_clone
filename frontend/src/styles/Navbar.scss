@@ -11,8 +11,37 @@
   }
 
   .searchbar {
+    width: 40vw;
+
+    input {
+      padding-left: 5px;
+      font-size: 20px;
+      width: 40vw;
+    }
+
     ul {
       position: absolute;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      padding-left: 0;
+      width: inherit;
+      margin-top: 0;
+      cursor: pointer;
+
+      li {
+        list-style: none;
+        text-align: left;
+        font-weight: bold;
+        font-size: 20px;
+        padding: 20px 0 20px 10px;
+        box-shadow: 0 0 10px rgb(219, 221, 224);
+        margin: 5px;
+      }
+
+      li:hover {
+        box-shadow: 0 0 10px #b4b2b2;
+      }
     }
   }
 
