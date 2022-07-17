@@ -13,12 +13,11 @@ const CreatePost = ({ visible }) => {
 
     const submitPost = async () => {
         const date = new Date()
-
         await axios.post('http://localhost:5000/api/posts', {
             id: uuidv4(),
             profile_id: cookies['profile_id'],
             content: content,
-            date: `${date.getDay()}-${date.getMonth()}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+            date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
         }).then(() => {
             alert("Post added")
             navigate(0)

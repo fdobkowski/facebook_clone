@@ -3,6 +3,13 @@ const router = Router()
 const pool = require('../Pool')
 const queries = require('./profile_queries')
 
+router.get('/', async (req, res) => {
+    await pool.query(queries.get_all_profiles, (err, result) => {
+        if (err) throw err
+        res.status(200).send(result.rows)
+    })
+})
+
 router.post('/', async (req, res) => {
     await pool.query(queries.post_profile(req.body), (err, result) => {
         if (err) throw err
