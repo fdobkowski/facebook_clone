@@ -1,9 +1,10 @@
-import '../styles/Navbar.scss'
-import homeLogo from '../assets/home_icon.svg'
+import '../../styles/Navbar.scss'
+import homeLogo from '../../assets/home_icon.svg'
 import {useLocation, useNavigate} from 'react-router-dom'
 import {useCookies} from "react-cookie";
 import {useKeycloak} from "@react-keycloak/web";
 import {useCallback, useEffect} from "react";
+import Searchbar from "./Searchbar";
 
 const Navbar = () => {
 
@@ -29,6 +30,7 @@ const Navbar = () => {
         {(location.pathname !== '/login') ?
             <nav className={"navbar_container"}>
                 <img alt={'home'} src={homeLogo} onClick={() => navigate("/")} />
+                <Searchbar />
                 <button onClick={() => {
                     removeCookies('profile_id')
                     removeCookies('profile_first_name')

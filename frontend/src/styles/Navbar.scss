@@ -10,6 +10,12 @@
     cursor: pointer;
   }
 
+  .searchbar {
+    ul {
+      position: absolute;
+    }
+  }
+
   button {
     background: transparent;
     border: 1px solid black;
