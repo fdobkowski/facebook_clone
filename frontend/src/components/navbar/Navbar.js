@@ -32,6 +32,12 @@ const Navbar = () => {
         setSocket(io.connect("http://localhost:4000"))
     }
 
+    if (socket) {
+        socket.on('connect', () => {
+            socket.emit('user_connected', (cookies['profile_id']))
+        })
+    }
+
     return (
         <div>
         {(location.pathname !== '/login') ?

@@ -18,6 +18,10 @@ client.connect()
         io.sockets.on('connection', (socket) => {
             console.log(`${socket.id} has connected`)
 
+            socket.on('user_connected', (id) => {
+                client.set(id, socket.id).then(() => console.log(`${socket.id} added`)).catch(err => console.error(err))
+            })
+
             socket.on('disconnect', () => console.log(`${socket.id} has disconnected`))
         })
     }).catch(error => console.error(error))
