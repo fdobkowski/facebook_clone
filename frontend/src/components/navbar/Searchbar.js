@@ -19,7 +19,7 @@ const Searchbar = () => {
 
     useEffect(() => {
         document.addEventListener("click", (e) => {
-            if (!searchbar_ref.current.contains(e.target)) {
+            if (window.location.pathname !== '/login' && !searchbar_ref.current.contains(e.target)) {
                 setFocused(false)
             }
         })

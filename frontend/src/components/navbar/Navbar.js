@@ -31,13 +31,17 @@ const Navbar = () => {
             <nav className={"navbar_container"}>
                 <img alt={'home'} src={homeLogo} onClick={() => navigate("/")} />
                 <Searchbar />
-                <button onClick={() => {
-                    removeCookies('profile_id')
-                    removeCookies('profile_first_name')
-                    removeCookies('profile_last_name')
-                    navigate(0)
-                    handleLogout()
-                }}>Logout</button>
+                <div>
+                    <button onClick={() => (cookies['profile_id']) ? navigate(`/profile/${cookies['profile_id']}`) : null}>Profile</button>
+                    <button onClick={() => {
+                        removeCookies('profile_id')
+                        removeCookies('profile_first_name')
+                        removeCookies('profile_last_name')
+                        navigate(0)
+                        handleLogout()
+                    }}>Logout</button>
+                </div>
+
             </nav> : null }
         </div>
     )

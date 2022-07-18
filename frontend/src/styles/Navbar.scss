@@ -45,20 +45,22 @@
     }
   }
 
-  button {
-    background: transparent;
-    border: 1px solid black;
-    border-radius: 10px;
-    font-size: 20px;
-    color: rgb(1, 101, 225);
-    font-weight: bold;
-    margin-right: 15px;
-    padding: 5px 25px;
-    cursor: pointer;
-  }
+  div {
+    button {
+      background: transparent;
+      border: 1px solid black;
+      border-radius: 10px;
+      font-size: 20px;
+      color: rgb(1, 101, 225);
+      font-weight: bold;
+      margin-right: 15px;
+      padding: 5px 25px;
+      cursor: pointer;
+    }
 
-  button:hover {
-    background-color: rgb(245, 246, 247);
+    button:hover {
+      background-color: rgb(245, 246, 247);
+    }
   }
 
 }
