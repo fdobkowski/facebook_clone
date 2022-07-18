@@ -3,8 +3,9 @@ import homeLogo from '../../assets/home_icon.svg'
 import {useLocation, useNavigate} from 'react-router-dom'
 import {useCookies} from "react-cookie";
 import {useKeycloak} from "@react-keycloak/web";
-import {useCallback, useEffect} from "react";
+import {useCallback, useEffect, useState} from "react";
 import Searchbar from "./Searchbar";
+import io from "socket.io-client";
 
 const Navbar = () => {
 
@@ -25,6 +26,12 @@ const Navbar = () => {
         }
     }, [])
 
+    const [socket, setSocket] = useState(null)
+
+    if (location.pathname !== '/login' && !socket) {
+        setSocket(io.connect("http://localhost:4000"))
+    }
+
     return (
         <div>
         {(location.pathname !== '/login') ?
@@ -37,8 +44,10 @@ const Navbar = () => {
                         removeCookies('profile_id')
                         removeCookies('profile_first_name')
                         removeCookies('profile_last_name')
-                        navigate(0)
+                        socket.disconnect()
+                        setSocket(null)
                         handleLogout()
+                        navigate('/login')
                     }}>Logout</button>
                 </div>
 

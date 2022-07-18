@@ -9,9 +9,6 @@ import {getProfiles} from "./redux/reducers/profileReducer";
 import {getPosts} from "./redux/reducers/postReducer";
 
 
-// console.log(store.getState().profiles.initialState === 'idle')
-// store.getState().profiles.status
-
 if (store.getState().profiles.status === 'idle') store.dispatch(getProfiles())
 if (store.getState().posts.status === 'idle') store.dispatch(getPosts())
 
