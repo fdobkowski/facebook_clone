@@ -10,19 +10,22 @@ const Searchbar = () => {
 
     const [focused, setFocused] = useState(false)
     const navigate = useNavigate()
-    const searchbar_ref = useRef()
+    const searchbar_ref = useRef(null)
 
     // useEffect(() => {
     //     console.log(profiles)
     // }, [profiles])
 
 
+    const hideSearchResult = (e) => {
+        if (window.location.pathname !== '/login' && searchbar_ref.current && !searchbar_ref.current.contains(e.target)) {
+            setFocused(false)
+        }
+    }
+
     useEffect(() => {
-        document.addEventListener("click", (e) => {
-            if (window.location.pathname !== '/login' && !searchbar_ref.current.contains(e.target)) {
-                setFocused(false)
-            }
-        })
+        document.addEventListener("click", hideSearchResult)
+        return () => document.removeEventListener("click", hideSearchResult)
     }, [])
 
     return (
