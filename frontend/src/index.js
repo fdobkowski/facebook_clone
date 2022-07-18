@@ -8,8 +8,12 @@ import { store } from './redux/store'
 import {getProfiles} from "./redux/reducers/profileReducer";
 import {getPosts} from "./redux/reducers/postReducer";
 
-store.dispatch(getProfiles())
-store.dispatch(getPosts())
+
+// console.log(store.getState().profiles.initialState === 'idle')
+// store.getState().profiles.status
+
+if (store.getState().profiles.status === 'idle') store.dispatch(getProfiles())
+if (store.getState().posts.status === 'idle') store.dispatch(getPosts())
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

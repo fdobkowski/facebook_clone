@@ -22,6 +22,7 @@ const Profile = () => {
     }, [])
 
     return (
+        (profile) ?
         <div className={'profile_container'}>
             <div className={'profile_header'} id={`post_${createPost}`} onClick={() => {
                 if (createPost) setCreatePost(false)
@@ -29,7 +30,6 @@ const Profile = () => {
                 <img alt={'profile img'} src={require('../assets/fb_profile_picture.png')}/>
                 <span>{profile.first_name} {profile.last_name}</span>
             </div>
-            {(profile) ?
             <div className={'profile_body'}>
                 <div className={'profile_data'} id={`post_${createPost}`} onClick={() => {
                     if (createPost) setCreatePost(false)
@@ -73,8 +73,8 @@ const Profile = () => {
                 </div>
                 {(createPost) ? <CreatePost visible={setCreatePost}/> : null }
             </div>
-                : null}
-        </div>
+
+        </div> : null
     )
 }
 
