@@ -7,7 +7,7 @@ import {useCallback, useEffect, useState} from "react";
 import Searchbar from "./Searchbar";
 import io from "socket.io-client";
 
-const Navbar = () => {
+const Navbar = ( { socket }) => {
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -26,21 +26,6 @@ const Navbar = () => {
         }
     }, [])
 
-    const [socket, setSocket] = useState(null)
-
-    useEffect(() => {
-        if (location.pathname !== '/login' && !socket && cookies['profile_id']) {
-            setSocket(io.connect("http://localhost:4000"))
-        }
-    }, [cookies['profile_id']])
-
-
-    if (socket) {
-        socket.on('connect', () => {
-            socket.emit('user_connected', (cookies['profile_id']))
-        })
-    }
-
     return (
         <div>
         {(location.pathname !== '/login') ?
@@ -53,8 +38,8 @@ const Navbar = () => {
                         removeCookies('profile_id')
                         removeCookies('profile_first_name')
                         removeCookies('profile_last_name')
+                        socket.emit('user_disconnected', cookies['profile_id'])
                         socket.disconnect()
-                        setSocket(null)
                         handleLogout()
                         navigate('/login')
                     }}>Logout</button>
