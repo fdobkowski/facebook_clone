@@ -18,7 +18,7 @@ const Navbar = () => {
     }, [keycloak])
 
 
-    const [cookies, setCookies, removeCookies] = useCookies(['user'])
+    const [cookies, setCookies, removeCookies] = useCookies(['profile_id'])
 
     useEffect(() => {
         if (cookies['profile_id'] === undefined) {
@@ -28,9 +28,12 @@ const Navbar = () => {
 
     const [socket, setSocket] = useState(null)
 
-    if (location.pathname !== '/login' && !socket) {
-        setSocket(io.connect("http://localhost:4000"))
-    }
+    useEffect(() => {
+        if (location.pathname !== '/login' && !socket && cookies['profile_id']) {
+            setSocket(io.connect("http://localhost:4000"))
+        }
+    }, [cookies['profile_id']])
+
 
     if (socket) {
         socket.on('connect', () => {
