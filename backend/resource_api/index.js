@@ -6,6 +6,7 @@ const loginRoute = require('./login/login')
 const protectedUserRoute = require('./protected/protected_users')
 const protectedProfileRoute = require('./protected/protected_profiles')
 const protectedPosts = require('./protected/protected_posts')
+const notificationsRoute = require('./notifications/notifications')
 
 const app = express()
 
@@ -18,6 +19,7 @@ app.use('/api/login', loginRoute)
 app.use('/api/protected/users', protectedUserRoute)
 app.use('/api/protected/profiles', protectedProfileRoute)
 app.use('/api/protected/posts', protectedPosts)
+app.use('/api/notifications', notificationsRoute)
 
 const { Client } = require('pg')
 const pool = require('./Pool')
@@ -52,6 +54,10 @@ client.connect().then(async () => {
                     await pool.query(queries.posts_table, (err) => {
                         if (err) throw err
                         console.log("Created table posts")
+                    })
+                    await pool.query(queries.notifications_table, (err) => {
+                        if (err) throw err
+                        console.log('Created notification posts')
                     })
                 })
             })

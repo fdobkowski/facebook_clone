@@ -24,9 +24,17 @@ const posts_table = 'CREATE TABLE IF NOT EXISTS posts (\n' +
     '\tdate TIMESTAMP NOT NULL\n' +
     ');'
 
+const notifications_table = 'CREATE TABLE IF NOT EXISTS notifications (\n' +
+    '\tid serial PRIMARY KEY,\n' +
+    '\tsender_id VARCHAR(255),\n' +
+    '\treceiver_id VARCHAR(255),\n' +
+    '\ttype VARCHAR(255)\n' +
+    ');'
+
 module.exports = {
     create_database,
     users_table,
     profiles_table,
-    posts_table
+    posts_table,
+    notifications_table
 }
