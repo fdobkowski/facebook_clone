@@ -26,20 +26,22 @@ client.connect()
                 })
             })
 
-            socket.on('send_friend_request', (sender_id, receiver_id) => {
-                client.get(receiver_id).then(response => {
-                    if (response !== 'disconnected') {
-                        io.to(response).emit('receive_notification', {
-                            type: 'friend_request',
-                            from: sender_id
-                        })
-                    } else {
-                        axios.post('http://localhost:5000/api/notifications', {
-                            sender_id: sender_id,
-                            receiver_id: receiver_id,
-                            type: 'friend_request'
-                        }).then(response => console.log(response.data)).catch(err => console.error(err))
-                    }
+            socket.on('send_friend_request', (data) => {
+                client.get(data.receiver_id).then(response => {
+                    if (response) {
+                        if (response !== 'disconnected') {
+                            io.to(response).emit('receive_notification', {
+                                type: 'friend_request',
+                                from: data.sender_id
+                            })
+                        } else {
+                            axios.post('http://localhost:5000/api/notifications', {
+                                sender_id: data.sender_id,
+                                receiver_id: data.receiver_id,
+                                type: 'friend_request'
+                            }).then(response => console.log(response.data)).catch(err => console.error(err))
+                        }
+                    } else console.log('User does not exist')
                 }).catch(err => console.error(err))
             })
 

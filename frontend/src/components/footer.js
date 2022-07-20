@@ -25,6 +25,7 @@ const Footer = () => {
             </div>
             <div>
                 Florian Dobkowski @ 2022
+                <a href="https://www.flaticon.com/free-icons/follow" title="follow icons">Follow icons created by Handicon - Flaticon</a>
             </div>
         </footer>
     )

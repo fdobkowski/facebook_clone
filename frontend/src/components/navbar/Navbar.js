@@ -30,7 +30,7 @@ const Navbar = ( { socket, setSocket }) => {
         {(location.pathname !== '/login') ?
             <nav className={"navbar_container"}>
                 <img alt={'home'} src={homeLogo} onClick={() => navigate("/")} />
-                <Searchbar />
+                <Searchbar id={cookies['profile_id']} socket={socket}/>
                 <div>
                     <button onClick={() => (cookies['profile_id']) ? navigate(`/profile/${cookies['profile_id']}`) : null}>Profile</button>
                     <button onClick={() => {

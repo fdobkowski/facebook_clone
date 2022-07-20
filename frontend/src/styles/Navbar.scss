@@ -37,6 +37,30 @@
         padding: 20px 0 20px 10px;
         box-shadow: 0 0 10px rgb(219, 221, 224);
         margin: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        span {
+          width: 100%;
+          height: 100%;
+        }
+
+        #sent_false {
+          margin-right: 2rem;
+          opacity: 0.3;
+          padding: 0;
+        }
+
+        #sent_false:hover {
+          opacity: 1;
+        }
+
+        #sent_true {
+          margin-right: 2rem;
+          padding: 0;
+          opacity: 0;
+        }
       }
 
       li:hover {
