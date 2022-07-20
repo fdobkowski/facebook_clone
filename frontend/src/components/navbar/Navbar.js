@@ -11,6 +11,7 @@ const Navbar = ( { socket, setSocket }) => {
     const navigate = useNavigate()
     const location = useLocation()
     const { keycloak } = useKeycloak()
+    const [notifications, setNotifications] = useState([])
 
     const handleLogout = useCallback(() => {
         if (keycloak.authenticated) keycloak.logout()
@@ -24,6 +25,20 @@ const Navbar = ( { socket, setSocket }) => {
             navigate('/login')
         }
     }, [])
+
+    if (socket) {
+        socket.on('receive_notification', (data) => {
+            console.log(data)
+            setNotifications([...notifications, data])
+        })
+    }
+
+    useEffect(() => {
+        console.log("notifications")
+        console.log(notifications)
+        console.log("===================")
+    }, [notifications]);
+
 
     return (
         <div>

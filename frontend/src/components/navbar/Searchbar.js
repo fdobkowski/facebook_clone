@@ -12,7 +12,6 @@ const Searchbar = ({ id, socket }) => {
     const navigate = useNavigate()
     const searchbar_ref = useRef(null)
     const friend_ref = useRef([])
-    const [sent, setSent] = useState(false)
 
 
     useEffect(() => {
@@ -21,7 +20,6 @@ const Searchbar = ({ id, socket }) => {
 
     const hideSearchResult = (e) => {
         if (window.location.pathname !== '/login' && searchbar_ref.current && !searchbar_ref.current.contains(e.target)) {
-            console.log(friend_ref.current)
             if (!Object.values(friend_ref.current).includes(e.target)) setFocused(false)
         }
     }
@@ -32,6 +30,7 @@ const Searchbar = ({ id, socket }) => {
     }, [])
 
     const handleFriendRequest = (receiver_id, ref_id) => {
+        console.log("clicked")
         socket.emit('send_friend_request', ({sender_id: id, receiver_id: receiver_id}))
         friend_ref.current[ref_id].id = 'sent_true'
     }

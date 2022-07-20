@@ -20,7 +20,7 @@ function App() {
     const [cookies, setCookies, removeCookies] = useCookies()
 
     useEffect(() => {
-        if (location.pathname !== '/login' && !socket && (id || cookies['profile_id'])) {
+        if (location.pathname !== '/login' && !socket && (id || cookies['profile_id']) ) {
             setSocket(io.connect("http://localhost:4000"))
         }
     }, [location.pathname])

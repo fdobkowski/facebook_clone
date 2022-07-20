@@ -22,7 +22,12 @@ client.connect()
             socket.on('user_connected', (id) => {
                 client.set(id, socket.id).then(() => console.log(`${socket.id} added`)).catch(err => console.error(err))
                 axios.get(`http://localhost:5000/api/notifications/${id}`).then(response => {
-                    console.log(response.data)
+                    response.data.map(x => {
+                        io.to(socket.id).emit('receive_notification', {
+                            type: x.type,
+                            from: x.sender_id
+                        })
+                    })
                 })
             })
 
@@ -30,10 +35,16 @@ client.connect()
                 client.get(data.receiver_id).then(response => {
                     if (response) {
                         if (response !== 'disconnected') {
-                            io.to(response).emit('receive_notification', {
-                                type: 'friend_request',
-                                from: data.sender_id
-                            })
+                            axios.post('http://localhost:5000/api/notifications', {
+                                sender_id: data.sender_id,
+                                receiver_id: data.receiver_id,
+                                type: 'friend_request'
+                            }).then(() => {
+                                io.to(response).emit('receive_notification', {
+                                    type: 'friend_request',
+                                    from: data.sender_id
+                                })
+                            }).catch(err => console.error(err))
                         } else {
                             axios.post('http://localhost:5000/api/notifications', {
                                 sender_id: data.sender_id,
