@@ -12,10 +12,6 @@ const Searchbar = () => {
     const navigate = useNavigate()
     const searchbar_ref = useRef(null)
 
-    // useEffect(() => {
-    //     console.log(profiles)
-    // }, [profiles])
-
 
     const hideSearchResult = (e) => {
         if (window.location.pathname !== '/login' && searchbar_ref.current && !searchbar_ref.current.contains(e.target)) {
