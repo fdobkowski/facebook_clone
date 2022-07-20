@@ -5,9 +5,8 @@ import {useCookies} from "react-cookie";
 import {useKeycloak} from "@react-keycloak/web";
 import {useCallback, useEffect, useState} from "react";
 import Searchbar from "./Searchbar";
-import io from "socket.io-client";
 
-const Navbar = ( { socket }) => {
+const Navbar = ( { socket, setSocket }) => {
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -39,6 +38,7 @@ const Navbar = ( { socket }) => {
                         removeCookies('profile_first_name')
                         removeCookies('profile_last_name')
                         socket.emit('user_disconnected', cookies['profile_id'])
+                        setSocket(null)
                         socket.disconnect()
                         handleLogout()
                         navigate('/login')

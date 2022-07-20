@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 import {useCookies} from "react-cookie";
 import { Buffer } from 'buffer'
 
-const Login = () => {
+const Login = ( { setId }) => {
 
     const axios = require('axios')
     const navigate = useNavigate()
@@ -29,6 +29,7 @@ const Login = () => {
             setCookies("profile_id", response.data.id)
             setCookies('profile_first_name', response.data.first_name)
             setCookies('profile_last_name', response.data.last_name)
+            setId(response.data.id)
             navigate('/')
         }).catch(error => alert(error.response.data))
     }
