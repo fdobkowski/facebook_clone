@@ -34,8 +34,20 @@ const Navbar = ( { socket, setSocket }) => {
 
     if (socket) {
         socket.on('receive_notification', (data) => {
-            console.log(data)
             setNotifications([...notifications, data])
+        })
+
+        socket.on('receive_old_notifications', (data) => {
+            console.log(data)
+            setNotifications([...notifications, ...data.map(x => {
+                return {
+                    id: x.id,
+                    type: x.type,
+                    from: x.sender_id,
+                    seen: x.seen
+
+                }
+            })])
         })
     }
 
@@ -83,26 +95,29 @@ const Navbar = ( { socket, setSocket }) => {
                          } onClick={() => setNotification_focus(!notification_focus)}/>
                     {(notification_focus) ?
                     <ul className={'notification_list'}>
-                        {notifications.map(x => {
-                            return (
-                                <li key={uuid()} className={`seen_${x.seen}`}>
-                                    {(x.type === 'friend_request') ?
-                                        <div className={'friend_request'}>
-                                            <img alt={'profile_picture'} src={require('../../assets/fb_profile_picture.png')}
-                                                 onClick={() => navigate(`/profile/${x.from}`)} />
-                                            <div>
-                                                <span>{`${profiles.find(y => y.id === x.from).first_name} has sent you a friend request`}</span>
-                                                {(!x.seen) ?
+                        {(notifications.length !== 0) ?
+                            notifications.map(x => {
+                                return (
+                                    <li key={uuid()} className={`seen_${x.seen}`}>
+                                        {(x.type === 'friend_request') ?
+                                            <div className={'friend_request'}>
+                                                <img alt={'profile_picture'} src={require('../../assets/fb_profile_picture.png')}
+                                                     onClick={() => navigate(`/profile/${x.from}`)} />
                                                 <div>
-                                                    <button>Accept</button>
-                                                    <button onClick={() => handleDecline(x)}>Decline</button>
-                                                </div> : null}
-                                            </div>
-                                        </div> : null
-                                    }
-                                </li>
-                            )
-                        })}
+                                                    <span>{`${profiles.find(y => y.id === x.from).first_name} has sent you a friend request`}</span>
+                                                    {(!x.seen) ?
+                                                    <div>
+                                                        <button>Accept</button>
+                                                        <button onClick={() => handleDecline(x)}>Decline</button>
+                                                    </div> : null}
+                                                </div>
+                                            </div> : null}
+                                    </li>
+                                )
+                        }) :
+                        <li className={'empty_notifications'}>
+                            You have no notifications
+                        </li>}
                     </ul> : null}
                     <button className={'util_button'} onClick={() => (cookies['profile_id']) ? navigate(`/profile/${cookies['profile_id']}`) : null}>Profile</button>
                     <button className={'util_button'} onClick={() => {

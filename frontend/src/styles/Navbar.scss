@@ -110,6 +110,8 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        width: 30vw;
+        height: 10vh;
 
         .friend_request {
           display: flex;
@@ -164,6 +166,12 @@
           }
         }
 
+      }
+
+      .empty_notifications {
+        font-size: 25px;
+        text-align: center;
+        justify-content: center;
       }
 
       .seen_true {
