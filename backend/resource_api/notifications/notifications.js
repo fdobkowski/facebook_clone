@@ -17,5 +17,19 @@ router.get("/:id", async (req, res) => {
     })
 })
 
+router.get('/single/:id', async (req, res) => {
+    await pool.query(queries.get_single_notification(req.params.id), (err, result) => {
+        if (err) throw err
+        res.send(result.rows[0])
+    })
+})
+
+router.patch('/:id', async (req, res) => {
+    await pool.query(queries.patch_seen_notification(req.params.id), (err) => {
+        if (err) throw err
+        res.send('OK')
+    })
+})
+
 
 module.exports = router

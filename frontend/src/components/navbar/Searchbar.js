@@ -30,7 +30,6 @@ const Searchbar = ({ id, socket, notification_ref }) => {
     }, [])
 
     const handleFriendRequest = (receiver_id, ref_id) => {
-        console.log("clicked")
         socket.emit('send_friend_request', ({sender_id: id, receiver_id: receiver_id}))
         friend_ref.current[ref_id].id = 'sent_true'
     }

@@ -17,6 +17,7 @@ const Navbar = ( { socket, setSocket }) => {
     const [notification_focus, setNotification_focus] = useState(false)
     const notification_ref = useRef(null)
     const profiles = useSelector((state) => state.profiles.profiles)
+    const axios = require('axios')
 
     const handleLogout = useCallback(() => {
         if (keycloak.authenticated) keycloak.logout()
@@ -55,6 +56,19 @@ const Navbar = ( { socket, setSocket }) => {
         return () => document.removeEventListener("click", hideNotifications)
     }, [])
 
+    const handleDecline = (notification) => {
+        console.log(notification)
+        axios.patch(`http://localhost:5000/api/notifications/${notification.id}`)
+            .then(() => {
+                setNotifications(notifications.map(x => {
+                    if (x === notification) {
+                        x.seen = true
+                        return x
+                    }
+                }))
+            }).catch(err => console.error(err))
+    }
+
     return (
         <div>
         {(location.pathname !== '/login') ?
@@ -64,22 +78,25 @@ const Navbar = ( { socket, setSocket }) => {
                 <div className={'nav_buttons'}>
                     <img id={`notification_${notification_focus}`}
                          alt={'notifications'} ref={notification_ref}
-                         src={require('../../assets/notification.png')} onClick={() => setNotification_focus(!notification_focus)}/>
+                         src={
+                             (notifications.filter(x => !x.seen).length === 0) ? require('../../assets/notification.png') : require('../../assets/new_notification.png')
+                         } onClick={() => setNotification_focus(!notification_focus)}/>
                     {(notification_focus) ?
                     <ul className={'notification_list'}>
                         {notifications.map(x => {
                             return (
-                                <li key={uuid()} id={x.type}>
+                                <li key={uuid()} className={`seen_${x.seen}`}>
                                     {(x.type === 'friend_request') ?
                                         <div className={'friend_request'}>
                                             <img alt={'profile_picture'} src={require('../../assets/fb_profile_picture.png')}
                                                  onClick={() => navigate(`/profile/${x.from}`)} />
                                             <div>
                                                 <span>{`${profiles.find(y => y.id === x.from).first_name} has sent you a friend request`}</span>
+                                                {(!x.seen) ?
                                                 <div>
                                                     <button>Accept</button>
-                                                    <button>Decline</button>
-                                                </div>
+                                                    <button onClick={() => handleDecline(x)}>Decline</button>
+                                                </div> : null}
                                             </div>
                                         </div> : null
                                     }

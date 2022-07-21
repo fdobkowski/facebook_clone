@@ -8,6 +8,8 @@ const server = http.createServer(app)
 const client = redis.createClient()
 const axios = require('axios')
 
+const uuid = require('uuid').v4
+
 const io = new Server(server, {
     cors: {
         origin: 'http://localhost:3000'
@@ -24,8 +26,10 @@ client.connect()
                 axios.get(`http://localhost:5000/api/notifications/${id}`).then(response => {
                     response.data.map(x => {
                         io.to(socket.id).emit('receive_notification', {
+                            id: x.id,
                             type: x.type,
-                            from: x.sender_id
+                            from: x.sender_id,
+                            seen: x.seen
                         })
                     })
                 })
@@ -34,24 +38,25 @@ client.connect()
             socket.on('send_friend_request', (data) => {
                 client.get(data.receiver_id).then(response => {
                     if (response) {
-                        if (response !== 'disconnected') {
-                            axios.post('http://localhost:5000/api/notifications', {
-                                sender_id: data.sender_id,
-                                receiver_id: data.receiver_id,
-                                type: 'friend_request'
-                            }).then(() => {
-                                io.to(response).emit('receive_notification', {
-                                    type: 'friend_request',
-                                    from: data.sender_id
-                                })
-                            }).catch(err => console.error(err))
-                        } else {
-                            axios.post('http://localhost:5000/api/notifications', {
-                                sender_id: data.sender_id,
-                                receiver_id: data.receiver_id,
-                                type: 'friend_request'
-                            }).then(response => console.log(response.data)).catch(err => console.error(err))
-                        }
+                        const notification_id = uuid()
+                        axios.post('http://localhost:5000/api/notifications', {
+                            id: notification_id,
+                            sender_id: data.sender_id,
+                            receiver_id: data.receiver_id,
+                            type: 'friend_request'
+                        }).then(() => {
+                            if (response !== 'disconnected') {
+                                axios.get(`http://localhost:5000/api/notifications/single/${notification_id}`)
+                                    .then((result => {
+                                        io.to(response).emit('receive_notification', {
+                                            id: result.data.id,
+                                            type: result.data.type,
+                                            from: result.data.sender_id,
+                                            seen: result.data.seen
+                                        })
+                                    })).catch(err => console.error(err))
+                            }
+                        }).catch(err => console.error(err))
                     } else console.log('User does not exist')
                 }).catch(err => console.error(err))
             })
