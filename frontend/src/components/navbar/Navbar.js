@@ -44,6 +44,16 @@ const Navbar = ( { socket, setSocket }) => {
         console.log("===================")
     }, [notifications]);
 
+    const hideNotifications = (e) => {
+        if (window.location.pathname !== '/login' && notification_ref.current && !notification_ref.current.contains(e.target)) {
+            setNotification_focus(false)
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener("click", hideNotifications)
+        return () => document.removeEventListener("click", hideNotifications)
+    }, [])
 
     return (
         <div>
