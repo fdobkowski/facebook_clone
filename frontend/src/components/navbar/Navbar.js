@@ -69,14 +69,13 @@ const Navbar = ( { socket, setSocket }) => {
     }, [])
 
     const handleDecline = (notification) => {
-        console.log(notification)
         axios.patch(`http://localhost:5000/api/notifications/${notification.id}`)
             .then(() => {
                 setNotifications(notifications.map(x => {
                     if (x === notification) {
                         x.seen = true
                         return x
-                    }
+                    } else return x
                 }))
             }).catch(err => console.error(err))
     }

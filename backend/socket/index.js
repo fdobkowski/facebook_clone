@@ -24,15 +24,7 @@ client.connect()
             socket.on('user_connected', (id) => {
                 client.set(id, socket.id).then(() => console.log(`${socket.id} added`)).catch(err => console.error(err))
                 axios.get(`http://localhost:5000/api/notifications/${id}`).then(response => {
-                    io.to(socket.id).emit('receive_old_notifications', response.data)
-                    // response.data.map(x => {
-                    //     io.to(socket.id).emit('receive_old_notification', {
-                    //         id: x.id,
-                    //         type: x.type,
-                    //         from: x.sender_id,
-                    //         seen: x.seen
-                    //     })
-                    // })
+                    io.to(socket.id).emit('receive_old_notifications', response.data.reverse())
                 })
             })
 
