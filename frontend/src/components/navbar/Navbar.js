@@ -34,7 +34,7 @@ const Navbar = ( { socket, setSocket }) => {
 
     if (socket) {
         socket.on('receive_notification', (data) => {
-            setNotifications([...notifications, data])
+            setNotifications([data, ...notifications])
         })
 
         socket.on('receive_old_notifications', (data) => {
