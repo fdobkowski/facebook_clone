@@ -29,6 +29,7 @@ const notifications_table = 'CREATE TABLE IF NOT EXISTS notifications (\n' +
     '\tsender_id VARCHAR(255) REFERENCES profiles(id),\n' +
     '\treceiver_id VARCHAR(255) REFERENCES profiles(id),\n' +
     '\ttype VARCHAR(255)\n' +
+    '\tseen BOOLEAN\n' +
     ');'
 
 const friendships_table = 'CREATE TABLE IF NOT EXISTS friendships (\n' +
