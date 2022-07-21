@@ -2,7 +2,7 @@ import {useSelector} from "react-redux";
 import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-const Searchbar = ({ id, socket }) => {
+const Searchbar = ({ id, socket, notification_ref }) => {
 
     const [profileFilter, setProfileFilter] = useState(/.*/i)
     const profiles = useSelector((state) => state.profiles.profiles.filter(x => profileFilter.test(x.first_name) || profileFilter.test(x.last_name)
@@ -20,7 +20,7 @@ const Searchbar = ({ id, socket }) => {
 
     const hideSearchResult = (e) => {
         if (window.location.pathname !== '/login' && searchbar_ref.current && !searchbar_ref.current.contains(e.target)) {
-            if (!Object.values(friend_ref.current).includes(e.target)) setFocused(false)
+            if (!Object.values(friend_ref.current).includes(e.target) && !notification_ref.current.contains(e.target)) setFocused(false)
         }
     }
 

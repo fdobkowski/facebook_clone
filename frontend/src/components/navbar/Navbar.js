@@ -3,7 +3,7 @@ import homeLogo from '../../assets/home_icon.svg'
 import {useLocation, useNavigate} from 'react-router-dom'
 import {useCookies} from "react-cookie";
 import {useKeycloak} from "@react-keycloak/web";
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import Searchbar from "./Searchbar";
 import {v4 as uuid} from 'uuid'
 
@@ -14,6 +14,7 @@ const Navbar = ( { socket, setSocket }) => {
     const { keycloak } = useKeycloak()
     const [notifications, setNotifications] = useState([])
     const [notification_focus, setNotification_focus] = useState(false)
+    const notification_ref = useRef(null)
 
     const handleLogout = useCallback(() => {
         if (keycloak.authenticated) keycloak.logout()
@@ -47,10 +48,11 @@ const Navbar = ( { socket, setSocket }) => {
         {(location.pathname !== '/login') ?
             <nav className={"navbar_container"}>
                 <img alt={'home'} src={homeLogo} onClick={() => navigate("/")} />
-                <Searchbar id={cookies['profile_id']} socket={socket}/>
+                <Searchbar id={cookies['profile_id']} socket={socket} notification_ref={notification_ref}/>
                 <div className={'nav_buttons'}>
                     <img id={`notification_${notification_focus}`}
-                         alt={'notifications'} src={require('../../assets/notification.png')} onClick={() => setNotification_focus(!notification_focus)}/>
+                         alt={'notifications'} ref={notification_ref}
+                         src={require('../../assets/notification.png')} onClick={() => setNotification_focus(!notification_focus)}/>
                     {(notification_focus) ?
                     <ul className={'notification_list'}>
                         {notifications.map(x => {
