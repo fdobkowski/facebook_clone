@@ -5,6 +5,7 @@ import {useCookies} from "react-cookie";
 import {useKeycloak} from "@react-keycloak/web";
 import {useCallback, useEffect, useState} from "react";
 import Searchbar from "./Searchbar";
+import {v4 as uuid} from 'uuid'
 
 const Navbar = ( { socket, setSocket }) => {
 
@@ -12,6 +13,7 @@ const Navbar = ( { socket, setSocket }) => {
     const location = useLocation()
     const { keycloak } = useKeycloak()
     const [notifications, setNotifications] = useState([])
+    const [notification_focus, setNotification_focus] = useState(false)
 
     const handleLogout = useCallback(() => {
         if (keycloak.authenticated) keycloak.logout()
@@ -46,7 +48,19 @@ const Navbar = ( { socket, setSocket }) => {
             <nav className={"navbar_container"}>
                 <img alt={'home'} src={homeLogo} onClick={() => navigate("/")} />
                 <Searchbar id={cookies['profile_id']} socket={socket}/>
-                <div>
+                <div className={'nav_buttons'}>
+                    <img id={`notification_${notification_focus}`}
+                         alt={'notifications'} src={require('../../assets/notification.png')} onClick={() => setNotification_focus(!notification_focus)}/>
+                    {(notification_focus) ?
+                    <ul className={'notification_list'}>
+                        {notifications.map(x => {
+                            return (
+                                <li key={uuid()} id={x.type}>
+                                    {x.type}
+                                </li>
+                            )
+                        })}
+                    </ul> : null}
                     <button onClick={() => (cookies['profile_id']) ? navigate(`/profile/${cookies['profile_id']}`) : null}>Profile</button>
                     <button onClick={() => {
                         removeCookies('profile_id')
