@@ -98,17 +98,73 @@
       cursor: pointer;
       list-style: none;
       box-shadow: 0 0 10px rgb(219, 221, 224);
+      right: 0;
 
       li {
         list-style: none;
         font-weight: bold;
         font-size: 15px;
-        padding: 15px 10px 15px 10px;
+        padding: 5px 5px 5px 0;
         box-shadow: 0 0 10px rgb(219, 221, 224);
         margin: 5px;
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        .friend_request {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          //margin-bottom: 10px;
+
+          img {
+            position: relative;
+            transform: translateY(0);
+            margin: 0 5px 0 0;
+            height: 80px;
+          }
+
+          div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            span {
+              padding-bottom: 10px;
+              font-size: 17px;
+            }
+            div {
+              display: flex;
+              flex-direction: row;
+              width: 100%;
+              justify-content: space-around;
+
+              button {
+                width: 40%;
+                font-size: 1rem;
+                border: 1px solid black;
+                border-radius: 10px;
+                color: rgb(1, 101, 225);
+                font-weight: bold;
+                padding: 5px 0;
+                background-color: transparent;
+                cursor: pointer;
+              }
+
+              button:first-child {
+                border-color: rgb(1, 101, 225);
+                background-color: rgb(1, 101, 225);
+                color: white;
+              }
+
+              button:hover {
+                box-shadow: 0 0 4px #000000;
+              }
+            }
+          }
+        }
+
       }
 
       li:hover {
@@ -116,7 +172,7 @@
       }
     }
 
-    button {
+    .util_button {
       position: relative;
       transform: translateY(-15%);
       background: transparent;
@@ -130,7 +186,7 @@
       cursor: pointer;
     }
 
-    button:hover {
+    .util_button:hover {
       background-color: rgb(245, 246, 247);
     }
   }
