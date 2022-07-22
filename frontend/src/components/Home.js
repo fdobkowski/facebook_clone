@@ -35,11 +35,6 @@ const Home = () => {
         dispatch(getFriendships(cookies['profile_id']))
     }, [])
 
-    useEffect(() => {
-        console.log("PROFILE:")
-        console.log(profile)
-    },[profile])
-
 
     return (
         <div className={"home_container"}>
