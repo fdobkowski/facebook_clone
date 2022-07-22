@@ -20,7 +20,15 @@ const Navbar = ( { socket, setSocket }) => {
     const axios = require('axios')
 
     const handleLogout = useCallback(() => {
+        removeCookies('profile_id')
+        removeCookies('profile_first_name')
+        removeCookies('profile_last_name')
+        setNotifications([])
+        socket.emit('user_disconnected', cookies['profile_id'])
+        setSocket(null)
+        socket.disconnect()
         if (keycloak.authenticated) keycloak.logout()
+        navigate('/login')
     }, [keycloak])
 
 
@@ -138,16 +146,7 @@ const Navbar = ( { socket, setSocket }) => {
                         </li>}
                     </ul> : null}
                     <button className={'util_button'} onClick={() => (cookies['profile_id']) ? navigate(`/profile/${cookies['profile_id']}`) : null}>Profile</button>
-                    <button className={'util_button'} onClick={() => {
-                        removeCookies('profile_id')
-                        removeCookies('profile_first_name')
-                        removeCookies('profile_last_name')
-                        socket.emit('user_disconnected', cookies['profile_id'])
-                        setSocket(null)
-                        socket.disconnect()
-                        handleLogout()
-                        navigate('/login')
-                    }}>Logout</button>
+                    <button className={'util_button'} onClick={() => handleLogout()}>Logout</button>
                 </div>
 
             </nav> : null }
