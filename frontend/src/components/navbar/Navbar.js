@@ -19,7 +19,7 @@ const Navbar = ( { socket, setSocket }) => {
     const profiles = useSelector((state) => state.profiles.profiles)
     const axios = require('axios')
 
-    const handleLogout = useCallback(() => {
+    const handleLogout = () => {
         removeCookies('profile_id')
         removeCookies('profile_first_name')
         removeCookies('profile_last_name')
@@ -29,7 +29,7 @@ const Navbar = ( { socket, setSocket }) => {
         socket.disconnect()
         if (keycloak.authenticated) keycloak.logout()
         navigate('/login')
-    }, [keycloak])
+    }
 
 
     const [cookies, setCookies, removeCookies] = useCookies(['profile_id'])
