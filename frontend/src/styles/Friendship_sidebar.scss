@@ -40,12 +40,12 @@
 
       img {
         height: 7vh;
-        padding-right: 10px;
-        opacity: 0.6;
+        margin-right: 10px;
       }
 
       img:hover {
-        opacity: 1;
+        filter: brightness(110%);
+        cursor: pointer;
       }
     }
 
