@@ -50,7 +50,7 @@ const Searchbar = ({ id, socket, notification_ref }) => {
             {(focused) ?
             <ul className={'searchbar_ul'}>
                 {(profiles) ?
-                profiles.slice(0, 5).map((x, i) => {
+                profiles.map((x, i) => {
                     return (
                         <li key={x.id}>
                             <span onClick={() => navigate(`/profile/${x.id}`)}>{x.first_name} {x.last_name}</span>

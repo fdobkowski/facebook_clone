@@ -28,6 +28,18 @@
       width: inherit;
       margin-top: 0;
       cursor: pointer;
+      overflow: scroll;
+      max-height: 55vh;
+
+      &::-webkit-scrollbar {
+        width: 7px;
+        height: 0;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: darkgray;
+        border-radius: 100px;
+      }
 
       li {
         list-style: none;
@@ -67,6 +79,12 @@
         box-shadow: 0 0 10px #b4b2b2;
       }
     }
+
+    ul:hover {
+      &::-webkit-scrollbar-thumb {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      }
+    }
   }
 
   .nav_buttons {
@@ -100,7 +118,7 @@
       box-shadow: 0 0 10px rgb(219, 221, 224);
       right: 50px;
       overflow: scroll;
-      height: 55vh;
+      max-height: 55vh;
 
       &::-webkit-scrollbar {
         width: 7px;
