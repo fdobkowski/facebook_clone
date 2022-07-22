@@ -3,6 +3,8 @@ import {useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
 import CreatePost from "./CreatePost";
+import {useDispatch, useSelector} from "react-redux";
+import {getFriendships} from "../redux/reducers/profileReducer";
 
 const Home = () => {
 
@@ -12,6 +14,9 @@ const Home = () => {
 
     const [createPost, setCreatePost] = useState(false)
     const [posts, setPosts] = useState([])
+    const all_profiles = useSelector((state) => state.profiles.profiles)
+    const profile = useSelector((state) => state.profiles.profiles.find(x => x.id === cookies['profile_id']))
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if (cookies['profile_id'] === undefined || cookies['profile_first_name'] === undefined || cookies['profile_last_name'] === undefined) {
@@ -25,6 +30,15 @@ const Home = () => {
             setPosts(response.data)
         }).catch(err => console.error(err))
     }, []);
+
+    useEffect(() => {
+        dispatch(getFriendships(cookies['profile_id']))
+    }, [])
+
+    useEffect(() => {
+        console.log("PROFILE:")
+        console.log(profile)
+    },[profile])
 
 
     return (
@@ -59,7 +73,17 @@ const Home = () => {
             <div className={"friends_list"} id={`post_${createPost}`} onClick={() => {
                 if (createPost) setCreatePost(false)
             }}>
-                Friends List
+                {(profile && profile.friendships) ?
+                <ul>
+                    {profile.friendships.map((x, i) => {
+                        return (
+                            <li key={i}>
+                                <img alt={'profile_picture'} src={require('../assets/fb_profile_picture.png')} />
+                                <span>{all_profiles.find(y => y.id === x.friend).first_name} {all_profiles.find(y => y.id === x.friend).last_name}</span>
+                            </li>
+                        )
+                    })}
+                </ul> : 'You have no friends yet'}
             </div>
         </div>
     )

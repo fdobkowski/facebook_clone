@@ -10,4 +10,11 @@ router.post('/', async (req, res) => {
     })
 })
 
+router.get('/:id', async (req, res) => {
+    await pool.query(queries.get_friendships(req.params.id), (err, result) => {
+        if (err) throw err
+        res.status(200).send(result.rows)
+    })
+})
+
 module.exports = router
