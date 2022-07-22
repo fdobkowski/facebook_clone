@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom";
 import CreatePost from "./CreatePost";
 import {useDispatch, useSelector} from "react-redux";
 import {getFriendships} from "../redux/reducers/profileReducer";
+import Friendship_sidebar from "./friendships/Friendship_sidebar";
 
 const Home = () => {
 
@@ -31,9 +32,7 @@ const Home = () => {
         }).catch(err => console.error(err))
     }, []);
 
-    useEffect(() => {
-        dispatch(getFriendships(cookies['profile_id']))
-    }, [])
+
 
 
     return (
@@ -65,21 +64,7 @@ const Home = () => {
                 <button onClick={() => navigate('/protected')}>Administration panel</button>
                 {(createPost) ? <CreatePost visible={setCreatePost}/> : null }
             </div>
-            <div className={"friends_list"} id={`post_${createPost}`} onClick={() => {
-                if (createPost) setCreatePost(false)
-            }}>
-                {(profile && profile.friendships) ?
-                <ul>
-                    {profile.friendships.map((x, i) => {
-                        return (
-                            <li key={i}>
-                                <img alt={'profile_picture'} src={require('../assets/fb_profile_picture.png')} />
-                                <span>{all_profiles.find(y => y.id === x.friend).first_name} {all_profiles.find(y => y.id === x.friend).last_name}</span>
-                            </li>
-                        )
-                    })}
-                </ul> : 'You have no friends yet'}
-            </div>
+           <Friendship_sidebar createPost={createPost} setCreatePost={setCreatePost} id={cookies['profile_id']} />
         </div>
     )
 }

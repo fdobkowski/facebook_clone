@@ -130,7 +130,7 @@ const Navbar = ( { socket, setSocket }) => {
                                                 <img alt={'profile_picture'} src={require('../../assets/fb_profile_picture.png')}
                                                      onClick={() => navigate(`/profile/${x.from}`)} />
                                                 <div>
-                                                    <span>{`${profiles.find(y => y.id === x.from).first_name} has sent you a friend request`}</span>
+                                                    <span>{`${(profiles) ? profiles.find(y => y.id === x.from).first_name : ''} has sent you a friend request`}</span>
                                                     {(!x.seen) ?
                                                     <div>
                                                         <button onClick={() => handleAccept(x)}>Accept</button>
