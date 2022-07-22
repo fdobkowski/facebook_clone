@@ -80,6 +80,25 @@ const Navbar = ( { socket, setSocket }) => {
             }).catch(err => console.error(err))
     }
 
+    const handleAccept = (notification) => {
+        axios.patch(`http://localhost:5000/api/notifications/${notification.id}`)
+            .then(() => {
+                setNotifications(notifications.map(x => {
+                    if (x === notification) {
+                        x.seen = true
+                        return x
+                    } else return x
+                }))
+
+                const date = new Date()
+                axios.post('http://localhost:5000/api/friendships', {
+                    sender_id: notification.from,
+                    receiver_id: cookies['profile_id'],
+                    date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+                }).then(() => alert(`You are now friends with ${profiles.find(x => x.id === notification.from).first_name}`)).catch(err => console.error(err))
+            }).catch(err => console.error(err))
+    }
+
     return (
         <div>
         {(location.pathname !== '/login') ?
@@ -106,7 +125,7 @@ const Navbar = ( { socket, setSocket }) => {
                                                     <span>{`${profiles.find(y => y.id === x.from).first_name} has sent you a friend request`}</span>
                                                     {(!x.seen) ?
                                                     <div>
-                                                        <button>Accept</button>
+                                                        <button onClick={() => handleAccept(x)}>Accept</button>
                                                         <button onClick={() => handleDecline(x)}>Decline</button>
                                                     </div> : null}
                                                 </div>
