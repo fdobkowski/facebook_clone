@@ -16,13 +16,27 @@ const io = new Server(server, {
     }
 })
 
+const online_users = () => {
+    client.keys('*').then(async response => {
+        response.map(async (x, i) => {
+            if (i === 0) console.log('\n----- Online users -----')
+
+            await client.get(x).then(response => {
+                if (response !== 'disconnected') console.log(response)
+            }).catch(err => console.error(err))
+
+            if (i === response.length - 1) console.log('------------------------\n')
+        })
+    }).catch(err => console.error(err))
+}
+
 client.connect()
     .then(() => {
         io.sockets.on('connection', (socket) => {
-            console.log(`${socket.id} has connected`)
 
+            online_users()
             socket.on('user_connected', (id) => {
-                client.set(id, socket.id).then(() => console.log(`${socket.id} added`)).catch(err => console.error(err))
+                client.set(id, socket.id).then().catch(err => console.error(err))
                 axios.get(`http://localhost:5000/api/notifications/${id}`).then(response => {
                     io.to(socket.id).emit('receive_old_notifications', response.data.reverse())
                 })
@@ -50,18 +64,18 @@ client.connect()
                                     })).catch(err => console.error(err))
                             }
                         }).catch(err => console.error(err))
-                    } else console.log('User does not exist')
+                    }
                 }).catch(err => console.error(err))
             })
 
             socket.on('user_disconnected', (id) => {
                 client.get(id).then(response => {
-                    client.set(id, 'disconnected').then(() => console.log(`${id} id set to disconnected`)).catch(err => console.error(err))
+                    client.set(id, 'disconnected').then().catch(err => console.error(err))
                 })
             })
 
             socket.on('disconnect', () => {
-                console.log(`${socket.id} has disconnected`)
+                online_users()
             })
         })
     }).catch(error => console.error(error))
