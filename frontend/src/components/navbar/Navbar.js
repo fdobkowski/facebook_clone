@@ -6,7 +6,8 @@ import {useKeycloak} from "@react-keycloak/web";
 import {useCallback, useEffect, useRef, useState} from "react";
 import Searchbar from "./Searchbar";
 import {v4 as uuid} from 'uuid'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {getFriendships, getProfiles} from "../../redux/reducers/profileReducer";
 
 const Navbar = ( { socket, setSocket }) => {
 
@@ -18,6 +19,7 @@ const Navbar = ( { socket, setSocket }) => {
     const notification_ref = useRef(null)
     const profiles = useSelector((state) => state.profiles.profiles)
     const axios = require('axios')
+    const dispatch = useDispatch()
 
     const handleLogout = () => {
         removeCookies('profile_id')
@@ -42,6 +44,8 @@ const Navbar = ( { socket, setSocket }) => {
 
     if (socket) {
         socket.on('receive_notification', (data) => {
+            dispatch(getProfiles())
+            dispatch(getFriendships(cookies['profile_id']))
             setNotifications([data, ...notifications])
         })
 

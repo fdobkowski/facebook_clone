@@ -11,6 +11,8 @@ import io from "socket.io-client";
 import { useBeforeunload } from 'react-beforeunload'
 import {useCookies} from "react-cookie";
 import Friendships from "./components/friendships/Friendships";
+import {useDispatch} from "react-redux";
+import {getProfiles} from "./redux/reducers/profileReducer";
 
 
 function App() {
@@ -19,6 +21,7 @@ function App() {
     const [socket, setSocket] = useState(null)
     const location = useLocation()
     const [cookies, setCookies, removeCookies] = useCookies()
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if (location.pathname !== '/login' && !socket && (id || cookies['profile_id']) ) {
