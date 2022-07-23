@@ -41,7 +41,7 @@ const Home = () => {
                 if (createPost) setCreatePost(false)
             }}>
                 <button onClick={() => navigate(`/profile/${cookies['profile_id']}`)}>Profile</button>
-                <button>Friends</button>
+                <button onClick={() => navigate(`/profile/${cookies['profile_id']}/friends`)}>Friends</button>
             </div>
             <div className={"main"}>
                 <div className={"create_post"} id={`post_${createPost}`} onClick={() => {
