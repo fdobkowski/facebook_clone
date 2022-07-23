@@ -1,22 +1,24 @@
 .navbar_container {
   display: flex;
   align-items: center;
-  height: 5vh;
+  height: 8vh;
   justify-content: space-between;
 
   img {
-    height: 4vh;
+    height: 70%;
     padding: 10px;
     cursor: pointer;
   }
 
   .searchbar {
     width: 40vw;
+    height: 60%;
 
     input {
       padding-left: 5px;
       font-size: 20px;
       width: 40vw;
+      height: 100%;
     }
 
     ul {
@@ -58,6 +60,10 @@
           height: 100%;
         }
 
+        img {
+          height: 55px;
+        }
+
         #sent_false {
           margin-right: 2rem;
           opacity: 0.3;
@@ -95,6 +101,7 @@
       padding: 0;
       margin-right: 20px;
       opacity: 0.7;
+      height: 40px;
     }
 
     img:hover {
