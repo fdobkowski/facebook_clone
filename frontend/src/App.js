@@ -10,6 +10,7 @@ import {useEffect, useState} from "react";
 import io from "socket.io-client";
 import { useBeforeunload } from 'react-beforeunload'
 import {useCookies} from "react-cookie";
+import Friendships from "./components/friendships/Friendships";
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
             <Route path={"/login"} element={<Login setId={setId}/>}/>
             <Route path={"/"} element={<Home/>}/>
             <Route path={"/profile/:id"} element={<Profile/>}/>
+            <Route path={"/profile/:id/friends"} element={<Friendships/>}/>
             <Route path={"/protected"} element={<Protected/>}/>
         </Routes>
         <Footer />

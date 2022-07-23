@@ -3,6 +3,8 @@ import {Field, Form, Formik} from "formik";
 import {useState} from "react";
 import { Buffer } from 'buffer'
 import { v4 as uuidv4 } from 'uuid'
+import {useDispatch} from "react-redux";
+import {getProfiles} from "../../redux/reducers/profileReducer";
 
 const Register = ( { visible }) => {
 
@@ -11,6 +13,7 @@ const Register = ( { visible }) => {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
     const [customGender, setCustomGender] = useState("Female")
+    const dispatch = useDispatch()
 
     const handleRegister = async (values) => {
 
@@ -31,7 +34,10 @@ const Register = ( { visible }) => {
                 gender: values.gender,
                 custom_gender: values.custom_gender,
                 pronoun: values.pronoun
-            }).then((response) => alert(response.data)).catch(error => console.error(error))
+            }).then((response) => {
+                dispatch(getProfiles())
+                alert(response.data)
+            }).catch(error => console.error(error))
         }).catch(error => console.error(error))
 
         visible.setVisible(false)
