@@ -1,3 +1,4 @@
+import '../../styles/Friendships.scss'
 import {useCookies} from "react-cookie";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
@@ -43,20 +44,20 @@ const Friendships = () => {
         const handleClick = () => navigate(`/profile/${friend.id}`)
 
         return (
-            <li key={friend.id}>
-                <img alt={'profile_picture'} src={require('../../assets/fb_profile_picture.png')} onClick={handleClick}/>
-                <span onClick={handleClick}>{friend.first_name} {friend.last_name}</span>
+            <li key={friend.id} onClick={handleClick}>
+                <img alt={'profile_picture'} src={require('../../assets/fb_profile_picture.png')}/>
+                <span>{friend.first_name} {friend.last_name}</span>
             </li>
         )
     }
 
     return (
-        <div>
-            <input className={'friends_search'} placeholder={'Search...'} onChange={(e) => {
+        <div className={'friends_container'}>
+            <input className={'friends_search'} placeholder={'Search friend...'} onChange={(e) => {
                 const regex = new RegExp(`^${e.target.value}.*`, 'i')
                 setFilter(regex)
             }}/>
-            <ul className={'friends_container'}>
+            <ul>
                 {(profile && filteredFriends) ?
                 filteredFriends.map(x => {
                     return (
