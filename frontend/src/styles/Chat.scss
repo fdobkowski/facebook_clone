@@ -22,7 +22,15 @@
       height: 10%;
 
       span {
+        width: 100%;
         padding-left: 5px;
+      }
+
+      .close_button {
+        justify-self: flex-end;
+        height: 20px;
+        margin-right: 10px;
+        cursor: pointer;
       }
 
     }

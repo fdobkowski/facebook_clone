@@ -37,12 +37,13 @@ function App() {
         })
 
         socket.on('enable_chat', (data) => {
-            if (!chats.includes(data.receiver_id)) setChats([...chats, {receiver_id: data.receiver_id, chat_id: data.chat_id}])
+            if (chats.filter(x => x.receiver_id === data.receiver_id).length === 0) setChats([...chats, {receiver_id: data.receiver_id, chat_id: data.chat_id}])
             else setChats(chats)
         })
-        socket.on('disable_chat', (id) => {
-            setChats(chats.filter(x => x.id !== id))
-        })
+    }
+
+    const disableChat = (id) => {
+        setChats(chats.filter(x => x.receiver_id !== id))
     }
 
     useBeforeunload((event) => {
@@ -66,7 +67,9 @@ function App() {
           <div className={'chats_container'}>
               {(chats) ? chats.map(x => {
                   return (
-                      <Chat id={x.receiver_id} chat_id={x.chat_id} socket={socket} key={x.receiver_id}/>
+                      <Chat id={x.receiver_id} chat_id={x.chat_id}
+                            socket={socket} key={x.receiver_id}
+                            disableChat={disableChat}/>
                   )
               }) : null}
           </div>

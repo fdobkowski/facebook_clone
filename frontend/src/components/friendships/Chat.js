@@ -4,7 +4,7 @@ import {useCookies} from "react-cookie";
 import ScrollToBottom from "react-scroll-to-bottom";
 import {useSelector} from "react-redux";
 
-const Chat = ( { id, chat_id, socket }) => {
+const Chat = ( { id, chat_id, socket, disableChat }) => {
 
     const [allMessages, setAllMessages] = useState([])
     const [message, setMessage] = useState('')
@@ -43,6 +43,9 @@ const Chat = ( { id, chat_id, socket }) => {
             <div className={"chat_header"}>
                 <img alt={'profile_picture'} src={require('../../assets/fb_profile_picture.png')} />
                 <span>{receiver.first_name} {receiver.last_name}</span>
+                <img className={'close_button'}
+                     alt={'close'} src={require('../../assets/close.png')}
+                     onClick={() => disableChat(id)}/>
             </div> : null}
             <ScrollToBottom className={"message_body"} initialScrollBehavior={'smooth'}>
                 <div>
