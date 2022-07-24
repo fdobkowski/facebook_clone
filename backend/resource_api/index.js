@@ -8,6 +8,8 @@ const protectedProfileRoute = require('./protected/protected_profiles')
 const protectedPosts = require('./protected/protected_posts')
 const notificationsRoute = require('./notifications/notifications')
 const friendshipsRoute = require('./friendships/friendships')
+const chatRoute = require('./chat/chat')
+const messagesRoute = require('./chat/messages')
 
 const app = express()
 
@@ -22,6 +24,8 @@ app.use('/api/protected/profiles', protectedProfileRoute)
 app.use('/api/protected/posts', protectedPosts)
 app.use('/api/notifications', notificationsRoute)
 app.use('/api/friendships', friendshipsRoute)
+app.use('/api/chat', chatRoute)
+app.use('/api/messages', messagesRoute)
 
 const { Client } = require('pg')
 const pool = require('./Pool')
@@ -65,6 +69,15 @@ client.connect().then(async () => {
                     await pool.query(queries.friendships_table, (err) => {
                         if (err) throw err
                         console.log('Created table friendships')
+                    })
+
+                    await pool.query(queries.chat_table, async (err) => {
+                        if (err) throw err
+                        console.log('Created table chat')
+                        await pool.query(queries.messages_table, (err) => {
+                            if (err) throw err
+                            console.log('Created table messages')
+                        })
                     })
                 })
             })

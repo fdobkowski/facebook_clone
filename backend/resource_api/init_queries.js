@@ -39,11 +39,26 @@ const friendships_table = 'CREATE TABLE IF NOT EXISTS friendships (\n' +
     '\tdate TIMESTAMP NOT NULL\n' +
     ');'
 
+const chat_table = 'CREATE TABLE IF NOT EXISTS chat (\n' +
+    '\tid VARCHAR(255) PRIMARY KEY,\n' +
+    '\tsender_id VARCHAR(255) REFERENCES profiles(id),\n' +
+    '\treceiver_id VARCHAR(255) REFERENCES profiles(id),\n' +
+    ');'
+
+const messages_table = 'CREATE TABLE IF NOT EXISTS messages (\n' +
+    '\tid VARCHAR(255) REFERENCES chat_table(id),\n' +
+    '\tmessage VARCHAR(255),\n' +
+    '\tsender_id VARCHAR(255) REFERENCES profiles(id),\n' +
+    '\tdate TIMESTAMP NOT NULL\n' +
+    ');'
+
 module.exports = {
     create_database,
     users_table,
     profiles_table,
     posts_table,
     notifications_table,
-    friendships_table
+    friendships_table,
+    chat_table,
+    messages_table
 }
