@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getFriendships} from "../redux/reducers/profileReducer";
 import Friendship_sidebar from "./friendships/Friendship_sidebar";
 
-const Home = () => {
+const Home = ( { socket } ) => {
 
     const axios = require('axios')
     const [cookies, setCookies] = useCookies(['user'])
@@ -64,7 +64,7 @@ const Home = () => {
                 <button onClick={() => navigate('/protected')}>Administration panel</button>
                 {(createPost) ? <CreatePost visible={setCreatePost}/> : null }
             </div>
-           <Friendship_sidebar createPost={createPost} setCreatePost={setCreatePost} id={cookies['profile_id']} />
+           <Friendship_sidebar createPost={createPost} setCreatePost={setCreatePost} id={cookies['profile_id']} socket={socket}/>
         </div>
     )
 }

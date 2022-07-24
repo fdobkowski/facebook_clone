@@ -68,6 +68,26 @@ client.connect()
                 }).catch(err => console.error(err))
             })
 
+            socket.on('join_chat', async (data) => {
+                axios.get(`http://localhost:5000/api/chat/${data.sender_id}/${data.receiver_id}`)
+                    .then(async response => {
+                        io.to(socket.id).emit('enable_chat', data.receiver_id)
+                        if (response.data.length === 0) {
+                            await axios.post('http://localhost:5000/api/chat', {
+                                id: uuid(),
+                                sender_id: data.sender_id,
+                                receiver_id: data.receiver_id
+                            }).then(response => console.log(response.data)).catch(err => console.error(err))
+                        } else {
+                            await axios.get(`http://localhost:5000/api/messages/${response.data.id}`)
+                                .then((result) => {
+                                    io.to(socket.id).emit('receive_old_messages', result.data)
+                                })
+                                .catch(err => console.error(err))
+                        }
+                    }).catch(err => console.error(err))
+            })
+
             socket.on('user_disconnected', (id) => {
                 client.get(id).then(response => {
                     client.set(id, 'disconnected').then().catch(err => console.error(err))

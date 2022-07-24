@@ -12,7 +12,7 @@ import { useBeforeunload } from 'react-beforeunload'
 import {useCookies} from "react-cookie";
 import Friendships from "./components/friendships/Friendships";
 import {useDispatch} from "react-redux";
-import {getProfiles} from "./redux/reducers/profileReducer";
+import Chat from "./components/friendships/Chat";
 
 
 function App() {
@@ -22,6 +22,7 @@ function App() {
     const location = useLocation()
     const [cookies, setCookies, removeCookies] = useCookies()
     const dispatch = useDispatch()
+    const [chats, setChats] = useState([])
 
     useEffect(() => {
         if (location.pathname !== '/login' && !socket && (id || cookies['profile_id']) ) {
@@ -33,6 +34,14 @@ function App() {
     if (socket) {
         socket.on('connect', () => {
             socket.emit('user_connected', (id || cookies['profile_id']))
+        })
+
+        socket.on('enable_chat', (id) => {
+            if (!chats.includes(id)) setChats([...chats, id])
+            else setChats(chats)
+        })
+        socket.on('disable_chat', (id) => {
+            setChats(chats.filter(x => x.id !== id))
         })
     }
 
@@ -48,11 +57,16 @@ function App() {
         <Navbar socket={socket} setSocket={setSocket}/>
         <Routes>
             <Route path={"/login"} element={<Login setId={setId}/>}/>
-            <Route path={"/"} element={<Home/>}/>
+            <Route path={"/"} element={<Home socket={socket}/>}/>
             <Route path={"/profile/:id"} element={<Profile/>}/>
             <Route path={"/profile/:id/friends"} element={<Friendships/>}/>
             <Route path={"/protected"} element={<Protected/>}/>
         </Routes>
+          {(chats) ? chats.map(x => {
+              return (
+                  <Chat id={x} socket={socket} key={x}/>
+              )
+          }) : null}
         <Footer />
       </div>
   )

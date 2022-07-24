@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
 router.get('/:sender/:receiver', async (req, res) => {
     await pool.query(queries.get_chat(req.params.sender, req.params.receiver), (err, result) => {
         if (err) throw err
-        res.status(200).send(result.rows)
+        res.status(200).send(result.rows[0])
     })
 })
 
