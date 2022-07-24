@@ -36,8 +36,8 @@ function App() {
             socket.emit('user_connected', (id || cookies['profile_id']))
         })
 
-        socket.on('enable_chat', (id) => {
-            if (!chats.includes(id)) setChats([...chats, id])
+        socket.on('enable_chat', (data) => {
+            if (!chats.includes(data.receiver_id)) setChats([...chats, {receiver_id: data.receiver_id, chat_id: data.chat_id}])
             else setChats(chats)
         })
         socket.on('disable_chat', (id) => {
@@ -64,7 +64,7 @@ function App() {
         </Routes>
           {(chats) ? chats.map(x => {
               return (
-                  <Chat id={x} socket={socket} key={x}/>
+                  <Chat id={x.receiver_id} chat_id={x.chat_id} socket={socket} key={x.receiver_id}/>
               )
           }) : null}
         <Footer />
