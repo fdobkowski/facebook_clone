@@ -44,7 +44,7 @@ const Chat = ( { id, chat_id, socket }) => {
                 <img alt={'profile_picture'} src={require('../../assets/fb_profile_picture.png')} />
                 <span>{receiver.first_name} {receiver.last_name}</span>
             </div> : null}
-            <ScrollToBottom className={"message_body"}>
+            <ScrollToBottom className={"message_body"} initialScrollBehavior={'smooth'}>
                 <div>
                     {(allMessages) ? allMessages.map((x, i) => {
                         return (

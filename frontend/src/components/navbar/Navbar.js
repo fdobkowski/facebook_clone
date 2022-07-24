@@ -9,7 +9,7 @@ import {v4 as uuid} from 'uuid'
 import {useDispatch, useSelector} from "react-redux";
 import {getFriendships, getProfiles} from "../../redux/reducers/profileReducer";
 
-const Navbar = ( { socket, setSocket }) => {
+const Navbar = ( { socket, setSocket, setChats }) => {
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -28,6 +28,7 @@ const Navbar = ( { socket, setSocket }) => {
         setNotifications([])
         socket.emit('user_disconnected', cookies['profile_id'])
         setSocket(null)
+        setChats([])
         socket.disconnect()
         if (keycloak.authenticated) keycloak.logout()
         navigate('/login')

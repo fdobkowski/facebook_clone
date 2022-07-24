@@ -49,12 +49,13 @@ function App() {
         if (id || cookies['profile_id']) {
             socket.emit('user_disconnected', id || cookies['profile_id'])
             setSocket(null)
+            setChats([])
         }
     })
 
   return (
       <div>
-        <Navbar socket={socket} setSocket={setSocket}/>
+        <Navbar socket={socket} setSocket={setSocket} setChats={setChats}/>
         <Routes>
             <Route path={"/login"} element={<Login setId={setId}/>}/>
             <Route path={"/"} element={<Home socket={socket}/>}/>
