@@ -84,7 +84,7 @@ client.connect()
                             await axios.get(`http://localhost:5000/api/messages/${response.data.id}`)
                                 .then((result) => {
                                     io.to(socket.id).emit('enable_chat', {receiver_id: data.receiver_id, chat_id: response.data.id})
-                                    io.to(socket.id).emit('receive_old_messages', result.data)
+                                    io.to(socket.id).emit('receive_old_messages', {data: result.data, chat_id: response.data.id})
                                 })
                                 .catch(err => console.error(err))
                         }

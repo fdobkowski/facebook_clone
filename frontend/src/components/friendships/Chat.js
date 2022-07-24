@@ -13,7 +13,7 @@ const Chat = ( { id, chat_id, socket, disableChat }) => {
 
     if (socket) {
         socket.on('receive_old_messages', (data) => {
-            setAllMessages(data)
+            if (data.chat_id === chat_id) setAllMessages(data.data)
         })
 
         socket.on('receive_message', (data) => {
