@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: row-reverse;
   width: 100vw;
-  height: 45vh;
+  height: 50vh;
   position: absolute;
   bottom: 0;
 
@@ -15,7 +15,7 @@
   }
 
   .chat_room_container {
-    width: 15vw;
+    width: 17vw;
     box-shadow: 0 0 10px gray;
     background-color: white;
     margin-right: 10px;
@@ -102,6 +102,10 @@
               padding-right: 5px;
             }
           }
+        }
+
+        .main_messages:last-child {
+          margin-bottom: 10px;
         }
       }
     }
