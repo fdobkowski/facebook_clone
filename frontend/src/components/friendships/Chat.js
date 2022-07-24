@@ -37,6 +37,13 @@ const Chat = ( { id, chat_id, socket, disableChat }) => {
         }
     }
 
+    // Check if both dates are up to 2 hours apart
+
+    const checkDateDiff = (date1, date2) => {
+        const diff = Math.abs(date1.getTime() - date2.getTime()) / 3600000
+        return diff < 2
+    }
+
     return (
         <div className={"chat_room_container"}>
             {(receiver) ?
@@ -52,7 +59,9 @@ const Chat = ( { id, chat_id, socket, disableChat }) => {
                     {(allMessages) ? allMessages.map((x, i) => {
                         return (
                             <div className={"main_messages"} key={i}>
-                                <p>{new Date(x.date).toLocaleString()}</p>
+                                {(i !== 0 && allMessages[i].sender_id === allMessages[i - 1].sender_id
+                                    && checkDateDiff(new Date(allMessages[i].date), new Date(allMessages[i - 1].date))) ? null :
+                                <p>{new Date(x.date).toLocaleString()}</p>}
                                 <div className={"message_data"} id={(x.sender_id === cookies['profile_id']) ? 'sender' : 'receiver'}>
                                     <div>{x.message}</div>
                                     {(x.sender_id !== cookies['profile_id']) ?
