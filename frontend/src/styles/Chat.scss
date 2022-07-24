@@ -60,7 +60,9 @@
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 5px;
+          padding: 2px;
+          margin-right: 20px;
+          margin-left: 20px;
 
           p {
             font-size: 12px;
@@ -70,7 +72,6 @@
           .message_data {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
             font-size: 18px;
 
             div {
@@ -83,7 +84,7 @@
 
             div {
               background-color: rgb(44, 127, 229);
-              border-radius: 20px;
+              border-radius: 18px;
               color: white;
             }
           }
