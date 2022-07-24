@@ -37,7 +37,12 @@ function App() {
         })
 
         socket.on('enable_chat', (data) => {
-            if (chats.filter(x => x.receiver_id === data.receiver_id).length === 0) setChats([...chats, {receiver_id: data.receiver_id, chat_id: data.chat_id}])
+            if (chats.filter(x => x.receiver_id === data.receiver_id).length === 0) {
+                if (chats.length === 3) {
+                    setChats(chats.shift())
+                }
+                setChats([...chats, {receiver_id: data.receiver_id, chat_id: data.chat_id}])
+            }
             else setChats(chats)
         })
     }
