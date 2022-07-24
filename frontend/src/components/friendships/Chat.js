@@ -1,12 +1,15 @@
+import '../../styles/Chat.scss'
 import {useState} from "react";
 import {useCookies} from "react-cookie";
-import BasicScrollToBottom from "react-scroll-to-bottom";
+import ScrollToBottom from "react-scroll-to-bottom";
+import {useSelector} from "react-redux";
 
 const Chat = ( { id, chat_id, socket }) => {
 
     const [allMessages, setAllMessages] = useState([])
     const [message, setMessage] = useState('')
     const [cookies] = useCookies()
+    const receiver = useSelector((state) => state.profiles.profiles.find(x => x.id === id))
 
     if (socket) {
         socket.on('receive_old_messages', (data) => {
@@ -36,27 +39,35 @@ const Chat = ( { id, chat_id, socket }) => {
 
     return (
         <div className={"chat_room_container"}>
+            {(receiver) ?
             <div className={"chat_header"}>
-                <h2>{id} chat</h2>
-            </div>
-            <BasicScrollToBottom>
+                <img alt={'profile_picture'} src={require('../../assets/fb_profile_picture.png')} />
+                <span>{receiver.first_name} {receiver.last_name}</span>
+            </div> : null}
+            <ScrollToBottom className={"message_body"}>
                 <div>
                     {(allMessages) ? allMessages.map((x, i) => {
                         return (
-                            <div className={"main_messages"} key={i} id={(x.sender_id === cookies['profile_id']) ? 'sender' : 'receiver'}>
+                            <div className={"main_messages"} key={i}>
                                 <p>{new Date(x.date).toLocaleString()}</p>
-                                <div className={"message_data"}>
+                                <div className={"message_data"} id={(x.sender_id === cookies['profile_id']) ? 'sender' : 'receiver'}>
                                     <div>{x.message}</div>
+                                    {(x.sender_id !== cookies['profile_id']) ?
                                     <img alt={'profile_picture'} src={require('../../assets/fb_profile_picture.png')} />
+                                    : null}
                                 </div>
                             </div>
                         )
                     }) : null}
                 </div>
-            </BasicScrollToBottom>
+            </ScrollToBottom>
             <div className={"chat_footer"}>
-                <input type={"text"} placeholder={"Send message.."} value={message} onChange={(event) => setMessage(event.target.value)}/>
-                <button className={"send"} onClick={() => handleSend()}>Send</button>
+                <input type={"text"} placeholder={"Send message.."}
+                       value={message}
+                       onChange={(event) => setMessage(event.target.value)}
+                       onKeyDown={(e) => (e.code === 'Enter') ? handleSend() : null}/>
+                <img alt={'send'} src={require('../../assets/send-message.png')}
+                     className={"send"} onClick={() => handleSend()}/>
             </div>
         </div>
     )
