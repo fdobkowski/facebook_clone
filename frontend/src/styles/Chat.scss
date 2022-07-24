@@ -1,18 +1,24 @@
 .chats_container {
   display: flex;
-  width: 100%;
+  flex-direction: row-reverse;
+  width: 100vw;
+  height: 45vh;
+  position: absolute;
+  bottom: 0;
 
   img {
     height: 40px;
   }
 
+  .chat_room_container:first-child {
+    margin-right: 10vw;
+  }
+
   .chat_room_container {
-    position: absolute;
-    bottom: 10vh;
-    height: 45vh;
-    width: 20vw;
+    width: 15vw;
     box-shadow: 0 0 10px gray;
     background-color: white;
+    margin-right: 10px;
 
     .chat_header {
       display: flex;
@@ -38,8 +44,6 @@
     .message_body {
       height: 80%;
       overflow: hidden;
-
-
 
       div {
         &::-webkit-scrollbar {
@@ -118,6 +122,7 @@
     height: 10%;
 
     input {
+      width: 65%;
       font-size: 15px;
       margin-right: 10px;
       margin-bottom: 5px;
