@@ -47,6 +47,14 @@
         filter: brightness(110%);
         cursor: pointer;
       }
+
+      span {
+        cursor: pointer;
+      }
+
+      span:hover {
+        text-decoration: underline;
+      }
     }
 
     li:first-child {
