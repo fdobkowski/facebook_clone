@@ -51,7 +51,7 @@ const Navbar = ( { socket, setSocket, setChats }) => {
         })
 
         socket.on('receive_old_notifications', (data) => {
-            console.log(data)
+            // console.log(data)
             setNotifications([...notifications, ...data.map(x => {
                 return {
                     id: x.id,
@@ -64,11 +64,11 @@ const Navbar = ( { socket, setSocket, setChats }) => {
         })
     }
 
-    useEffect(() => {
-        console.log("notifications")
-        console.log(notifications)
-        console.log("===================")
-    }, [notifications]);
+    // useEffect(() => {
+    //     console.log("notifications")
+    //     console.log(notifications)
+    //     console.log("===================")
+    // }, [notifications]);
 
     const hideNotifications = (e) => {
         if (window.location.pathname !== '/login' && notification_ref.current && !notification_ref.current.contains(e.target)) {

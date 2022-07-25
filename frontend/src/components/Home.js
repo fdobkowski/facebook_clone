@@ -5,8 +5,8 @@ import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
 import CreatePost from "./CreatePost";
 import {useDispatch, useSelector} from "react-redux";
-import {getFriendships} from "../redux/reducers/profileReducer";
 import Friendship_sidebar from "./friendships/Friendship_sidebar";
+import {getFriendships} from "../redux/reducers/profileReducer";
 
 const Home = ( { socket } ) => {
 
@@ -15,9 +15,11 @@ const Home = ( { socket } ) => {
     const navigate = useNavigate()
 
     const [createPost, setCreatePost] = useState(false)
-    const [posts, setPosts] = useState([])
     const all_profiles = useSelector((state) => state.profiles.profiles)
     const profile = useSelector((state) => state.profiles.profiles.find(x => x.id === cookies['profile_id']))
+    const posts = useSelector((state) => [...state.posts.posts.filter(x => {
+        return x.profile_id === cookies['profile_id'] || ((profile.friendships) && [...profile.friendships.map(y =>  y.friend)].includes(x.profile_id))
+    })])
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -28,12 +30,8 @@ const Home = ( { socket } ) => {
 
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/posts').then(response => {
-            setPosts(response.data)
-        }).catch(err => console.error(err))
-    }, []);
-
-
+        dispatch(getFriendships(cookies['profile_id']))
+    }, [])
 
 
     return (
@@ -55,13 +53,13 @@ const Home = ( { socket } ) => {
                     <ul className={'posts'} id={`post_${createPost}`} onClick={() => {
                         if (createPost) setCreatePost(false)
                     }}>
-                        {posts.reverse().map(x => {
+                        {(posts) ? posts.reverse().map(x => {
                             return (
                                 <li key={x.id} className={'profile_post_container'}>
                                     <div className={'post_data'}>
                                         <span>
                                             <img alt={'profile_picture'} src={require('../assets/fb_profile_picture.png')}/>
-                                            {profile.first_name} {profile.last_name}
+                                            {all_profiles.find(y => y.id === x.profile_id).first_name} {all_profiles.find(y => y.id === x.profile_id).last_name}
                                         </span>
                                         <span>{new Date(x.date).toLocaleString()}</span>
                                     </div>
@@ -70,7 +68,7 @@ const Home = ( { socket } ) => {
                                     </div>
                                 </li>
                             )
-                        })}
+                        }) : null}
                     </ul> : <span className={'empty_posts'}>Such empty</span>)}
                 <button onClick={() => navigate('/protected')}>Administration panel</button>
                 {(createPost) ? <CreatePost visible={setCreatePost}/> : null }
