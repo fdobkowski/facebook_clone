@@ -4,6 +4,32 @@
   justify-content: space-between;
   background-color: rgb(240, 242, 245);
 
+  .side_bar {
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+    align-items: center;
+
+    button {
+      background: white;
+      border: 1px solid black;
+      border-radius: 10px;
+      width: 80%;
+      margin: 20px 10px 10px;
+      font-size: 20px;
+      color: rgb(1, 101, 225);
+      font-weight: bold;
+      padding: 5px 25px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      box-shadow: 0 0 10px #b4b2b2;
+
+    }
+  }
+
+
   .main {
     width: 60vw;
     display: flex;
