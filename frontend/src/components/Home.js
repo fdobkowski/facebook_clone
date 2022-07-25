@@ -1,4 +1,5 @@
 import '../styles/Home.scss'
+import '../styles/Posts.scss'
 import {useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
@@ -37,9 +38,7 @@ const Home = ( { socket } ) => {
 
     return (
         <div className={"home_container"}>
-            <div className={"side_bar"} id={`post_${createPost}`} onClick={() => {
-                if (createPost) setCreatePost(false)
-            }}>
+            <div className={"side_bar"} id={`post_${createPost}`}>
                 <button onClick={() => navigate(`/profile/${cookies['profile_id']}`)}>Profile</button>
                 <button onClick={() => navigate(`/profile/${cookies['profile_id']}/friends`)}>Friends</button>
             </div>
@@ -52,15 +51,27 @@ const Home = ( { socket } ) => {
                         <span onClick={() => setCreatePost(!createPost)}>What's on your mind, {cookies['profile_first_name']}?</span>
                     </div>
                 </div>
-                <ul className={"posts"} id={`post_${createPost}`} onClick={() => {
-                    if (createPost) setCreatePost(false)
-                }}>
-                    {posts.map(x => {
-                        return (
-                            <li key={x.id}>{x.content}</li>
-                        )
-                    })}
-                </ul>
+                {(posts.length !== 0 ?
+                    <ul className={'posts'} id={`post_${createPost}`} onClick={() => {
+                        if (createPost) setCreatePost(false)
+                    }}>
+                        {posts.reverse().map(x => {
+                            return (
+                                <li key={x.id} className={'profile_post_container'}>
+                                    <div className={'post_data'}>
+                                        <span>
+                                            <img alt={'profile_picture'} src={require('../assets/fb_profile_picture.png')}/>
+                                            {profile.first_name} {profile.last_name}
+                                        </span>
+                                        <span>{new Date(x.date).toLocaleString()}</span>
+                                    </div>
+                                    <div className={'post_content'}>
+                                        {x.content}
+                                    </div>
+                                </li>
+                            )
+                        })}
+                    </ul> : <span className={'empty_posts'}>Such empty</span>)}
                 <button onClick={() => navigate('/protected')}>Administration panel</button>
                 {(createPost) ? <CreatePost visible={setCreatePost}/> : null }
             </div>

@@ -1,4 +1,5 @@
 import '../styles/Profile.scss'
+import '../styles/Posts.scss'
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
@@ -52,7 +53,7 @@ const Profile = () => {
                         </div>
                     </div> : null}
                     {(profile_posts.length !== 0 ?
-                        <ul>
+                        <ul className={'posts'}>
                             {profile_posts.reverse().map(x => {
                             return (
                                 <li key={x.id} className={'profile_post_container'}>
