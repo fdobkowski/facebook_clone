@@ -4,7 +4,7 @@ import {useCookies} from "react-cookie";
 import ScrollToBottom from "react-scroll-to-bottom";
 import {useSelector} from "react-redux";
 
-const Chat = ( { id, chat_id, socket, disableChat }) => {
+const Chat = ( { id, chat_id, socket, disableChat, container }) => {
 
     const [allMessages, setAllMessages] = useState([])
     const [message, setMessage] = useState('')
@@ -45,7 +45,7 @@ const Chat = ( { id, chat_id, socket, disableChat }) => {
     }
 
     return (
-        <div className={"chat_room_container"}>
+        <div className={"chat_room_container"} id={`container_${container}`}>
             {(receiver) ?
             <div className={"chat_header"}>
                 <img alt={'profile_picture'} src={require('../../assets/fb_profile_picture.png')} />

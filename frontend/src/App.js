@@ -69,15 +69,13 @@ function App() {
             <Route path={"/profile/:id/friends"} element={<Friendships/>}/>
             <Route path={"/protected"} element={<Protected/>}/>
         </Routes>
-          <div className={'chats_container'}>
-              {(chats) ? chats.map(x => {
-                  return (
-                      <Chat id={x.receiver_id} chat_id={x.chat_id}
-                            socket={socket} key={x.receiver_id}
-                            disableChat={disableChat}/>
-                  )
-              }) : null}
-          </div>
+          {(chats) ? chats.map((x, i) => {
+              return (
+                  <Chat container={i} id={x.receiver_id} chat_id={x.chat_id}
+                        socket={socket} key={x.receiver_id}
+                        disableChat={disableChat}/>
+              )
+          }) : null}
         <Footer />
       </div>
   )
