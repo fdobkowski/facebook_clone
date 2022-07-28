@@ -78,7 +78,7 @@ const Profile = () => {
                 </div>
                 {(createPost) ? <CreatePost visible={setCreatePost}/> : null }
             </div>
-            {(addProfilePicture) ? <ProfilePicture /> : null}
+            {(addProfilePicture) ? <ProfilePicture profile={profile}/> : null}
         </div> : null
     )
 }

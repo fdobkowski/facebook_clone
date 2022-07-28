@@ -1,0 +1,16 @@
+.profile_picture_container {
+  position: absolute;
+  top: 25vh;
+  left: 45vw;
+  border: 1px solid black;
+  padding: 20px;
+
+  img {
+    height: 95%;
+  }
+
+  div {
+    height: 5%;
+    display: flex;
+  }
+}
