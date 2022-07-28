@@ -15,6 +15,7 @@ const profiles_table = 'CREATE TABLE IF NOT EXISTS profiles (\n' +
     '\tgender VARCHAR(255) NOT NULL,\n' +
     '\tcustom_gender VARCHAR(255),\n' +
     '\tpronoun VARCHAR(255) NOT NULL\n' +
+    '\timage VARCHAR(255) NOT NULL\n' +
     ');'
 
 const posts_table = 'CREATE TABLE IF NOT EXISTS posts (\n' +
