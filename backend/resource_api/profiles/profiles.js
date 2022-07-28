@@ -32,7 +32,7 @@ router.delete("/:id", async (req, res) => {
 })
 
 router.patch("/:id", async (req, res) => {
-    await pool.query(queries.patch_profile(req.body), (err) => {
+    await pool.query(queries.update_image(req.params.id, req.body.url), (err) => {
         if (err) throw err
         res.send("User updated")
     })
