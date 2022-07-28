@@ -28,6 +28,10 @@ const Home = ( { socket } ) => {
         }
     }, [])
 
+    useEffect(() => {
+        console.log(profile)
+    }, [profile])
+
 
     useEffect(() => {
         dispatch(getFriendships(cookies['profile_id']))
@@ -41,14 +45,15 @@ const Home = ( { socket } ) => {
                 <button onClick={() => navigate(`/profile/${cookies['profile_id']}/friends`)}>Friends</button>
             </div>
             <div className={"main"}>
+                {(profile) ?
                 <div className={"create_post"} id={`post_${createPost}`} onClick={() => {
                     if (createPost) setCreatePost(false)
                 }}>
-                    <img alt={'profile_picture'} src={require('../assets/fb_profile_picture.png')}/>
+                    <img alt={'profile_picture'} src={profile.image}/>
                     <div>
                         <span onClick={() => setCreatePost(!createPost)}>What's on your mind, {cookies['profile_first_name']}?</span>
                     </div>
-                </div>
+                </div> : null }
                 {(posts.length !== 0 ?
                     <ul className={'posts'} id={`post_${createPost}`} onClick={() => {
                         if (createPost) setCreatePost(false)
@@ -58,7 +63,7 @@ const Home = ( { socket } ) => {
                                 <li key={x.id} className={'profile_post_container'}>
                                     <div className={'post_data'}>
                                         <span>
-                                            <img alt={'profile_picture'} src={require('../assets/fb_profile_picture.png')}/>
+                                            <img alt={'profile_picture'} src={profile.image}/>
                                             {all_profiles.find(y => y.id === x.profile_id).first_name} {all_profiles.find(y => y.id === x.profile_id).last_name}
                                         </span>
                                         <span>{new Date(x.date).toLocaleString()}</span>

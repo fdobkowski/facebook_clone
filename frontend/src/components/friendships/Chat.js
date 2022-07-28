@@ -48,7 +48,7 @@ const Chat = ( { id, chat_id, socket, disableChat, container }) => {
         <div className={"chat_room_container"} id={`container_${container}`}>
             {(receiver) ?
             <div className={"chat_header"}>
-                <img alt={'profile_picture'} src={require('../../assets/fb_profile_picture.png')} />
+                <img alt={'profile_picture'} src={receiver.image} />
                 <span>{receiver.first_name} {receiver.last_name}</span>
                 <img className={'close_button'}
                      alt={'close'} src={require('../../assets/close.png')}
@@ -65,7 +65,7 @@ const Chat = ( { id, chat_id, socket, disableChat, container }) => {
                                 <div className={"message_data"} id={(x.sender_id === cookies['profile_id']) ? 'sender' : 'receiver'}>
                                     <div>{x.message}</div>
                                     {(x.sender_id !== cookies['profile_id']) ?
-                                    <img alt={'profile_picture'} src={require('../../assets/fb_profile_picture.png')} />
+                                    <img alt={'profile_picture'} src={receiver.image} />
                                     : null}
                                 </div>
                             </div>

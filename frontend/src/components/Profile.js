@@ -5,12 +5,14 @@ import {useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
 import CreatePost from "./CreatePost";
 import {useSelector} from "react-redux";
+import ProfilePicture from "./ProfilePicture";
 
 const Profile = () => {
 
     const [cookies, setCookies] = useCookies(['user'])
     const navigate = useNavigate()
     const [createPost, setCreatePost] = useState(false)
+    const [addProfilePicture, setAddProfilePicture] = useState(false)
 
     const { id } = useParams()
     const profile = useSelector((state) => state.profiles.profiles.find(x => x.id === id))
@@ -27,11 +29,13 @@ const Profile = () => {
         <div className={'profile_container'}>
             <div className={'profile_header'} id={`post_${createPost}`} onClick={() => {
                 if (createPost) setCreatePost(false)
-            }}>
-                <img alt={'profile img'} src={require('../assets/fb_profile_picture.png')}/>
+            }} style={(addProfilePicture) ? {filter: `blur(5px)`} : null}>
+                <img alt={'profile img'} src={profile.image} onClick={() => {
+                    if (id === cookies['profile_id']) setAddProfilePicture(!addProfilePicture)
+                }}/>
                 <span>{profile.first_name} {profile.last_name}</span>
             </div>
-            <div className={'profile_body'}>
+            <div className={'profile_body'} style={(addProfilePicture) ? {filter: `blur(5px)`} : null}>
                 <div className={'profile_data'} id={`post_${createPost}`} onClick={() => {
                     if (createPost) setCreatePost(false)
                 }}>
@@ -47,7 +51,7 @@ const Profile = () => {
                 }}>
                     {(id === cookies['profile_id']) ?
                     <div className={"create_post"}>
-                        <img alt={'profile_picture'} src={require('../assets/fb_profile_picture.png')}/>
+                        <img alt={'profile_picture'} src={profile.image}/>
                         <div>
                             <span onClick={() => setCreatePost(!createPost)}>What's on your mind, {cookies['profile_first_name']}?</span>
                         </div>
@@ -59,7 +63,7 @@ const Profile = () => {
                                 <li key={x.id} className={'profile_post_container'}>
                                     <div className={'post_data'}>
                                         <span>
-                                            <img alt={'profile_picture'} src={require('../assets/fb_profile_picture.png')}/>
+                                            <img alt={'profile_picture'} src={profile.image}/>
                                             {profile.first_name} {profile.last_name}
                                         </span>
                                         <span>{new Date(x.date).toLocaleString()}</span>
@@ -74,7 +78,7 @@ const Profile = () => {
                 </div>
                 {(createPost) ? <CreatePost visible={setCreatePost}/> : null }
             </div>
-
+            {(addProfilePicture) ? <ProfilePicture /> : null}
         </div> : null
     )
 }

@@ -33,7 +33,7 @@ const Friendship_sidebar = ( { createPost, setCreatePost, id, socket }) => {
                     {profile.friendships.map((x, i) => {
                         return (
                             <li key={i}>
-                                <img onClick={() => navigate(`/profile/${x.friend}`)} alt={'profile_picture'} src={require('../../assets/fb_profile_picture.png')} />
+                                <img onClick={() => navigate(`/profile/${x.friend}`)} alt={'profile_picture'} src={all_profiles.find(y => y.id === x.friend).image} />
                                 <span onClick={() => handleChat(id, x.friend)}>{all_profiles.find(y => y.id === x.friend).first_name} {all_profiles.find(y => y.id === x.friend).last_name}</span>
                             </li>
                         )

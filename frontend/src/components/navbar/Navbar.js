@@ -132,7 +132,7 @@ const Navbar = ( { socket, setSocket, setChats }) => {
                                     <li key={uuid()} className={`seen_${x.seen}`}>
                                         {(x.type === 'friend_request') ?
                                             <div className={'friend_request'}>
-                                                <img alt={'profile_picture'} src={require('../../assets/fb_profile_picture.png')}
+                                                <img alt={'profile_picture'} src={profiles.find(y => y.id === x.from).image}
                                                      onClick={() => navigate(`/profile/${x.from}`)} />
                                                 <div>
                                                     <span>{`${(profiles) ? profiles.find(y => y.id === x.from).first_name : ''} has sent you a friend request`}</span>

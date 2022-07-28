@@ -4,12 +4,14 @@ import {useState} from "react";
 import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid'
+import {useSelector} from "react-redux";
 
 const CreatePost = ({ visible }) => {
 
     const [content, setContent] = useState("")
     const [cookies, setCookies, removeCookies] = useCookies()
     const navigate = useNavigate()
+    const picture = useSelector((state) => state.profiles.profiles.find(x => x.id === cookies['profile_id']).image)
 
     const submitPost = async () => {
         const date = new Date()
@@ -32,7 +34,7 @@ const CreatePost = ({ visible }) => {
                     <button onClick={() => visible(false)}>X</button>
                 </div>
                 <div className={"post_info"}>
-                    <img alt={'profile_picture'} src={require('../assets/fb_profile_picture.png')}/>
+                    <img alt={'profile_picture'} src={picture}/>
                     <span>{cookies['profile_first_name']} {cookies['profile_last_name']}</span>
                 </div>
             </div>

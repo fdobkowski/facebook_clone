@@ -45,7 +45,7 @@ const Friendships = () => {
 
         return (
             <li key={friend.id} onClick={handleClick}>
-                <img alt={'profile_picture'} src={require('../../assets/fb_profile_picture.png')}/>
+                <img alt={'profile_picture'} src={friend.image}/>
                 <span>{friend.first_name} {friend.last_name}</span>
             </li>
         )
