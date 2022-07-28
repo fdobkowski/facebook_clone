@@ -1,5 +1,5 @@
-const post_profile = (body) => `INSERT INTO profiles (id, first_name, last_name, birthday, gender, custom_gender, pronoun) 
-                                VALUES ('${body.id}', '${body.first_name}', '${body.last_name}', '${body.birthday}', '${body.gender}', '${body.custom_gender}', '${body.pronoun}');`
+const post_profile = (body) => `INSERT INTO profiles (id, first_name, last_name, birthday, gender, custom_gender, pronoun, image) 
+                                VALUES ('${body.id}', '${body.first_name}', '${body.last_name}', '${body.birthday}', '${body.gender}', '${body.custom_gender}', '${body.pronoun}', '${body.image}');`
 const get_single_profile = (id) => `SELECT * FROM profiles WHERE id = '${id}';`
 const get_all_profiles = `SELECT * FROM profiles;`
 const delete_profile = (id) => `DELETE FROM profiles WHERE ID = '${id}';`

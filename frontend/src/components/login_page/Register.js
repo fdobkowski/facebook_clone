@@ -33,7 +33,8 @@ const Register = ( { visible }) => {
                 birthday: `${values.year}-${values.month}-${values.day}`,
                 gender: values.gender,
                 custom_gender: values.custom_gender,
-                pronoun: values.pronoun
+                pronoun: values.pronoun,
+                image: process.env.REACT_APP_AWS_IMAGE
             }).then((response) => {
                 dispatch(getProfiles())
                 alert(response.data)
