@@ -64,6 +64,7 @@ const ProfilePicture = ({ profile } ) => {
 
     return (
         <div className={'profile_picture_container'}>
+            <h1>Change profile picture</h1>
             <img alt={'picture'} src={temporaryImage} />
             <div>
                 <input type={'file'} name={'image'} accept={'image/png,image/jpeg,image/bmp,image/gif,image/tiff'} onChange={e => imageChange(e)}/>
