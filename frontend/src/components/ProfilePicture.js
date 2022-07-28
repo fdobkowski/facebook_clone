@@ -1,5 +1,5 @@
 import '../styles/ProfilePicture.scss'
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import { Buffer } from 'buffer'
 import S3 from 'react-aws-s3'
 import AWS from 'aws-sdk'
@@ -8,15 +8,18 @@ import {useCookies} from "react-cookie";
 import {useDispatch} from "react-redux";
 import {changeProfilePicture, getProfiles} from "../redux/reducers/profileReducer";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 window.Buffer = window.Buffer || Buffer
 
-const ProfilePicture = ({ profile } ) => {
+const ProfilePicture = ({ profile, setAddProfilePicture } ) => {
 
     const [file, setFile] = useState(null)
     const [url, setUrl] = useState(null)
     const [cookies] = useCookies()
     const dispatch = useDispatch()
     const [temporaryImage, setTemporaryImage] = useState(profile.image)
+    const navigate = useNavigate()
+    const imageRef = useRef(null)
 
     AWS.config.update({
         accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
@@ -48,8 +51,12 @@ const ProfilePicture = ({ profile } ) => {
                     Key: cookies['profile_id']
                 })
 
+
                 await axios.patch(`http://localhost:5000/api/profiles/${cookies['profile_id']}`, {url: newUrl})
-                    .then(() => dispatch(getProfiles)).catch(err => console.error(err))
+                    .then(() => {
+                        dispatch(getProfiles)
+                        navigate(0)
+                    }).catch(err => console.error(err))
 
             }
         }
@@ -63,8 +70,11 @@ const ProfilePicture = ({ profile } ) => {
     }
 
     return (
-        <div className={'profile_picture_container'}>
-            <h1>Change profile picture</h1>
+        <div className={'profile_picture_container'} ref={imageRef}>
+            <div className={'profile_picture_header'}>
+                <h1>Change profile picture</h1>
+                <img alt={'exit'} src={require('../assets/close.png')} onClick={() => setAddProfilePicture(false)}/>
+            </div>
             <img alt={'picture'} src={temporaryImage} />
             <div>
                 <input type={'file'} name={'image'} accept={'image/png,image/jpeg,image/bmp,image/gif,image/tiff'} onChange={e => imageChange(e)}/>

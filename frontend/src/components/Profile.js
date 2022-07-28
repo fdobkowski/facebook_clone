@@ -31,7 +31,7 @@ const Profile = () => {
                 if (createPost) setCreatePost(false)
             }} style={(addProfilePicture) ? {filter: `blur(5px)`} : null}>
                 <img alt={'profile img'} src={profile.image} onClick={() => {
-                    if (id === cookies['profile_id']) setAddProfilePicture(!addProfilePicture)
+                    if (id === cookies['profile_id']) setAddProfilePicture(true)
                 }}/>
                 <span>{profile.first_name} {profile.last_name}</span>
             </div>
@@ -78,7 +78,7 @@ const Profile = () => {
                 </div>
                 {(createPost) ? <CreatePost visible={setCreatePost}/> : null }
             </div>
-            {(addProfilePicture) ? <ProfilePicture profile={profile}/> : null}
+            {(addProfilePicture) ? <ProfilePicture profile={profile} setAddProfilePicture={setAddProfilePicture}/> : null}
         </div> : null
     )
 }
