@@ -30,9 +30,13 @@ const Profile = () => {
             <div className={'profile_header'} id={`post_${createPost}`} onClick={() => {
                 if (createPost) setCreatePost(false)
             }} style={(addProfilePicture) ? {filter: `blur(5px)`} : null}>
-                <img alt={'profile img'} src={profile.image} onClick={() => {
-                    if (id === cookies['profile_id']) setAddProfilePicture(true)
-                }} id={'profile_img'}/>
+                <div className={'profile_img_container'} id={(id === cookies['profile_id']) ? 'users_profile_picture' : null}>
+                    <img alt={'profile img'} src={profile.image} onClick={() => {
+                        if (id === cookies['profile_id']) setAddProfilePicture(true);
+                    }} id={'profile_img'} style={((id === cookies['profile_id'])) ? {cursor: "pointer"} : null}/>
+                    {(id === cookies['profile_id']) ? <p className={'profile_picture_edit'}
+                    onClick={() => setAddProfilePicture(true)}>Edit profile picture</p> : null}
+                </div>
                 <span>{profile.first_name} {profile.last_name}</span>
             </div>
             <div className={'profile_body'} style={(addProfilePicture) ? {filter: `blur(5px)`} : null}>

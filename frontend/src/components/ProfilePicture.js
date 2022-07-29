@@ -21,7 +21,6 @@ const ProfilePicture = ({ profile, setAddProfilePicture } ) => {
     const [temporaryImage, setTemporaryImage] = useState(profile.image)
     const navigate = useNavigate()
     const imageRef = useRef(null)
-    const [photo, setPhoto] = useState(null)
 
     const handleUpload = async () => {
         if (file) {
@@ -65,21 +64,8 @@ const ProfilePicture = ({ profile, setAddProfilePicture } ) => {
             <div>
                 <input type={'file'} name={'image'} accept={'image/png,image/jpeg,image/bmp,image/gif,image/tiff'} onChange={e => imageChange(e)}/>
                 <button type={"submit"} onClick={handleUpload}>Upload</button>
-                <button onClick={() => {
-                    bucket.getObject({
-                            Bucket: process.env.REACT_APP_AWS_BUCKET_NAME,
-                            Key: cookies['profile_id']
-                        }, (err, data) => {
 
-                            let buf = Buffer.from(data.Body);
-                            let base64 = buf.toString('base64');
-
-                            if (err) return err.message
-                            setPhoto(`data:image/jpeg;base64,${Buffer.from(data.Body).toString('base64')}`)
-                        })
-                }}>Get</button>
             </div>
-            <img alt={'picture'} src={photo} />
         </div>
     )
 }
