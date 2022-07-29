@@ -40,7 +40,10 @@
 
       img {
         height: 7vh;
+        width: 4vw;
         margin-right: 10px;
+        object-fit: cover;
+        clip-path: circle();
       }
 
       img:hover {
@@ -49,6 +52,7 @@
       }
 
       span {
+        text-align: left;
         cursor: pointer;
       }
 

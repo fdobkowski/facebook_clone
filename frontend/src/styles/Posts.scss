@@ -34,8 +34,13 @@
         padding-bottom: 10px;
 
         img {
-          width: 4vw;
-          padding: 10px;
+          width: 80px;
+          height: 80px;
+          object-fit: cover;
+          clip-path: circle();
+          //width: 6vw;
+          //height: 100%;
+          margin: 10px;
         }
       }
     }

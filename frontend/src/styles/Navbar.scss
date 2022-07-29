@@ -114,6 +114,7 @@
 
     .notification_list {
       position: absolute;
+      z-index: 1;
       align-self: flex-start;
       background-color: white;
       display: flex;
@@ -158,8 +159,11 @@
           img {
             position: relative;
             transform: translateY(0);
-            margin: 0 5px 0 0;
-            height: 80px;
+            margin: 0 10px 0 5px;
+            height: 10vh;
+            width: 5vw;
+            clip-path: circle();
+            object-fit: cover;
           }
 
           div {

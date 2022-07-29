@@ -32,7 +32,7 @@ const Profile = () => {
             }} style={(addProfilePicture) ? {filter: `blur(5px)`} : null}>
                 <img alt={'profile img'} src={profile.image} onClick={() => {
                     if (id === cookies['profile_id']) setAddProfilePicture(true)
-                }}/>
+                }} id={'profile_img'}/>
                 <span>{profile.first_name} {profile.last_name}</span>
             </div>
             <div className={'profile_body'} style={(addProfilePicture) ? {filter: `blur(5px)`} : null}>

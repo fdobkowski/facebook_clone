@@ -8,14 +8,16 @@
     display: flex;
     align-items: center;
     height: 25vh;
-    width: 80%;
     box-shadow: 0 0 10px rgb(219, 221, 224);
     background-color: white;
     padding-left: 20%;
 
     img {
-      height: 90%;
-      padding: 10px;
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      clip-path: circle();
+      margin-right: 30px;
     }
 
     span {
@@ -93,5 +95,10 @@
     height: 5vh;
     margin-bottom: 2vh;
     margin-top: 0;
+
+    img {
+      clip-path: circle();
+      padding: 0;
+    }
   }
 }

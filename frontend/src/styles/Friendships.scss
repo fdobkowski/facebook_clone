@@ -45,11 +45,14 @@
       background-color: white;
 
       img {
-        height: 150px;
+        height: 20vh;
+        width: 10vw;
+        clip-path: circle();
+        object-fit: cover;
       }
 
       span {
-        height: 100%;
+        //height: 100%;
         font-size: 30px;
         text-wrap: normal;
       }
