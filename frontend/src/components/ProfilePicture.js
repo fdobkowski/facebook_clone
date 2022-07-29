@@ -9,55 +9,41 @@ import {useDispatch} from "react-redux";
 import {changeProfilePicture, getProfiles} from "../redux/reducers/profileReducer";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import { bucket } from "../S3";
+
 window.Buffer = window.Buffer || Buffer
 
 const ProfilePicture = ({ profile, setAddProfilePicture } ) => {
 
     const [file, setFile] = useState(null)
-    const [url, setUrl] = useState(null)
     const [cookies] = useCookies()
     const dispatch = useDispatch()
     const [temporaryImage, setTemporaryImage] = useState(profile.image)
     const navigate = useNavigate()
     const imageRef = useRef(null)
-
-    AWS.config.update({
-        accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
-        secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY
-    })
-
-    const bucket = new AWS.S3({
-        params: { Bucket: process.env.REACT_APP_AWS_BUCKET_NAME},
-        region: process.env.REACT_APP_AWS_BUCKET_REGION
-    })
+    const [photo, setPhoto] = useState(null)
 
     const handleUpload = async () => {
         if (file) {
             if (file.size > 100000) alert('Image size is too large')
             else {
+
                 const params = {
                     Body: file,
                     Bucket: process.env.REACT_APP_AWS_BUCKET_NAME,
-                    Key: cookies['profile_id']
+                    Key: cookies['profile_id'],
+                    ACL: 'public-read'
                 }
 
-                await bucket.putObject(params)
-                    .send(err => {
-                        if (err) console.error(err)
-                    })
-
-                const newUrl = bucket.getSignedUrl('getObject', {
-                    Bucket: process.env.REACT_APP_AWS_BUCKET_NAME,
-                    Key: cookies['profile_id']
-                })
-
-
-                await axios.patch(`http://localhost:5000/api/profiles/${cookies['profile_id']}`, {url: newUrl})
-                    .then(() => {
-                        dispatch(getProfiles)
-                        navigate(0)
-                    }).catch(err => console.error(err))
-
+                await bucket.putObject(params).promise().then(async () => {
+                        await axios.patch(`http://localhost:5000/api/profiles/${cookies['profile_id']}`, {
+                            url: `${process.env.REACT_APP_AWS_IMAGE_URL}/${cookies['profile_id']}`
+                        })
+                            .then(() => {
+                                dispatch(getProfiles)
+                                navigate(0)
+                            }).catch(err => console.error(err))
+                }).catch(err => console.error(err))
             }
         }
     }
@@ -79,7 +65,21 @@ const ProfilePicture = ({ profile, setAddProfilePicture } ) => {
             <div>
                 <input type={'file'} name={'image'} accept={'image/png,image/jpeg,image/bmp,image/gif,image/tiff'} onChange={e => imageChange(e)}/>
                 <button type={"submit"} onClick={handleUpload}>Upload</button>
+                <button onClick={() => {
+                    bucket.getObject({
+                            Bucket: process.env.REACT_APP_AWS_BUCKET_NAME,
+                            Key: cookies['profile_id']
+                        }, (err, data) => {
+
+                            let buf = Buffer.from(data.Body);
+                            let base64 = buf.toString('base64');
+
+                            if (err) return err.message
+                            setPhoto(`data:image/jpeg;base64,${Buffer.from(data.Body).toString('base64')}`)
+                        })
+                }}>Get</button>
             </div>
+            <img alt={'picture'} src={photo} />
         </div>
     )
 }
