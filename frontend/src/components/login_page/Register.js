@@ -66,7 +66,7 @@ const Register = ( { visible }) => {
                     <h2>Sign Up</h2>
                     <h5>It's quick and easy.</h5>
                 </div>
-                <button onClick={() => visible.setVisible(false)}>X</button>
+                <img alt={'close'} src={require('../../assets/close.png')} onClick={() => visible.setVisible(false)}/>
             </div>
             <Formik initialValues={{
                 first_name: "",
@@ -82,20 +82,24 @@ const Register = ( { visible }) => {
                 pronoun: "She",
                 custom_gender: ""
             }} onSubmit={(values) => handleRegister(values)}
-            validateOnChange={false} validateOnBlur={true} validationSchema={yup_schema}
+            validateOnChange={false} validationSchema={yup_schema}
             enableReinitialize={true}>
                 {({ values, setFieldValue, errors }) => (
                     <Form className={"register_form"}>
                         <div className={"names"}>
-                            <Field className={"type_form"} name={"first_name"} placeholder={"First name"}
-                                   id={errors.first_name ? 'is_error' : 'no_error'}/>
-                            <div className={"error"}>
-                                {errors.first_name ? errors.first_name : null}
+                            <div>
+                                <Field className={"type_form"} name={"first_name"} placeholder={"First name"}
+                                       id={errors.first_name ? 'is_error' : 'no_error'}/>
+                                <div className={"error"}>
+                                    {errors.first_name ? errors.first_name : null}
+                                </div>
                             </div>
-                            <Field className={"type_form"} name={"last_name"} placeholder={"Last name"}
-                                   id={errors.last_name ? 'is_error' : 'no_error'}/>
-                            <div className={"error"}>
-                                {errors.last_name ? errors.last_name : null}
+                            <div>
+                                <Field className={"type_form"} name={"last_name"} placeholder={"Last name"}
+                                       id={errors.last_name ? 'is_error' : 'no_error'}/>
+                                <div className={"error"}>
+                                    {errors.last_name ? errors.last_name : null}
+                                </div>
                             </div>
                         </div>
                         <Field className={"type_form"} name={"email"} placeholder={"Email"}
@@ -154,7 +158,7 @@ const Register = ( { visible }) => {
                                     setCustomGender("Female")
                                 }}>
                                     <Field type={"radio"} value={"Female"} name={"gender"} />
-                                    Female
+                                    <span>Female</span>
                                 </div>
                                 <div onClick={() => {
                                     setFieldValue("pronoun", "He")
@@ -162,7 +166,7 @@ const Register = ( { visible }) => {
                                     setCustomGender("Male")
                                 }}>
                                     <Field type={"radio"} value={"Male"} name={"gender"}/>
-                                    Male
+                                    <span>Male</span>
                                 </div>
                             </div>
                             <div className={"custom_radio"} onClick={() => {
