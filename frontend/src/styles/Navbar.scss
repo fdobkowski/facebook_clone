@@ -3,6 +3,7 @@
   align-items: center;
   height: 8vh;
   justify-content: space-between;
+  min-width: 320px;
 
   img {
     height: 70%;
@@ -11,13 +12,15 @@
   }
 
   .searchbar {
-    width: 40vw;
+    width: 40%;
     height: 60%;
+    min-width: 155px;
+
 
     input {
       padding-left: 5px;
       font-size: 20px;
-      width: 40vw;
+      width: 100%;
       height: 100%;
     }
 
@@ -28,11 +31,15 @@
       flex-direction: column;
       padding-left: 0;
       width: inherit;
+      min-width: 155px;
       margin-top: 0;
       cursor: pointer;
       overflow: scroll;
       max-height: 55vh;
       z-index: 1;
+      box-shadow: 0 0 10px rgb(166, 167, 169);
+
+
 
       &::-webkit-scrollbar {
         width: 7px;
@@ -49,8 +56,8 @@
         text-align: left;
         font-weight: bold;
         font-size: 20px;
-        padding: 20px 0 20px 10px;
-        box-shadow: 0 0 10px rgb(219, 221, 224);
+        padding: 10px 0 10px 10px;
+        box-shadow: 0 0 10px rgb(167, 169, 171);
         margin: 5px;
         display: flex;
         align-items: center;
@@ -59,23 +66,23 @@
         span {
           width: 100%;
           height: 100%;
+          font-size: 17px;
         }
 
-        img:first-child {
-          height: 7vh;
-          width: 4vw;
-          clip-path: circle();
-          object-fit: cover;
-          padding: 0;
-          margin: 8px;
-        }
-
-        img {
-          height: 55px;
+        .profile_image {
+          img:first-child {
+            height: 80px;
+            width: 80px;
+            clip-path: circle();
+            object-fit: cover;
+            padding: 0;
+            margin: 0 8px 0 0;
+          }
         }
 
         #sent_false {
-          margin-right: 2rem;
+          height: 55px;
+          margin-right: 1.2rem;
           opacity: 0.3;
           padding: 0;
         }
@@ -85,9 +92,7 @@
         }
 
         #sent_true {
-          margin-right: 2rem;
-          padding: 0;
-          opacity: 0;
+          display: none;
         }
       }
 
@@ -133,10 +138,11 @@
       margin-top: 0;
       cursor: pointer;
       list-style: none;
-      box-shadow: 0 0 10px rgb(219, 221, 224);
+      box-shadow: 0 0 10px rgb(166, 167, 169);
       right: 50px;
       overflow: scroll;
       max-height: 55vh;
+      min-width: 280px;
 
       &::-webkit-scrollbar {
         width: 7px;
@@ -151,14 +157,15 @@
       li {
         list-style: none;
         font-weight: bold;
-        font-size: 15px;
+        font-size: 1rem;
         padding: 5px 5px 5px 0;
-        box-shadow: 0 0 10px rgb(219, 221, 224);
+        box-shadow: 0 0 10px rgb(167, 169, 171);
         margin: 5px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         width: 30vw;
+        min-width: 260px;
         height: 10vh;
 
         .friend_request {
@@ -166,14 +173,16 @@
           justify-content: space-between;
           align-items: center;
 
-          img {
-            position: relative;
-            transform: translateY(0);
-            margin: 0 10px 0 5px;
-            height: 10vh;
-            width: 5vw;
-            clip-path: circle();
-            object-fit: cover;
+          div {
+            img {
+              position: relative;
+              transform: translateY(0);
+              margin: 0 10px 0 5px;
+              height: 65px;
+              width: 65px;
+              clip-path: circle();
+              object-fit: cover;
+            }
           }
 
           div {
@@ -184,7 +193,7 @@
 
             span {
               padding-bottom: 10px;
-              font-size: 17px;
+              //font-size: 17px;
             }
             div {
               display: flex;
@@ -194,7 +203,6 @@
 
               button {
                 width: 40%;
-                font-size: 1rem;
                 border: 1px solid black;
                 border-radius: 10px;
                 color: rgb(1, 101, 225);
@@ -254,6 +262,10 @@
       margin-right: 15px;
       padding: 5px 25px;
       cursor: pointer;
+
+      img {
+        display: none;
+      }
     }
 
     .util_button:hover {
@@ -261,4 +273,154 @@
     }
   }
 
+}
+
+@media (max-width: 768px) {
+  .navbar_container {
+    .searchbar {
+
+      .searchbar_ul {
+
+        width: 60vw;
+        max-height: 40vh;
+
+        li {
+          div {
+
+            img:first-child {
+              height: 45px;
+              width: 45px;
+            }
+          }
+
+          span {
+            font-size: 12px;
+          }
+
+          #sent_false {
+            height: 30px;
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+
+    .nav_buttons {
+      width: 30vw;
+      display: grid;
+      grid: auto auto / auto auto;
+      row-gap: 5px;
+      padding: 5px 0 5px 0;
+
+      .notification_list {
+        margin-top: 8vh;
+        right: 20px;
+
+        li {
+          width: 50vw;
+          font-size: 0.9rem;
+
+          .friend_request {
+
+            width: 100%;
+
+            div {
+              img {
+                height: 40px;
+                width: 40px;
+              }
+
+              span {
+                padding-bottom: 5px;
+              }
+            }
+
+            div:last-child {
+              width: 90%;
+            }
+          }
+        }
+      }
+
+      img {
+        grid-area: 1 / 1 / span 2 / 1;
+      }
+
+      .util_button {
+        font-size: 15px;
+        height: 25px;
+        text-align: center;
+        padding: 0 20px 0 20px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar_container {
+
+    .searchbar {
+      height: 50%;
+
+      .searchbar_ul {
+
+        max-height: 30vh;
+
+        li {
+          padding: 0;
+
+          div {
+
+            img:first-child {
+              height: 30px;
+              width: 30px;
+            }
+          }
+
+          span {
+            font-size: 10px;
+          }
+
+          #sent_false {
+            height: 20px;
+            margin-right: 0.5rem;
+          }
+        }
+      }
+    }
+
+
+
+    .nav_buttons {
+      width: 25vw;
+      display: flex;
+      justify-content: space-between;
+
+      .notification_list {
+        li {
+          width: 80vw;
+        }
+      }
+
+      img {
+        margin: 0;
+        height: 25px;
+      }
+
+      .util_button {
+        border: none;
+        padding: 0;
+        margin: 0;
+
+        span {
+          display: none;
+        }
+
+        img {
+          display: inline;
+        }
+      }
+    }
+
+  }
 }

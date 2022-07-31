@@ -132,8 +132,10 @@ const Navbar = ( { socket, setSocket, setChats }) => {
                                     <li key={uuid()} className={`seen_${x.seen}`}>
                                         {(x.type === 'friend_request') ?
                                             <div className={'friend_request'}>
-                                                <img alt={'profile_picture'} src={profiles.find(y => y.id === x.from).image}
-                                                     onClick={() => navigate(`/profile/${x.from}`)} />
+                                                <div>
+                                                    <img alt={'profile_picture'} src={profiles.find(y => y.id === x.from).image}
+                                                         onClick={() => navigate(`/profile/${x.from}`)} />
+                                                </div>
                                                 <div>
                                                     <span>{`${(profiles) ? profiles.find(y => y.id === x.from).first_name : ''} has sent you a friend request`}</span>
                                                     {(!x.seen) ?
@@ -150,8 +152,14 @@ const Navbar = ( { socket, setSocket, setChats }) => {
                             You have no notifications
                         </li>}
                     </ul> : null}
-                    <button className={'util_button'} onClick={() => (cookies['profile_id']) ? navigate(`/profile/${cookies['profile_id']}`) : null}>Profile</button>
-                    <button className={'util_button'} onClick={() => handleLogout()}>Logout</button>
+                    <button className={'util_button'} onClick={() => (cookies['profile_id']) ? navigate(`/profile/${cookies['profile_id']}`) : null}>
+                        <span>Profile</span>
+                        <img alt={'profile'} src={require('../../assets/user.png')}/>
+                    </button>
+                    <button className={'util_button'} onClick={() => handleLogout()}>
+                        <span>Logout</span>
+                        <img alt={'logout'} src={require('../../assets/logout.png')} />
+                    </button>
                 </div>
 
             </nav> : null }
