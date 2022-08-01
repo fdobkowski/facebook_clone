@@ -3,6 +3,7 @@
   display: flex;
   justify-content: space-between;
   background-color: rgb(240, 242, 245);
+  min-width: 320px;
 
   .side_bar {
     display: flex;
@@ -54,6 +55,25 @@
       margin-top: 0;
       padding-top: 20px;
       padding-bottom: 20px;
+      width: 90%;
+
+      //justify-content: space-between;
+
+      img {
+        height: 60px;
+        width: 60px;
+        clip-path: circle();
+        object-fit: cover;
+        margin: 0 10px;
+      }
+
+      div {
+        width: 80%;
+        span {
+          font-size: 1.1rem;
+          padding: 10px;
+        }
+      }
     }
 
     .main:hover {
@@ -64,6 +84,50 @@
 
     #post_true {
       filter: blur(5px);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .home_container {
+    .side_bar {
+      display: none;
+    }
+
+    .main {
+      width: 80vw;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .home_container {
+
+    .main {
+      width: 100%;
+
+      .posts {
+        .profile_post_container {
+          .post_data {
+            padding: 0;
+
+            span:first-child {
+              img {
+                height: 60px;
+                width: 60px;
+              }
+            }
+
+            span {
+              font-size: 15px;
+            }
+          }
+        }
+      }
+    }
+
+    .friends_list {
+      display: none;
     }
   }
 }
