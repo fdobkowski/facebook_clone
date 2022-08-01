@@ -31,7 +31,7 @@ const CreatePost = ({ visible }) => {
             <div className={"post_header"}>
                 <div className={"post_utils"}>
                     <span>Create post</span>
-                    <button onClick={() => visible(false)}>X</button>
+                    <img alt={'close'} src={require('../assets/close.png')} onClick={() => visible(false)} />
                 </div>
                 <div className={"post_info"}>
                     <img alt={'profile_picture'} src={picture}/>

@@ -3,6 +3,7 @@
   flex-direction: column;
   background-color: rgb(240, 242, 245);
   height: 82vh;
+  min-width: 320px;
 
   .profile_header {
     display: flex;
@@ -68,8 +69,10 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      align-self: center;
       width: 25vw;
-      margin: 2% 0 10% 10vw;
+      padding: 10px;
+      margin: 2% 50px 0 10vw;
       border-collapse: separate;
       border: 1px solid transparent;
       border-radius: 25px;
@@ -131,6 +134,101 @@
     img {
       clip-path: circle();
       padding: 0;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .profile_container {
+    .profile_header {
+      padding: 0;
+      justify-content: center;
+      height: 15vh;
+
+      .profile_img_container {
+        img {
+          height: 100px;
+          width: 100px;
+        }
+      }
+
+      span {
+        font-size: 1.8rem;
+      }
+    }
+
+    .profile_body {
+      height: 67vh;
+
+      .profile_data {
+        margin: 50px 10px 50px 10px;
+        align-self: center;
+        width: 30vw;
+
+        span {
+          font-size: 15px;
+          width: 90%;
+        }
+      }
+
+      .profile_posts {
+        margin-right: 0;
+        width: 60vw;
+
+        .create_post {
+          div {
+            span {
+              font-size: 15px;
+            }
+          }
+        }
+
+        .posts {
+          .profile_post_container {
+            .post_data {
+              span {
+                font-size: 15px;
+                img {
+                  height: 60px;
+                  width: 60px;
+                }
+              }
+            }
+
+            .post_content {
+              font-size: 18px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .profile_container {
+    .profile_body {
+      flex-direction: column;
+      justify-content: center;
+      align-content: center;
+
+      .profile_data {
+        width: 90%;
+        flex-direction: row;
+        margin: 15px 0 15px 0;
+
+        span {
+          font-size: 0.6rem;
+          text-align: center;
+          padding: 5px;
+          margin: 0 3px 0 3px;
+        }
+      }
+
+      .profile_posts {
+        width: 95%;
+        align-self: center;
+      }
     }
   }
 }
