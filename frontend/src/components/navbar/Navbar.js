@@ -116,11 +116,12 @@ const Navbar = ( { socket, setSocket, setChats }) => {
         <div>
         {(location.pathname !== '/login') ?
             <nav className={"navbar_container"}>
-                <img alt={'home'} src={homeLogo} onClick={() => navigate("/")} />
+                <img alt={'home'} src={homeLogo} onClick={() => navigate("/")} title={'Home'}/>
                 <Searchbar id={cookies['profile_id']} socket={socket} notification_ref={notification_ref}/>
                 <div className={'nav_buttons'}>
                     <img id={`notification_${notification_focus}`}
                          alt={'notifications'} ref={notification_ref}
+                         title={'Notifications'}
                          src={
                              (notifications.filter(x => !x.seen).length === 0) ? require('../../assets/notification.png') : require('../../assets/new_notification.png')
                          } onClick={() => setNotification_focus(!notification_focus)}/>
@@ -154,11 +155,11 @@ const Navbar = ( { socket, setSocket, setChats }) => {
                     </ul> : null}
                     <button className={'util_button'} onClick={() => (cookies['profile_id']) ? navigate(`/profile/${cookies['profile_id']}`) : null}>
                         <span>Profile</span>
-                        <img alt={'profile'} src={require('../../assets/user.png')}/>
+                        <img alt={'profile'} src={require('../../assets/user.png')} title={'Profile'}/>
                     </button>
                     <button className={'util_button'} onClick={() => handleLogout()}>
                         <span>Logout</span>
-                        <img alt={'logout'} src={require('../../assets/logout.png')} />
+                        <img alt={'logout'} src={require('../../assets/logout.png')} title={'Logout'}/>
                     </button>
                 </div>
 
