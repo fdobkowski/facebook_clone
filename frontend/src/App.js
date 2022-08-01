@@ -30,6 +30,9 @@ function App() {
         }
     }, [location.pathname])
 
+    useEffect(() => {
+        console.log(`Chats: ${chats.length}`)
+    }, [chats])
 
     if (socket) {
         socket.on('connect', () => {
@@ -38,7 +41,11 @@ function App() {
 
         socket.on('enable_chat', (data) => {
             if (chats.filter(x => x.receiver_id === data.receiver_id).length === 0) {
-                if (chats.length === 3) {
+                if (chats.length === 3 && window.innerWidth > 1060) {
+                    setChats(chats.shift())
+                } else if (1060 >= window.innerWidth && window.innerWidth > 768 && chats.length === 2) {
+                    setChats(chats.shift())
+                } else if (window.innerWidth <= 480 && chats.length === 1) {
                     setChats(chats.shift())
                 }
                 setChats([...chats, {receiver_id: data.receiver_id, chat_id: data.chat_id}])

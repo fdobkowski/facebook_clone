@@ -1,5 +1,6 @@
 .chat_room_container {
   width: 17vw;
+  min-width: 290px;
   box-shadow: 0 0 10px gray;
   background-color: white;
   position: absolute;
@@ -17,12 +18,14 @@
     box-shadow: 0 15px 20px -20px gray;
     height: 15%;
 
-    img {
-      height: 75px;
-      width: 75px;
-      margin: 10px;
-      clip-path: circle();
-      object-fit: cover;
+    div {
+      img {
+        height: 55px;
+        width: 55px;
+        margin: 10px;
+        clip-path: circle();
+        object-fit: cover;
+      }
     }
 
     span {
@@ -158,9 +161,21 @@
 }
 
 #container_1 {
-  right: calc((10vw + 17vw) + 20px);
+  right: calc((10vw + max(290px, 17vw)) + 20px);
 }
 
 #container_2 {
-  right: calc((10vw + ((17vw + 20px) * 2)));
+  right: calc((10vw + ((max(290px, 17vw) + 20px) * 2)));
+}
+
+@media (max-width: 1060px) {
+  #container_2 {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  #container_1 {
+    display: none;
+  }
 }

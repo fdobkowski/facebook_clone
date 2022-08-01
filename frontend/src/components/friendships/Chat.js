@@ -48,7 +48,7 @@ const Chat = ( { id, chat_id, socket, disableChat, container }) => {
         <div className={"chat_room_container"} id={`container_${container}`}>
             {(receiver) ?
             <div className={"chat_header"}>
-                <img alt={'profile_picture'} src={receiver.image} />
+                <div><img alt={'profile_picture'} src={receiver.image} /></div>
                 <span>{receiver.first_name} {receiver.last_name}</span>
                 <img className={'close_button'}
                      alt={'close'} src={require('../../assets/close.png')}
