@@ -63,7 +63,7 @@ const Home = ( { socket } ) => {
                                 <li key={x.id} className={'profile_post_container'}>
                                     <div className={'post_data'}>
                                         <span>
-                                            <img alt={'profile_picture'} src={profile.image}/>
+                                            <img alt={'profile_picture'} src={all_profiles.find(y => y.id === x.profile_id).image}/>
                                             {all_profiles.find(y => y.id === x.profile_id).first_name} {all_profiles.find(y => y.id === x.profile_id).last_name}
                                         </span>
                                         <span>{new Date(x.date).toLocaleString()}</span>
