@@ -5,7 +5,7 @@ import {getFriendships} from "../../redux/reducers/profileReducer";
 
 const Searchbar = ({ id, socket, notification_ref }) => {
 
-    const [profileFilter, setProfileFilter] = useState(/.*/i)
+    const [profileFilter, setProfileFilter] = useState(/^.*/i)
     const profiles = useSelector((state) => state.profiles.profiles.filter(x => profileFilter.test(x.first_name) || profileFilter.test(x.last_name)
         || profileFilter.test(`${x.first_name} ${x.last_name}`)))
     const main_profile = useSelector((state) => state.profiles.profiles.find(x => x.id === id))
@@ -50,7 +50,7 @@ const Searchbar = ({ id, socket, notification_ref }) => {
             {(focused) ?
             <ul className={'searchbar_ul'}>
                 {(profiles) ?
-                profiles.map((x, i) => {
+                profiles.slice(0, (String(profileFilter) === String(/^.*/i)) ? 0 : 5).map((x, i) => {
                     return (
                         <li key={x.id}>
                             <div className={'profile_image'}>
