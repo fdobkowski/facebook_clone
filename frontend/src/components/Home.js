@@ -62,7 +62,8 @@ const Home = ( { socket } ) => {
                             return (
                                 <li key={x.id} className={'profile_post_container'}>
                                     <div className={'post_data'}>
-                                        <span>
+                                        <span onClick={() => (x.profile_id !== profile.id) ? navigate(`/profile/${x.profile_id}`) : null}
+                                        id={(x.profile_id !== profile.id) ? 'foreign_post' : 'own_post'}>
                                             <img alt={'profile_picture'} src={all_profiles.find(y => y.id === x.profile_id).image}/>
                                             {all_profiles.find(y => y.id === x.profile_id).first_name} {all_profiles.find(y => y.id === x.profile_id).last_name}
                                         </span>
