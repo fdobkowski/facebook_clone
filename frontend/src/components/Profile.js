@@ -54,15 +54,25 @@ const Profile = ( { socket } ) => {
 
             </div>
             <div className={'profile_body'} style={(addProfilePicture) ? {filter: `blur(5px)`} : null}>
-                <div className={'profile_data'} id={`post_${createPost}`} onClick={() => {
-                    if (createPost) setCreatePost(false)
-                }}>
-                    <span>First name: {profile.first_name}</span>
-                    <span>Last name: {profile.last_name}</span>
-                    <span>Birthday: {new Date(profile.birthday).toLocaleDateString()}</span>
-                    <span>Gender: {(profile.gender === 'Custom') ?
-                        (profile.custom_gender ? profile.custom_gender : profile.gender) : profile.gender}</span>
-                    <span>Pronoun: {profile.pronoun}</span>
+                <div className={'profile_sidebar'}>
+                    <div className={'profile_data'} id={`post_${createPost}`} onClick={() => {
+                        if (createPost) setCreatePost(false)
+                    }}>
+                        <span>First name: {profile.first_name}</span>
+                        <span>Last name: {profile.last_name}</span>
+                        <span>Birthday: {new Date(profile.birthday).toLocaleDateString()}</span>
+                        <span>Gender: {(profile.gender === 'Custom') ?
+                            (profile.custom_gender ? profile.custom_gender : profile.gender) : profile.gender}</span>
+                        <span>Pronoun: {profile.pronoun}</span>
+                    </div>
+                    {(id === cookies['profile_id']) ?
+                        <div className={'profile_buttons'}>
+                            <button>Edit data</button>
+                            <button
+                                onClick={() => navigate(`/profile/${cookies['profile_id']}/friends`)}>
+                                Friends
+                            </button>
+                        </div> : null}
                 </div>
                 <div className={'profile_posts'} id={`post_${createPost}`} onClick={() => {
                     if (createPost) setCreatePost(false)
