@@ -14,7 +14,6 @@ const ProfileDataForm = ( { data, setEdit } ) => {
         pronoun: Yup.string().required('Required'),
     })
 
-
     return (
         <div>
             <div onClick={() => setEdit(false)} className={'click_filter'}></div>
@@ -33,10 +32,10 @@ const ProfileDataForm = ( { data, setEdit } ) => {
                         gender: data.gender,
                         pronoun: data.pronoun
                     }}
-                    onSubmit={() => console.log(data)}
+                    onSubmit={(values) => console.log(values)}
                     validateOnChange={false} validationSchema={yup_schema}
                     enableReinitialize={true}>
-                    {({ values, errors }) => (
+                    {({ errors }) => (
                     <Form>
                         <div>
                             <span>First name</span>
@@ -55,17 +54,17 @@ const ProfileDataForm = ( { data, setEdit } ) => {
                         <div className={'birthday'}>
                             <span>Birthday</span>
                             <div>
-                                <Field name={"month"} as={"select"} defaultValue={months[new Date(data.birthday).getMonth()]}>
+                                <Field name={"month"} as={"select"}>
                                     {months.map(x => (
                                         <option value={x} label={x} key={x}/>
                                     ))}
                                 </Field>
-                                <Field name={"day"} as={"select"} defaultValue={new Date(data.birthday).getDay()}>
+                                <Field name={"day"} as={"select"}>
                                     {[...Array(31)].map((x, i) => (
                                         <option value={i + 1} label={(i + 1).toString()} key={i}/>
                                     ))}
                                 </Field>
-                                <Field name={"year"} as={"select"} defaultValue={new Date(data.birthday).getFullYear()}>
+                                <Field name={"year"} as={"select"}>
                                     {[...Array(118)].map((x, i) => (
                                         <option defaultValue={new Date(data.birthday).getFullYear()} value={-(i - 2022)} label={(-(i - 2022)).toString()} key={i}/>
                                     ))}
