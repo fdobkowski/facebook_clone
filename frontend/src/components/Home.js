@@ -18,7 +18,7 @@ const Home = ( { socket } ) => {
     const all_profiles = useSelector((state) => state.profiles.profiles)
     const profile = useSelector((state) => state.profiles.profiles.find(x => x.id === cookies['profile_id']))
     const posts = useSelector((state) => [...state.posts.posts.filter(x => {
-        return x.profile_id === cookies['profile_id'] || ((profile.friendships) && [...profile.friendships.map(y =>  y.friend)].includes(x.profile_id))
+        return x.profile_id === cookies['profile_id'] || ((profile && profile.friendships) && [...profile.friendships.map(y =>  y.friend)].includes(x.profile_id))
     })])
     const dispatch = useDispatch()
 
@@ -29,8 +29,8 @@ const Home = ( { socket } ) => {
     }, [])
 
     useEffect(() => {
-        console.log(profile)
-    }, [profile])
+        console.log(posts)
+    }, [posts])
 
 
     useEffect(() => {
