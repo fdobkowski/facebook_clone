@@ -10,6 +10,7 @@
     font-size: 3rem;
     color: rgb(1, 101, 225);
     font-weight: bold;
+    padding-top: 10px;
   }
 
   input {
@@ -33,6 +34,7 @@
     overflow: scroll;
     height: 80%;
     justify-content: space-evenly;
+    padding: 0;
 
     &::-webkit-scrollbar {
       width: 7px;
