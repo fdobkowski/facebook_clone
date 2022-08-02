@@ -72,7 +72,7 @@ function App() {
         <Routes>
             <Route path={"/login"} element={<Login setId={setId}/>}/>
             <Route path={"/"} element={<Home socket={socket}/>}/>
-            <Route path={"/profile/:id"} element={<Profile/>}/>
+            <Route path={"/profile/:id"} element={<Profile socket={socket}/>}/>
             <Route path={"/profile/:id/friends"} element={<Friendships/>}/>
             <Route path={"/protected"} element={<Protected/>}/>
         </Routes>

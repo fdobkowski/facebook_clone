@@ -7,7 +7,7 @@ import CreatePost from "./CreatePost";
 import {useSelector} from "react-redux";
 import ProfilePicture from "./ProfilePicture";
 
-const Profile = () => {
+const Profile = ( { socket } ) => {
 
     const [cookies, setCookies] = useCookies(['user'])
     const navigate = useNavigate()
@@ -24,6 +24,15 @@ const Profile = () => {
         }
     }, [])
 
+    const handleChat = () => {
+        if (socket) {
+            socket.emit('join_chat', {
+                sender_id: cookies['profile_id'],
+                receiver_id: id
+            })
+        }
+    }
+
     return (
         (profile) ?
         <div className={'profile_container'}>
@@ -37,7 +46,12 @@ const Profile = () => {
                     {(id === cookies['profile_id']) ? <p className={'profile_picture_edit'}
                     onClick={() => setAddProfilePicture(true)}>Edit profile picture</p> : null}
                 </div>
-                <span>{profile.first_name} {profile.last_name}</span>
+                <div className={'profile_header_data'}>
+                    <span>{profile.first_name} {profile.last_name}</span>
+                    {(id !== cookies['profile_id']) ?
+                    <button onClick={handleChat}>Send message</button> : null }
+                </div>
+
             </div>
             <div className={'profile_body'} style={(addProfilePicture) ? {filter: `blur(5px)`} : null}>
                 <div className={'profile_data'} id={`post_${createPost}`} onClick={() => {
