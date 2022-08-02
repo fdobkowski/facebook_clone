@@ -38,4 +38,11 @@ router.patch("/:id", async (req, res) => {
     })
 })
 
+router.patch("/:id/data", async (req, res) => {
+    await pool.query(queries.patch_profile(req.params.id, req.body), (err) => {
+        if (err) throw err
+        res.send('User updated')
+    })
+})
+
 module.exports = router
