@@ -133,7 +133,8 @@
       .profile_buttons {
         display: flex;
         width: 60%;
-        justify-content: space-evenly;
+        justify-content: space-between;
+        min-width: 240px;
 
         button {
           background: white;
@@ -180,7 +181,7 @@
       }
     }
   }
-  
+
   .create_post {
     width: 100%;
     padding-left: 0;
@@ -219,14 +220,25 @@
     .profile_body {
       height: 67vh;
 
-      .profile_data {
-        margin: 50px 10px 50px 10px;
-        align-self: center;
-        width: 30vw;
+      .profile_sidebar {
+        .profile_data {
+          margin: 50px 10px 10px 10px;
+          align-self: center;
+          width: 30vw;
 
-        span {
-          font-size: 15px;
-          width: 90%;
+          span {
+            font-size: 15px;
+            width: 90%;
+          }
+        }
+
+        .profile_buttons {
+          flex-direction: column;
+          align-items: center;
+
+          button {
+            margin: 5px;
+          }
         }
       }
 
@@ -294,16 +306,25 @@
       justify-content: flex-start;
       align-content: center;
 
-      .profile_data {
-        width: 90%;
-        flex-direction: row;
-        margin: 15px 0 15px 0;
+      .profile_sidebar {
 
-        span {
-          font-size: 0.6rem;
-          text-align: center;
-          padding: 5px;
-          margin: 0 3px 0 3px;
+        .profile_data {
+          width: 90%;
+          flex-direction: row;
+          margin: 15px 0 15px 0;
+
+          span {
+            font-size: 0.6rem;
+            text-align: center;
+            padding: 5px;
+            margin: 0 3px 0 3px;
+          }
+        }
+
+        .profile_buttons {
+          flex-direction: row;
+          margin: 0;
+          min-width: 250px;
         }
       }
 
