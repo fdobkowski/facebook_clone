@@ -45,7 +45,9 @@ const Friendships = () => {
 
         return (
             <li key={friend.id} onClick={handleClick}>
-                <img alt={'profile_picture'} src={friend.image}/>
+                <div>
+                    <img alt={'profile_picture'} src={friend.image}/>
+                </div>
                 <span>{friend.first_name} {friend.last_name}</span>
             </li>
         )
@@ -53,6 +55,7 @@ const Friendships = () => {
 
     return (
         <div className={'friends_container'}>
+            <span className={'friends_header'}>Friends list</span>
             <input className={'friends_search'} placeholder={'Search friend...'} onChange={(e) => {
                 const regex = new RegExp(`^${e.target.value}.*`, 'i')
                 setFilter(regex)
