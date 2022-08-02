@@ -29,35 +29,26 @@ const Home = ( { socket } ) => {
     }, [])
 
     useEffect(() => {
-        console.log(posts)
-    }, [posts])
-
-
-    useEffect(() => {
         dispatch(getFriendships(cookies['profile_id']))
     }, [])
 
 
     return (
         <div className={"home_container"}>
-            <div className={"side_bar"} id={`post_${createPost}`}>
+            <div className={"side_bar"}>
                 <button onClick={() => navigate(`/profile/${cookies['profile_id']}`)}>Profile</button>
                 <button onClick={() => navigate(`/profile/${cookies['profile_id']}/friends`)}>Friends</button>
             </div>
             <div className={"main"}>
                 {(profile) ?
-                <div className={"create_post"} id={`post_${createPost}`} onClick={() => {
-                    if (createPost) setCreatePost(false)
-                }}>
+                <div className={"create_post"}>
                     <img alt={'profile_picture'} src={profile.image}/>
                     <div>
                         <span onClick={() => setCreatePost(!createPost)}>What's on your mind, {cookies['profile_first_name']}?</span>
                     </div>
                 </div> : null }
                 {(posts.length !== 0 ?
-                    <ul className={'posts'} id={`post_${createPost}`} onClick={() => {
-                        if (createPost) setCreatePost(false)
-                    }}>
+                    <ul className={'posts'} id={`post_${createPost}`}>
                         {(posts) ? posts.reverse().map(x => {
                             return (
                                 <li key={x.id} className={'profile_post_container'}>
@@ -77,9 +68,13 @@ const Home = ( { socket } ) => {
                         }) : null}
                     </ul> : <span className={'empty_posts'}>Such empty</span>)}
                 <button onClick={() => navigate('/protected')}>Administration panel</button>
-                {(createPost) ? <CreatePost visible={setCreatePost}/> : null }
+                {(createPost) ?
+                <div>
+                    <div className={'click_filter'} onClick={() => setCreatePost(false)}></div>
+                    <CreatePost visible={setCreatePost}/>
+                </div> : null }
             </div>
-           <Friendship_sidebar createPost={createPost} setCreatePost={setCreatePost} id={cookies['profile_id']} socket={socket}/>
+           <Friendship_sidebar id={cookies['profile_id']} socket={socket}/>
         </div>
     )
 }

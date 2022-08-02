@@ -4,7 +4,7 @@ import {useEffect} from "react";
 import {getFriendships} from "../../redux/reducers/profileReducer";
 import {useNavigate} from "react-router-dom";
 
-const Friendship_sidebar = ( { createPost, setCreatePost, id, socket }) => {
+const Friendship_sidebar = ( { id, socket }) => {
 
     const all_profiles = useSelector((state) => state.profiles.profiles)
     const profile = useSelector((state) => state.profiles.profiles.find(x => x.id === id))
@@ -25,8 +25,7 @@ const Friendship_sidebar = ( { createPost, setCreatePost, id, socket }) => {
     }
 
     return (
-        <div className={"friends_list"} id={`post_${createPost}`} onClick={() => {
-            if (createPost) setCreatePost(false)
+        <div className={"friends_list"} onClick={() => {
         }}>
             {(profile && profile.friendships) ?
                 <ul>

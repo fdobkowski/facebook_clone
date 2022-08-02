@@ -1,6 +1,9 @@
 .create_post_container {
   position: absolute;
   top: 15%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;

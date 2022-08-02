@@ -39,9 +39,7 @@ const Profile = ( { socket } ) => {
     return (
         (profile) ?
         <div className={'profile_container'}>
-            <div className={'profile_header'} id={`post_${createPost}`} onClick={() => {
-                if (createPost) setCreatePost(false)
-            }} style={(addProfilePicture) ? {filter: `blur(5px)`} : null}>
+            <div className={'profile_header'}>
                 <div className={'profile_img_container'} id={(id === cookies['profile_id']) ? 'users_profile_picture' : null}>
                     <img alt={'profile img'} src={profile.image} onClick={() => {
                         if (id === cookies['profile_id']) setAddProfilePicture(true);
@@ -56,11 +54,9 @@ const Profile = ( { socket } ) => {
                 </div>
 
             </div>
-            <div className={'profile_body'} style={(addProfilePicture) ? {filter: `blur(5px)`} : null}>
+            <div className={'profile_body'}>
                 <div className={'profile_sidebar'}>
-                    <div className={'profile_data'} id={`post_${createPost}`} onClick={() => {
-                        if (createPost) setCreatePost(false)
-                    }}>
+                    <div className={'profile_data'}>
                         <span>First name: {profile.first_name}</span>
                         <span>Last name: {profile.last_name}</span>
                         <span>Birthday: {new Date(profile.birthday).toLocaleDateString()}</span>
@@ -69,7 +65,7 @@ const Profile = ( { socket } ) => {
                         <span>Pronoun: {profile.pronoun}</span>
                     </div>
                     {(id === cookies['profile_id']) ?
-                        <div className={'profile_buttons'} id={`post_${createPost}`} >
+                        <div className={'profile_buttons'}>
                             <button onClick={() => setEdit(true)}>Edit data</button>
                             <button
                                 onClick={() => navigate(`/profile/${cookies['profile_id']}/friends`)}>
@@ -77,9 +73,7 @@ const Profile = ( { socket } ) => {
                             </button>
                         </div> : null}
                 </div>
-                <div className={'profile_posts'} id={`post_${createPost}`} onClick={() => {
-                    if (createPost) setCreatePost(false)
-                }}>
+                <div className={'profile_posts'}>
                     {(id === cookies['profile_id']) ?
                     <div className={"create_post"}>
                         <img alt={'profile_picture'} src={profile.image}/>
@@ -107,9 +101,17 @@ const Profile = ( { socket } ) => {
                         })}
                         </ul> : <span className={'empty_posts'}>Such empty</span>)}
                 </div>
-                {(createPost) ? <CreatePost visible={setCreatePost}/> : null }
+                {(createPost) ?
+                    <div>
+                        <div className={'click_filter'} onClick={() => setCreatePost(false)}></div>
+                        <CreatePost visible={setCreatePost}/>
+                    </div> : null }
             </div>
-            {(addProfilePicture) ? <ProfilePicture profile={profile} setAddProfilePicture={setAddProfilePicture}/> : null}
+            {(addProfilePicture) ?
+                <div>
+                    <div className={'click_filter'} onClick={() => setAddProfilePicture(false)}></div>
+                    <ProfilePicture profile={profile} setAddProfilePicture={setAddProfilePicture}/>
+                </div> : null}
             {(edit) ? <ProfileDataForm data={profile} setEdit={setEdit}/> : null}
         </div> : null
     )
