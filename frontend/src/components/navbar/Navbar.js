@@ -31,7 +31,7 @@ const Navbar = ( { socket, setSocket, setChats }) => {
         setChats([])
         socket.disconnect()
         if (keycloak.authenticated) keycloak.logout()
-        navigate('/login')
+        navigate(0)
     }
 
 
