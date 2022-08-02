@@ -6,6 +6,7 @@ import {useCookies} from "react-cookie";
 import CreatePost from "./CreatePost";
 import {useSelector} from "react-redux";
 import ProfilePicture from "./ProfilePicture";
+import ProfileDataForm from "./ProfileDataForm";
 
 const Profile = ( { socket } ) => {
 
@@ -17,6 +18,8 @@ const Profile = ( { socket } ) => {
     const { id } = useParams()
     const profile = useSelector((state) => state.profiles.profiles.find(x => x.id === id))
     const profile_posts = useSelector((state) => state.posts.posts.filter(x => x.profile_id === id))
+
+    const [edit, setEdit] = useState(false)
 
     useEffect(() => {
         if (cookies['profile_id'] === undefined) {
@@ -66,8 +69,8 @@ const Profile = ( { socket } ) => {
                         <span>Pronoun: {profile.pronoun}</span>
                     </div>
                     {(id === cookies['profile_id']) ?
-                        <div className={'profile_buttons'}>
-                            <button>Edit data</button>
+                        <div className={'profile_buttons'} id={`post_${createPost}`} >
+                            <button onClick={() => setEdit(true)}>Edit data</button>
                             <button
                                 onClick={() => navigate(`/profile/${cookies['profile_id']}/friends`)}>
                                 Friends
@@ -107,6 +110,7 @@ const Profile = ( { socket } ) => {
                 {(createPost) ? <CreatePost visible={setCreatePost}/> : null }
             </div>
             {(addProfilePicture) ? <ProfilePicture profile={profile} setAddProfilePicture={setAddProfilePicture}/> : null}
+            {(edit) ? <ProfileDataForm data={profile} setEdit={setEdit}/> : null}
         </div> : null
     )
 }
