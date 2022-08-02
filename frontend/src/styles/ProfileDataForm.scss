@@ -111,3 +111,15 @@
   }
 
 }
+
+@media (max-width: 480px) {
+  .form_container {
+    width: 300px;
+
+    .form_header {
+      img {
+        left: 300px;
+      }
+    }
+  }
+}
