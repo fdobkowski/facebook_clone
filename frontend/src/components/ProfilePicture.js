@@ -31,6 +31,7 @@ const ProfilePicture = ({ profile, setAddProfilePicture } ) => {
                     Body: file,
                     Bucket: process.env.REACT_APP_AWS_BUCKET_NAME,
                     Key: cookies['profile_id'],
+                    ContentType: 'image/jpeg',
                     ACL: 'public-read'
                 }
 
