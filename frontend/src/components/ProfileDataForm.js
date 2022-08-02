@@ -1,9 +1,12 @@
 import '../styles/ProfileDataForm.scss'
 import {Field, Form, Formik} from "formik";
+import {useNavigate} from "react-router-dom";
+import {useEffect} from "react";
 
 const ProfileDataForm = ( { data, setEdit } ) => {
 
     const Yup = require('yup')
+    const axios = require('axios')
 
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
@@ -14,6 +17,20 @@ const ProfileDataForm = ( { data, setEdit } ) => {
         pronoun: Yup.string().required('Required'),
     })
 
+    const navigate = useNavigate()
+
+    const handleSubmit = (values) => {
+        axios.patch(`http://localhost:5000/api/profiles/${data.id}/data`, {
+            first_name: values.first_name,
+            last_name: values.last_name,
+            birthday: `${values.year}-${values.month}-${values.day}`,
+            gender: (values.gender.toLowerCase() !== 'male' && values.gender.toLowerCase() !== 'female') ? 'Custom' : values.gender,
+            custom_gender: (values.gender.toLowerCase() !== 'male' && values.gender.toLowerCase() !== 'female') ? values.gender : '',
+            pronoun: values.pronoun
+        })
+            .then(() => navigate(0)).catch(err => console.error(err))
+    }
+
     return (
         <div>
             <div onClick={() => setEdit(false)} className={'click_filter'}></div>
@@ -22,17 +39,18 @@ const ProfileDataForm = ( { data, setEdit } ) => {
                     <span>Edit data</span>
                     <img onClick={() => setEdit(false)} alt={'close'} title={'close'} src={require('../assets/close.png')} />
                 </div>
+                {(data) ?
                 <Formik
                     initialValues={{
                         first_name: data.first_name,
                         last_name: data.last_name,
-                        months: months[new Date(data.birthday).getMonth()],
+                        month: `${months[new Date(data.birthday).getMonth()]}`,
                         day: new Date(data.birthday).getDay(),
                         year: new Date(data.birthday).getFullYear(),
                         gender: data.gender,
                         pronoun: data.pronoun
                     }}
-                    onSubmit={(values) => console.log(values)}
+                    onSubmit={(values) => handleSubmit(values)}
                     validateOnChange={false} validationSchema={yup_schema}
                     enableReinitialize={true}>
                     {({ errors }) => (
@@ -82,7 +100,7 @@ const ProfileDataForm = ( { data, setEdit } ) => {
                         <button type={"submit"}>Submit</button>
                     </Form>
                         )}
-                </Formik>
+                </Formik> : null}
             </div>
         </div>
     )

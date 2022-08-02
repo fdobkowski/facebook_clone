@@ -4,7 +4,7 @@ const get_single_profile = (id) => `SELECT * FROM profiles WHERE id = '${id}';`
 const get_all_profiles = `SELECT * FROM profiles;`
 const delete_profile = (id) => `DELETE FROM profiles WHERE ID = '${id}';`
 const patch_profile = (id, body) => `UPDATE profiles 
-                                 SET first_name = '${body.first_name}', last_name = '${body.email}', birthday = '${body.birthday}', gender = '${body.gender}', custom_gender = '${body.custom_gender}',
+                                 SET first_name = '${body.first_name}', last_name = '${body.last_name}', birthday = '${body.birthday}', gender = '${body.gender}', custom_gender = '${body.custom_gender}',
                                      pronoun = '${body.pronoun}' WHERE id = '${id}';`
 const update_image = (id, image) => `UPDATE profiles SET image='${image}' WHERE id='${id}'`
 
