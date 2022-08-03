@@ -57,6 +57,7 @@ const Navbar = ( { socket, setSocket, setChats }) => {
                     id: x.id,
                     type: x.type,
                     from: x.sender_id,
+                    date: x.date,
                     seen: x.seen
 
                 }
@@ -64,11 +65,11 @@ const Navbar = ( { socket, setSocket, setChats }) => {
         })
     }
 
-    // useEffect(() => {
-    //     console.log("notifications")
-    //     console.log(notifications)
-    //     console.log("===================")
-    // }, [notifications]);
+    useEffect(() => {
+        console.log("notifications")
+        console.log(notifications)
+        console.log("===================")
+    }, [notifications]);
 
     const hideNotifications = (e) => {
         if (window.location.pathname !== '/login' && notification_ref.current && !notification_ref.current.contains(e.target)) {
@@ -131,7 +132,7 @@ const Navbar = ( { socket, setSocket, setChats }) => {
                             notifications.map(x => {
                                 return (
                                     <li key={uuid()} className={`seen_${x.seen}`}>
-                                        {(x.type === 'friend_request') ?
+                                        {(x.type === 'friend_request' && profiles.find(y => y.id === x.from)) ?
                                             <div className={'friend_request'}>
                                                 <div>
                                                     <img alt={'profile_picture'} src={profiles.find(y => y.id === x.from).image}
@@ -144,6 +145,17 @@ const Navbar = ( { socket, setSocket, setChats }) => {
                                                         <button onClick={() => handleAccept(x)}>Accept</button>
                                                         <button onClick={() => handleDecline(x)}>Decline</button>
                                                     </div> : null}
+                                                </div>
+                                                <div className={'notification_date'}>
+                                                    <span>
+                                                        {new Date(x.date).toLocaleTimeString('default', {
+                                                            hour: '2-digit',
+                                                            minute: '2-digit'
+                                                        })}
+                                                    </span>
+                                                    <span>
+                                                        {new Date(x.date).toLocaleDateString()}
+                                                    </span>
                                                 </div>
                                             </div> : null}
                                     </li>

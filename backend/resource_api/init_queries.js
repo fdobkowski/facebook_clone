@@ -29,7 +29,8 @@ const notifications_table = 'CREATE TABLE IF NOT EXISTS notifications (\n' +
     '\tid VARCHAR(255) PRIMARY KEY,\n' +
     '\tsender_id VARCHAR(255) REFERENCES profiles(id),\n' +
     '\treceiver_id VARCHAR(255) REFERENCES profiles(id),\n' +
-    '\ttype VARCHAR(255)\n' +
+    '\ttype VARCHAR(255),\n' +
+    '\tdate DATE,\n' +
     '\tseen BOOLEAN\n' +
     ');'
 

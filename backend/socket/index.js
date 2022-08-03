@@ -43,6 +43,9 @@ client.connect()
             })
 
             socket.on('send_friend_request', (data) => {
+
+                const date = new Date()
+
                 client.get(data.receiver_id).then(response => {
                     if (response) {
                         const notification_id = uuid()
@@ -50,6 +53,7 @@ client.connect()
                             id: notification_id,
                             sender_id: data.sender_id,
                             receiver_id: data.receiver_id,
+                            date: `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`,
                             type: 'friend_request'
                         }).then(() => {
                             if (response !== 'disconnected') {
@@ -59,6 +63,7 @@ client.connect()
                                             id: result.data.id,
                                             type: result.data.type,
                                             from: result.data.sender_id,
+                                            date: result.data.date,
                                             seen: result.data.seen
                                         })
                                     })).catch(err => console.error(err))
