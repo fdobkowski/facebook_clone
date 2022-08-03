@@ -53,7 +53,7 @@ const Searchbar = ({ id, socket, notification_ref }) => {
                 profiles.slice(0, (String(profileFilter) === String(/^.*/i)) ? 0 : 5).map((x, i) => {
                     return (
                         <li key={x.id}>
-                            <div className={'profile_image'}>
+                            <div className={'profile_image'} onClick={() => navigate(`/profile/${x.id}`)}>
                                 <img alt={'profile_picture'} src={x.image}/>
                             </div>
                             <span onClick={() => navigate(`/profile/${x.id}`)}>{x.first_name} {x.last_name}</span>
