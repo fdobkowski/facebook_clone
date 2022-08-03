@@ -17,6 +17,7 @@ const Profile = ( { socket } ) => {
 
     const { id } = useParams()
     const profile = useSelector((state) => state.profiles.profiles.find(x => x.id === id))
+    const own_profile = useSelector((state) => state.profiles.profiles.find(x => x.id === cookies['profile_id']))
     const profile_posts = useSelector((state) => state.posts.posts.filter(x => x.profile_id === id))
 
     const [edit, setEdit] = useState(false)
@@ -36,6 +37,12 @@ const Profile = ( { socket } ) => {
         }
     }
 
+    useEffect(() => {
+        if (own_profile && own_profile.friendships) {
+            console.log(own_profile.friendships.map(x => x.friend).includes(id))
+        }
+    }, [own_profile])
+
     return (
         (profile) ?
         <div className={'profile_container'}>
@@ -48,7 +55,11 @@ const Profile = ( { socket } ) => {
                     onClick={() => setAddProfilePicture(true)}>Edit profile picture</p> : null}
                 </div>
                 <div className={'profile_header_data'}>
-                    <span>{profile.first_name} {profile.last_name}</span>
+                    <div>
+                        <span>{profile.first_name} {profile.last_name}</span>
+                        {(own_profile.friendships.map(x => x.friend).includes(id)) ?
+                        <img alt={'friend'} src={require('../assets/added.png')}/> : null}
+                    </div>
                     {(id !== cookies['profile_id']) ?
                     <button onClick={handleChat}>Send message</button> : null }
                 </div>

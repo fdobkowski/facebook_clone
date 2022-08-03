@@ -66,9 +66,21 @@
     height: 100%;
     justify-content: center;
 
-    span {
-      justify-self: center;
-      text-align: center;
+    div {
+      display: flex;
+      align-items: center;
+
+      span {
+        justify-self: center;
+        text-align: left;
+      }
+
+      img {
+        height: 50px;
+        width: 50px;
+        margin-left: 10px;
+      }
+
     }
 
     button {
@@ -214,6 +226,17 @@
 
       span {
         font-size: 1.8rem;
+      }
+
+      .profile_header_data {
+        justify-content: center;
+        align-items: center;
+        div {
+          img {
+            height: 30px;
+            width: 30px;
+          }
+        }
       }
     }
 
