@@ -22,9 +22,9 @@ const Navbar = ( { socket, setSocket, setChats }) => {
     const dispatch = useDispatch()
 
     const handleLogout = () => {
-        removeCookies('profile_id')
-        removeCookies('profile_first_name')
-        removeCookies('profile_last_name')
+        removeCookies('profile_id', { path: '/' })
+        removeCookies('profile_first_name', { path: '/' })
+        removeCookies('profile_last_name', { path: '/' })
         setNotifications([])
         socket.emit('user_disconnected', cookies['profile_id'])
         setSocket(null)
@@ -35,7 +35,7 @@ const Navbar = ( { socket, setSocket, setChats }) => {
     }
 
 
-    const [cookies, setCookies, removeCookies] = useCookies(['profile_id'])
+    const [cookies, setCookies, removeCookies] = useCookies()
 
     useEffect(() => {
         if (cookies['profile_id'] === undefined) {
