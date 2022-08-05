@@ -39,7 +39,11 @@ const Register = ( { visible }) => {
                 dispatch(getProfiles())
                 alert(response.data)
             }).catch(error => console.error(error))
-        }).catch(error => console.error(error))
+        }).catch(error => {
+            if (error.response.status === 409) {
+                alert(error.response.data)
+            } else alert('Something went wrong')
+        })
 
         visible.setVisible(false)
     }

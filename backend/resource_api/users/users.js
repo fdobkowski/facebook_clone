@@ -15,8 +15,18 @@ router.get('/', async (req, res) => {
         email: email,
         number: number,
         password: encrypt
-    }), (err, result) => {
-        if (err) throw err
+    }), (err) => {
+        if (err) {
+            if (err.code === '23505') {
+                if (err.constraint === 'users_email_key') res.status(409).send('User with this email already exist')
+                else if (err.constraint === 'users_number_key')  res.status(409).send('User with this phone number already exist')
+                return
+            } else {
+                console.error(err)
+                res.status(500).send('Something went wrong')
+                return
+            }
+        }
         res.status(200).send("Successful")
     })
 })
