@@ -1,5 +1,5 @@
 import '../../styles/Chat.scss'
-import {useState} from "react";
+import {useRef, useState} from "react";
 import {useCookies} from "react-cookie";
 import ScrollToBottom from "react-scroll-to-bottom";
 import {useSelector} from "react-redux";
@@ -10,6 +10,7 @@ const Chat = ( { id, chat_id, socket, disableChat, container }) => {
     const [message, setMessage] = useState('')
     const [cookies] = useCookies()
     const receiver = useSelector((state) => state.profiles.profiles.find(x => x.id === id))
+    const input_ref = useRef(null)
 
     if (socket) {
         socket.on('receive_old_messages', (data) => {
@@ -55,7 +56,7 @@ const Chat = ( { id, chat_id, socket, disableChat, container }) => {
                      onClick={() => disableChat(id)}/>
             </div> : null}
             <ScrollToBottom className={"message_body"} initialScrollBehavior={'smooth'}>
-                <div>
+                <div onClick={() => input_ref.current.focus()}>
                     {(allMessages) ? allMessages.map((x, i) => {
                         return (
                             <div className={"main_messages"} key={i}>
@@ -74,7 +75,7 @@ const Chat = ( { id, chat_id, socket, disableChat, container }) => {
                 </div>
             </ScrollToBottom>
             <div className={"chat_footer"}>
-                <input type={"text"} placeholder={"Send message.."}
+                <input ref={input_ref} type={"text"} placeholder={"Send message.."}
                        value={message}
                        onChange={(event) => setMessage(event.target.value)}
                        onKeyDown={(e) => (e.code === 'Enter') ? handleSend() : null}/>
