@@ -109,7 +109,10 @@ const Navbar = ( { socket, setSocket, setChats }) => {
                     sender_id: notification.from,
                     receiver_id: cookies['profile_id'],
                     date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
-                }).then(() => alert(`You are now friends with ${profiles.find(x => x.id === notification.from).first_name}`)).catch(err => console.error(err))
+                }).then(() => {
+                    alert(`You are now friends with ${profiles.find(x => x.id === notification.from).first_name}`)
+                    navigate(0)
+                }).catch(err => console.error(err))
             }).catch(err => console.error(err))
     }
 
