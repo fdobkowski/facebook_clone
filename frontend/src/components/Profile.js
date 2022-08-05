@@ -19,6 +19,7 @@ const Profile = ( { socket } ) => {
     const profile = useSelector((state) => state.profiles.profiles.find(x => x.id === id))
     const own_profile = useSelector((state) => state.profiles.profiles.find(x => x.id === cookies['profile_id']))
     const profile_posts = useSelector((state) => state.posts.posts.filter(x => x.profile_id === id))
+    const axios = require('axios')
 
     const [edit, setEdit] = useState(false)
 
@@ -37,6 +38,18 @@ const Profile = ( { socket } ) => {
         }
     }
 
+    const handleDelete = async (id) => {
+        await axios.delete('http://localhost:5000/api/friendships', {
+            data: {
+                receiver_id: cookies['profile_id'],
+                sender_id: id
+            }
+        }).then(() => {
+            alert(`${profile.first_name} ${profile.last_name} isn't your friend anymore`)
+            navigate(0)
+        }).catch(err => console.error(err))
+    }
+
     useEffect(() => {
         if (own_profile && own_profile.friendships) {
             console.log(own_profile.friendships.map(x => x.friend).includes(id))
@@ -44,7 +57,7 @@ const Profile = ( { socket } ) => {
     }, [own_profile])
 
     return (
-        (profile) ?
+        (profile && own_profile) ?
         <div className={'profile_container'}>
             <div className={'profile_header'}>
                 <div className={'profile_img_container'} id={(id === cookies['profile_id']) ? 'users_profile_picture' : null}>
@@ -57,7 +70,7 @@ const Profile = ( { socket } ) => {
                 <div className={'profile_header_data'}>
                     <div>
                         <span>{profile.first_name} {profile.last_name}</span>
-                        {(own_profile.friendships.map(x => x.friend).includes(id)) ?
+                        {(own_profile.friendships && own_profile.friendships.map(x => x.friend).includes(id)) ?
                         <img alt={'friend'} src={require('../assets/added.png')}/> : null}
                     </div>
                     {(id !== cookies['profile_id'] && own_profile && own_profile.friendships && own_profile.friendships.map(y => {
@@ -65,7 +78,7 @@ const Profile = ( { socket } ) => {
                     }).includes(id)) ?
                     <div className={'profile_header_buttons'}>
                         <button onClick={handleChat}>Send message</button>
-                        <img alt={'delete'} src={require('../assets/delete-account.png')}/>
+                        <img onClick={() => handleDelete(id)} alt={'delete'} src={require('../assets/delete-account.png')}/>
                     </div> : null }
                 </div>
 

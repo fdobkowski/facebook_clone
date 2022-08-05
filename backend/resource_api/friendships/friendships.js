@@ -20,7 +20,7 @@ router.get('/:id', async (req, res) => {
 router.delete('/', async (req, res) => {
     await pool.query(queries.delete_friendship(req.body), (err) => {
         if (err) throw err
-        res.status(200)
+        res.status(200).send('Ok')
     })
 })
 
