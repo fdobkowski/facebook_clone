@@ -170,8 +170,8 @@ const Navbar = ( { socket, setSocket, setChats }) => {
                         <img alt={'profile'} src={require('../../assets/user.png')} title={'Profile'}/>
                     </button>
                     <button className={'util_button'} onClick={() => handleLogout()}>
-                        <span>Logout</span>
-                        <img alt={'logout'} src={require('../../assets/logout.png')} title={'Logout'}/>
+                        <span onClick={() => handleLogout()}>Logout</span>
+                        <img onClick={() => handleLogout()} alt={'logout'} src={require('../../assets/logout.png')} title={'Logout'}/>
                     </button>
                 </div>
 
