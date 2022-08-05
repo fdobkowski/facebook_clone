@@ -60,8 +60,13 @@ const Profile = ( { socket } ) => {
                         {(own_profile.friendships.map(x => x.friend).includes(id)) ?
                         <img alt={'friend'} src={require('../assets/added.png')}/> : null}
                     </div>
-                    {(id !== cookies['profile_id']) ?
-                    <button onClick={handleChat}>Send message</button> : null }
+                    {(id !== cookies['profile_id'] && own_profile && own_profile.friendships && own_profile.friendships.map(y => {
+                        return y.friend
+                    }).includes(id)) ?
+                    <div className={'profile_header_buttons'}>
+                        <button onClick={handleChat}>Send message</button>
+                        <img alt={'delete'} src={require('../assets/delete-account.png')}/>
+                    </div> : null }
                 </div>
 
             </div>
