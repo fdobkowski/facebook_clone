@@ -52,6 +52,16 @@ function App() {
             }
             else setChats(chats)
         })
+
+        socket.on('new_chat', (data) => {
+
+            if (chats.find(x => x.chat_id === data.chat_id) === undefined) {
+                socket.emit('join_chat', {
+                    sender_id: data.receiver_id,
+                    receiver_id: data.sender_id
+                })
+            }
+        })
     }
 
     const disableChat = (id) => {

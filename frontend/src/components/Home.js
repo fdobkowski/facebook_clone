@@ -47,7 +47,7 @@ const Home = ( { socket } ) => {
                         <span onClick={() => setCreatePost(!createPost)}>What's on your mind, {cookies['profile_first_name']}?</span>
                     </div>
                 </div> : null }
-                {(posts.length !== 0 ?
+                {(profile && posts.length !== 0 ?
                     <ul className={'posts'} id={`post_${createPost}`}>
                         {(posts) ? posts.reverse().map(x => {
                             return (

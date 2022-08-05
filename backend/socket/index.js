@@ -100,10 +100,11 @@ client.connect()
                 await axios.post('http://localhost:5000/api/messages', data.data)
                     .then((response) => console.log(response.data)).catch(err => console.error(err))
 
-                client.get(data.receiver_id).then(response => {
+                client.get(data.receiver_id).then(async response => {
                     if (response) {
                         if (response !== 'disconnected') {
                             io.to(response).emit('receive_message', data.data)
+                            io.to(response).emit('new_chat', {sender_id: data.data.sender_id, receiver_id: data.receiver_id, chat_id: data.data.id})
                         }
                     }
                 }).catch(err => console.error(err))
