@@ -60,6 +60,7 @@ const Friendships = () => {
                 const regex = new RegExp(`^${e.target.value}.*`, 'i')
                 setFilter(regex)
             }}/>
+            {(profile && friends.length !== 0) ?
             <ul>
                 {(profile && filteredFriends) ?
                 filteredFriends.map(x => {
@@ -68,6 +69,10 @@ const Friendships = () => {
                     )
                 }) : null}
             </ul>
+                :
+            <div className={'empty_friends'}>
+                You have no friends yet
+            </div> }
         </div>
     )
 }

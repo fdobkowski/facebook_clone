@@ -85,6 +85,14 @@
       box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     }
   }
+
+  .empty_friends {
+    font-size: 4rem;
+    font-weight: bold;
+    text-align: center;
+    color: rgb(1, 101, 225);
+    margin-top: 50px;
+  }
 }
 
 @media (max-width: 768px) {
