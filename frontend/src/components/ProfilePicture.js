@@ -1,12 +1,9 @@
 import '../styles/ProfilePicture.scss'
-import {useEffect, useRef, useState} from "react";
+import {useRef, useState} from "react";
 import { Buffer } from 'buffer'
-import S3 from 'react-aws-s3'
-import AWS from 'aws-sdk'
-import {uploadFile} from "react-s3";
 import {useCookies} from "react-cookie";
 import {useDispatch} from "react-redux";
-import {changeProfilePicture, getProfiles} from "../redux/reducers/profileReducer";
+import {getProfiles} from "../redux/reducers/profileReducer";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import { bucket } from "../S3";

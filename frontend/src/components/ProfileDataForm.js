@@ -1,7 +1,6 @@
 import '../styles/ProfileDataForm.scss'
 import {Field, Form, Formik} from "formik";
 import {useNavigate} from "react-router-dom";
-import {useEffect} from "react";
 
 const ProfileDataForm = ( { data, setEdit } ) => {
 

@@ -3,20 +3,20 @@ import axios from "axios";
 import {useState} from "react";
 import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuid } from 'uuid'
 import {useSelector} from "react-redux";
 
 const CreatePost = ({ visible }) => {
 
     const [content, setContent] = useState("")
-    const [cookies, setCookies, removeCookies] = useCookies()
+    const [cookies] = useCookies()
     const navigate = useNavigate()
     const picture = useSelector((state) => state.profiles.profiles.find(x => x.id === cookies['profile_id']).image)
 
     const submitPost = async () => {
         const date = new Date()
         await axios.post('http://localhost:5000/api/posts', {
-            id: uuidv4(),
+            id: uuid(),
             profile_id: cookies['profile_id'],
             content: content,
             date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`

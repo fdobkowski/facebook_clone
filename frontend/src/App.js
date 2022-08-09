@@ -1,5 +1,5 @@
 import './App.css'
-import {BrowserRouter as Router, Routes, Route, useLocation} from "react-router-dom";
+import {Routes, Route, useLocation} from "react-router-dom";
 import Login from "./components/login_page/Login";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
@@ -20,8 +20,7 @@ function App() {
     const [id, setId] = useState('')
     const [socket, setSocket] = useState(null)
     const location = useLocation()
-    const [cookies, setCookies, removeCookies] = useCookies()
-    const dispatch = useDispatch()
+    const [cookies] = useCookies()
     const [chats, setChats] = useState([])
 
     useEffect(() => {
@@ -30,9 +29,6 @@ function App() {
         }
     }, [location.pathname])
 
-    useEffect(() => {
-        console.log(`Chats: ${chats.length}`)
-    }, [chats])
 
     if (socket) {
         socket.on('connect', () => {
@@ -68,7 +64,7 @@ function App() {
         setChats(chats.filter(x => x.receiver_id !== id))
     }
 
-    useBeforeunload((event) => {
+    useBeforeunload(() => {
         if (id || cookies['profile_id']) {
             socket.emit('user_disconnected', id || cookies['profile_id'])
             setSocket(null)

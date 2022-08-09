@@ -3,7 +3,7 @@ import homeLogo from '../../assets/home_icon.svg'
 import {useLocation, useNavigate} from 'react-router-dom'
 import {useCookies} from "react-cookie";
 import {useKeycloak} from "@react-keycloak/web";
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import Searchbar from "./Searchbar";
 import {v4 as uuid} from 'uuid'
 import {useDispatch, useSelector} from "react-redux";
@@ -51,7 +51,6 @@ const Navbar = ( { socket, setSocket, setChats }) => {
         })
 
         socket.on('receive_old_notifications', (data) => {
-            // console.log(data)
             setNotifications([...notifications, ...data.map(x => {
                 return {
                     id: x.id,
@@ -64,12 +63,6 @@ const Navbar = ( { socket, setSocket, setChats }) => {
             })])
         })
     }
-
-    useEffect(() => {
-        console.log("notifications")
-        console.log(notifications)
-        console.log("===================")
-    }, [notifications]);
 
     const hideNotifications = (e) => {
         if (window.location.pathname !== '/login' && notification_ref.current && !notification_ref.current.contains(e.target)) {

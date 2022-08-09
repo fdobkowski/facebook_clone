@@ -10,8 +10,7 @@ import {getFriendships} from "../redux/reducers/profileReducer";
 
 const Home = ( { socket } ) => {
 
-    const axios = require('axios')
-    const [cookies, setCookies] = useCookies(['user'])
+    const [cookies] = useCookies(['user'])
     const navigate = useNavigate()
 
     const [createPost, setCreatePost] = useState(false)

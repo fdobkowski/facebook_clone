@@ -7,10 +7,11 @@ import CreatePost from "./CreatePost";
 import {useSelector} from "react-redux";
 import ProfilePicture from "./ProfilePicture";
 import ProfileDataForm from "./ProfileDataForm";
+import axios from 'axios'
 
 const Profile = ( { socket } ) => {
 
-    const [cookies, setCookies] = useCookies(['user'])
+    const [cookies] = useCookies(['user'])
     const navigate = useNavigate()
     const [createPost, setCreatePost] = useState(false)
     const [addProfilePicture, setAddProfilePicture] = useState(false)
@@ -19,7 +20,6 @@ const Profile = ( { socket } ) => {
     const profile = useSelector((state) => state.profiles.profiles.find(x => x.id === id))
     const own_profile = useSelector((state) => state.profiles.profiles.find(x => x.id === cookies['profile_id']))
     const profile_posts = useSelector((state) => state.posts.posts.filter(x => x.profile_id === id))
-    const axios = require('axios')
 
     const [edit, setEdit] = useState(false)
 
@@ -50,11 +50,6 @@ const Profile = ( { socket } ) => {
         }).catch(err => console.error(err))
     }
 
-    useEffect(() => {
-        if (own_profile && own_profile.friendships) {
-            console.log(own_profile.friendships.map(x => x.friend).includes(id))
-        }
-    }, [own_profile])
 
     return (
         (profile && own_profile) ?
