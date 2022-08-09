@@ -16,25 +16,9 @@ const io = new Server(server, {
     }
 })
 
-const online_users = () => {
-    client.keys('*').then(async response => {
-        response.map(async (x, i) => {
-            if (i === 0) console.log('\n----- Online users -----')
-
-            await client.get(x).then(response => {
-                if (response !== 'disconnected') console.log(response)
-            }).catch(err => console.error(err))
-
-            if (i === response.length - 1) console.log('------------------------\n')
-        })
-    }).catch(err => console.error(err))
-}
-
 client.connect()
     .then(() => {
         io.sockets.on('connection', (socket) => {
-
-            online_users()
             socket.on('user_connected', (id) => {
                 client.set(id, socket.id).then().catch(err => console.error(err))
                 axios.get(`http://localhost:5000/api/notifications/${id}`).then(response => {
@@ -111,13 +95,9 @@ client.connect()
             })
 
             socket.on('user_disconnected', (id) => {
-                client.get(id).then(response => {
+                client.get(id).then(() => {
                     client.set(id, 'disconnected').then().catch(err => console.error(err))
                 })
-            })
-
-            socket.on('disconnect', () => {
-                online_users()
             })
         })
     }).catch(error => console.error(error))
