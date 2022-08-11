@@ -26,7 +26,10 @@ function App() {
     const auth = useSelector((state) => state.auth.token !== '')
 
     useEffect(() => {
-        if ((!cookies['status'] || cookies['status'] !== 'authenticated') && !auth) {
+
+        console.log(auth)
+
+        if (!cookies['status'] || cookies['status'] !== 'authenticated' || !auth) {
             navigate('/login')
         }
     }, [])

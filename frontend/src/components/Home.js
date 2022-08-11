@@ -22,12 +22,6 @@ const Home = ( { socket } ) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (cookies['profile_id'] === undefined || cookies['profile_first_name'] === undefined || cookies['profile_last_name'] === undefined) {
-            navigate('/login')
-        }
-    }, [])
-
-    useEffect(() => {
         dispatch(getFriendships(cookies['profile_id']))
     }, [])
 

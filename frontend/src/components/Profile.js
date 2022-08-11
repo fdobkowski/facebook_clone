@@ -23,12 +23,6 @@ const Profile = ( { socket } ) => {
 
     const [edit, setEdit] = useState(false)
 
-    useEffect(() => {
-        if (cookies['profile_id'] === undefined) {
-            navigate('/login')
-        }
-    }, [])
-
     const handleChat = () => {
         if (socket) {
             socket.emit('join_chat', {
