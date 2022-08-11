@@ -22,7 +22,8 @@ router.get("/", async (req, res) => {
 
                         const token = jwt.sign({
                             first_name: result.rows[0].first_name,
-                            last_name: result.rows[0].last_name
+                            last_name: result.rows[0].last_name,
+                            id: response.rows[0].id
                         }, process.env.HASH_KEY)
 
                         res.status(200).json({

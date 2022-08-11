@@ -13,7 +13,8 @@ import {useCookies} from "react-cookie";
 import Friendships from "./components/friendships/Friendships";
 import {useDispatch, useSelector} from "react-redux";
 import Chat from "./components/friendships/Chat";
-
+import {authenticated} from "./redux/reducers/authReducer";
+import axios from 'axios'
 
 function App() {
 
@@ -23,9 +24,23 @@ function App() {
     const [cookies] = useCookies()
     const [chats, setChats] = useState([])
     const navigate = useNavigate()
+    const auth = useSelector((state) => state.auth.auth)
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        if (!cookies['token'] || !cookies['status'] || cookies['status'] === 'logged_out') {
+        if (!auth && cookies['token']) {
+            axios.get('http://localhost:5000/api/profiles/auth', {
+                headers: {
+                    'Authorization': 'Bearer ' + cookies['token']
+                }
+            }).then(response => {
+                dispatch(authenticated(response.data))
+            }).catch(err => console.error(err))
+        }
+    }, [])
+
+    useEffect(() => {
+        if (!cookies['token'] || !cookies['status']) {
             navigate('/login')
         }
     }, [])
