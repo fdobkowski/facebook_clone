@@ -3,6 +3,7 @@ const router = Router()
 const pool = require('../Pool')
 const queries = require('./login_queries')
 const CryptoJS = require('crypto-js')
+const jwt = require('jsonwebtoken')
 
 router.get("/", async (req, res) => {
 
@@ -12,18 +13,24 @@ router.get("/", async (req, res) => {
     pool.query(queries.auth_user({login: login, password: password}), async (error, response) => {
         if (error) throw error
         if (response.rows.length !== 0) {
-            const decrypt = CryptoJS.AES.decrypt(response.rows[0].password, '274989hash')
+            const decrypt = CryptoJS.AES.decrypt(response.rows[0].password, process.env.HASH_KEY)
             if (password === decrypt.toString(CryptoJS.enc.Utf8)) {
-                const data = {}
                 await pool.query(queries.get_profile_id({login: login}), async (error, response) => {
                     if (error) throw error
-                    data.id = response.rows[0].id
-                    await pool.query(queries.get_profile_name(data.id), (error, response) => {
+                    await pool.query(queries.get_profile_name(response.rows[0].id), (error, result) => {
                         if (error) throw error
-                        data.first_name = response.rows[0].first_name
-                        data.last_name = response.rows[0].last_name
 
-                        res.status(200).send(data)
+                        const token = jwt.sign({
+                            first_name: result.rows[0].first_name,
+                            last_name: result.rows[0].last_name
+                        }, process.env.HASH_KEY)
+
+                        res.status(200).json({
+                            id: response.rows[0].id,
+                            first_name: result.rows[0].first_name,
+                            last_name: result.rows[0].last_name,
+                            token: token
+                        })
                     })
                 })
             } else res.status(401).send("Wrong credentials")
