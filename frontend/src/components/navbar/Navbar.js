@@ -34,14 +34,7 @@ const Navbar = ( { socket, setSocket, setChats }) => {
         navigate(0)
     }
 
-
     const [cookies, setCookies, removeCookies] = useCookies()
-
-    useEffect(() => {
-        if (cookies['profile_id'] === undefined) {
-            navigate('/login')
-        }
-    }, [])
 
     if (socket) {
         socket.on('receive_notification', (data) => {

@@ -1,5 +1,5 @@
 import './App.css'
-import {Routes, Route, useLocation} from "react-router-dom";
+import {Routes, Route, useLocation, useNavigate} from "react-router-dom";
 import Login from "./components/login_page/Login";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
@@ -11,7 +11,7 @@ import io from "socket.io-client";
 import { useBeforeunload } from 'react-beforeunload'
 import {useCookies} from "react-cookie";
 import Friendships from "./components/friendships/Friendships";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import Chat from "./components/friendships/Chat";
 
 
@@ -22,6 +22,14 @@ function App() {
     const location = useLocation()
     const [cookies] = useCookies()
     const [chats, setChats] = useState([])
+    const navigate = useNavigate()
+    const auth = useSelector((state) => state.auth.token !== '')
+
+    useEffect(() => {
+        if ((!cookies['status'] || cookies['status'] !== 'authenticated') && !auth) {
+            navigate('/login')
+        }
+    }, [])
 
     useEffect(() => {
         if (location.pathname !== '/login' && !socket && (id || cookies['profile_id']) ) {
