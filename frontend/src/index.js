@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
 import { store } from './redux/store'
-import {getFriendships, getProfiles} from "./redux/reducers/profileReducer";
+import {getProfiles} from "./redux/reducers/profileReducer";
 import {getPosts} from "./redux/reducers/postReducer";
 import _kc from "./Keycloak";
 import { ReactKeycloakProvider } from "@react-keycloak/web";
@@ -13,7 +13,6 @@ import {BrowserRouter as Router} from "react-router-dom";
 
 if (store.getState().profiles.status === 'idle') store.dispatch(getProfiles())
 if (store.getState().posts.status === 'idle') store.dispatch(getPosts())
-if (store.getState().profiles.profiles.length !== 0) store.dispatch(getFriendships())
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

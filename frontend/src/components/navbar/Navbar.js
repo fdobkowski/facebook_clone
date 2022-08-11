@@ -20,12 +20,14 @@ const Navbar = ( { socket, setSocket, setChats }) => {
     const profiles = useSelector((state) => state.profiles.profiles)
     const axios = require('axios')
     const dispatch = useDispatch()
+    const user = useSelector((state) => state.auth)
+
 
     const handleLogout = () => {
         removeCookies('token', { path: '/' })
         removeCookies('status', { path: '/' })
         setNotifications([])
-        socket.emit('user_disconnected', cookies['profile_id'])
+        socket.emit('user_disconnected', user.id)
         setSocket(null)
         setChats([])
         socket.disconnect()
@@ -38,7 +40,7 @@ const Navbar = ( { socket, setSocket, setChats }) => {
     if (socket) {
         socket.on('receive_notification', (data) => {
             dispatch(getProfiles())
-            dispatch(getFriendships(cookies['profile_id']))
+            dispatch(getFriendships(user.id))
             setNotifications([data, ...notifications])
         })
 
@@ -92,7 +94,7 @@ const Navbar = ( { socket, setSocket, setChats }) => {
                 const date = new Date()
                 axios.post('http://localhost:5000/api/friendships', {
                     sender_id: notification.from,
-                    receiver_id: cookies['profile_id'],
+                    receiver_id: user.id,
                     date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
                 }).then(() => {
                     alert(`You are now friends with ${profiles.find(x => x.id === notification.from).first_name}`)
@@ -106,7 +108,7 @@ const Navbar = ( { socket, setSocket, setChats }) => {
         {(location.pathname !== '/login') ?
             <nav className={"navbar_container"}>
                 <img alt={'home'} src={homeLogo} onClick={() => navigate("/")} title={'Home'}/>
-                <Searchbar id={cookies['profile_id']} socket={socket} notification_ref={notification_ref}/>
+                <Searchbar id={user.id} socket={socket} notification_ref={notification_ref}/>
                 <div className={'nav_buttons'}>
                     <img id={`notification_${notification_focus}`}
                          alt={'notifications'} ref={notification_ref}
@@ -153,7 +155,7 @@ const Navbar = ( { socket, setSocket, setChats }) => {
                             You have no notifications
                         </li>}
                     </ul> : null}
-                    <button className={'util_button'} onClick={() => (cookies['profile_id']) ? navigate(`/profile/${cookies['profile_id']}`) : null}>
+                    <button className={'util_button'} onClick={() => (user.id) ? navigate(`/profile/${user.id}`) : null}>
                         <span>Profile</span>
                         <img alt={'profile'} src={require('../../assets/user.png')} title={'Profile'}/>
                     </button>

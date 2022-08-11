@@ -15,6 +15,7 @@ import {useDispatch, useSelector} from "react-redux";
 import Chat from "./components/friendships/Chat";
 import {authenticated} from "./redux/reducers/authReducer";
 import axios from 'axios'
+import {get_main_profile} from "./redux/reducers/profileReducer";
 
 function App() {
 
@@ -24,11 +25,12 @@ function App() {
     const [cookies] = useCookies()
     const [chats, setChats] = useState([])
     const navigate = useNavigate()
-    const auth = useSelector((state) => state.auth.auth)
+    const user = useSelector((state) => state.auth)
+    const profile_status = useSelector((state) => state.profiles.profile_status)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (!auth && cookies['token']) {
+        if (!user.auth && cookies['token']) {
             axios.get('http://localhost:5000/api/profiles/auth', {
                 headers: {
                     'Authorization': 'Bearer ' + cookies['token']
@@ -38,6 +40,12 @@ function App() {
             }).catch(err => console.error(err))
         }
     }, [])
+
+    useEffect(() => {
+        if (user.auth && profile_status === 'idle') {
+            dispatch(get_main_profile(user.id))
+        }
+    }, [user.auth])
 
     useEffect(() => {
         if (!cookies['token'] || !cookies['status']) {

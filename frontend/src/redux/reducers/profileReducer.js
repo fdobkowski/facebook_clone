@@ -46,9 +46,16 @@ const profileReducer = createSlice({
     name: 'profiles',
     initialState: {
         status: 'idle',
-        profiles: []
+        profiles: [],
+        profile_status: 'idle',
+        main_profile: {}
     },
-    reducers: {},
+    reducers: {
+        get_main_profile: (state, action) => {
+            state.main_profile = state.profiles.find(x => x.id === action.payload)
+            state.profile_status = 'loaded'
+        }
+    },
     extraReducers(builder) {
         builder.addCase(getProfiles.rejected, (state, action) => {
             state.status = action.payload
@@ -66,4 +73,5 @@ const profileReducer = createSlice({
     }
 })
 
+export const { get_main_profile } = profileReducer.actions
 export default profileReducer.reducer
