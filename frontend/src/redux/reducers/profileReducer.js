@@ -63,6 +63,7 @@ const profileReducer = createSlice({
             state.profiles = action.payload
             state.status = 'loaded'
         }).addCase(getFriendships.fulfilled, (state, action) => {
+            state.main_profile.friendships = action.payload.data
             state.profiles = state.profiles.map(x => {
                 if (x.id === action.payload.id) {
                     x.friendships = action.payload.data
