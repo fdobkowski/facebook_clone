@@ -1,7 +1,6 @@
 import '../styles/Home.scss'
 import '../styles/Posts.scss'
 import {useEffect, useState} from "react";
-import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
 import CreatePost from "./CreatePost";
 import {useDispatch, useSelector} from "react-redux";
@@ -10,44 +9,41 @@ import {getFriendships} from "../redux/reducers/profileReducer";
 
 const Home = ( { socket } ) => {
 
-    const [cookies] = useCookies(['user'])
     const navigate = useNavigate()
-
+    const user = useSelector((state) => state.profiles.main_profile)
     const [createPost, setCreatePost] = useState(false)
     const all_profiles = useSelector((state) => state.profiles.profiles)
-    const profile = useSelector((state) => state.profiles.profiles.find(x => x.id === cookies['profile_id']))
     const posts = useSelector((state) => [...state.posts.posts.filter(x => {
-        return x.profile_id === cookies['profile_id'] || ((profile && profile.friendships) && [...profile.friendships.map(y =>  y.friend)].includes(x.profile_id))
+        return x.profile_id === user.id || ((user && user.friendships) && [...user.friendships.map(y =>  y.friend)].includes(x.profile_id))
     })])
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(getFriendships(cookies['profile_id']))
-    }, [])
-
+        dispatch(getFriendships(user.id))
+    }, [user])
 
     return (
         <div className={"home_container"}>
             <div className={"side_bar"}>
-                <button onClick={() => navigate(`/profile/${cookies['profile_id']}`)}>Profile</button>
-                <button onClick={() => navigate(`/profile/${cookies['profile_id']}/friends`)}>Friends</button>
+                <button onClick={() => navigate(`/profile/${user.id}`)}>Profile</button>
+                <button onClick={() => navigate(`/profile/${user.id}/friends`)}>Friends</button>
             </div>
             <div className={"main"}>
-                {(profile) ?
+                {(user) ?
                 <div className={"create_post"}>
-                    <img alt={'profile_picture'} src={profile.image}/>
+                    <img alt={'profile_picture'} src={user.image}/>
                     <div>
-                        <span onClick={() => setCreatePost(!createPost)}>What's on your mind, {cookies['profile_first_name']}?</span>
+                        <span onClick={() => setCreatePost(!createPost)}>What's on your mind, {user.first_name}?</span>
                     </div>
                 </div> : null }
-                {(profile && posts.length !== 0 ?
+                {(user && posts.length !== 0 ?
                     <ul className={'posts'} id={`post_${createPost}`}>
                         {(posts) ? posts.reverse().map(x => {
                             return (
                                 <li key={x.id} className={'profile_post_container'}>
                                     <div className={'post_data'}>
-                                        <span onClick={() => (x.profile_id !== profile.id) ? navigate(`/profile/${x.profile_id}`) : null}
-                                        id={(x.profile_id !== profile.id) ? 'foreign_post' : 'own_post'}>
+                                        <span onClick={() => (x.profile_id !== user.id) ? navigate(`/profile/${x.profile_id}`) : null}
+                                        id={(x.profile_id !== user.id) ? 'foreign_post' : 'own_post'}>
                                             <img alt={'profile_picture'} src={all_profiles.find(y => y.id === x.profile_id).image}/>
                                             {all_profiles.find(y => y.id === x.profile_id).first_name} {all_profiles.find(y => y.id === x.profile_id).last_name}
                                         </span>
@@ -67,7 +63,7 @@ const Home = ( { socket } ) => {
                     <CreatePost visible={setCreatePost}/>
                 </div> : null }
             </div>
-           <Friendship_sidebar id={cookies['profile_id']} socket={socket}/>
+           <Friendship_sidebar id={user.id} socket={socket}/>
         </div>
     )
 }

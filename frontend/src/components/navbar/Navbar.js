@@ -20,7 +20,7 @@ const Navbar = ( { socket, setSocket, setChats }) => {
     const profiles = useSelector((state) => state.profiles.profiles)
     const axios = require('axios')
     const dispatch = useDispatch()
-    const user = useSelector((state) => state.auth)
+    const user = useSelector((state) => state.profiles.main_profile)
 
 
     const handleLogout = () => {

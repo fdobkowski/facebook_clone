@@ -54,7 +54,7 @@ function App() {
     }, [])
 
     useEffect(() => {
-        if (location.pathname !== '/login' && !socket && (id || cookies['profile_id']) ) {
+        if (location.pathname !== '/login' && !socket && (id || user.id) ) {
             setSocket(io.connect("http://localhost:4000"))
         }
     }, [location.pathname])
@@ -62,7 +62,7 @@ function App() {
 
     if (socket) {
         socket.on('connect', () => {
-            socket.emit('user_connected', (id || cookies['profile_id']))
+            socket.emit('user_connected', (id || user.id))
         })
 
         socket.on('enable_chat', (data) => {
@@ -95,8 +95,8 @@ function App() {
     }
 
     useBeforeunload(() => {
-        if (id || cookies['profile_id']) {
-            socket.emit('user_disconnected', id || cookies['profile_id'])
+        if (id || user.id) {
+            socket.emit('user_disconnected', id || user.id)
             setSocket(null)
             setChats([])
         }

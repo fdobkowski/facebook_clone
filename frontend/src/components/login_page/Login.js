@@ -1,7 +1,7 @@
 import "../../styles/Login.scss"
 import logoSvg from "../../assets/logo.svg"
 import {Field, Form, Formik} from "formik";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import Register from "./Register";
 import {useNavigate} from "react-router-dom";
 import {useCookies} from "react-cookie";
@@ -35,12 +35,6 @@ const Login = ( { setId }) => {
             navigate('/')
         }).catch(error => alert(error.response.data))
     }
-
-    useEffect(() => {
-        if (cookies["profile_id"]) {
-            navigate('/')
-        }
-    }, [])
 
     return (
         <div className={"login_container"}>

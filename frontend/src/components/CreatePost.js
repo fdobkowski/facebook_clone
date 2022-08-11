@@ -9,15 +9,15 @@ import {useSelector} from "react-redux";
 const CreatePost = ({ visible }) => {
 
     const [content, setContent] = useState("")
-    const [cookies] = useCookies()
+    const user = useSelector((state) => state.profiles.main_profile)
     const navigate = useNavigate()
-    const picture = useSelector((state) => state.profiles.profiles.find(x => x.id === cookies['profile_id']).image)
+    const picture = useSelector((state) => state.profiles.profiles.find(x => x.id === user.id).image)
 
     const submitPost = async () => {
         const date = new Date()
         await axios.post('http://localhost:5000/api/posts', {
             id: uuid(),
-            profile_id: cookies['profile_id'],
+            profile_id: user.id,
             content: content,
             date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
         }).then(() => {
@@ -35,11 +35,11 @@ const CreatePost = ({ visible }) => {
                 </div>
                 <div className={"post_info"}>
                     <img alt={'profile_picture'} src={picture}/>
-                    <span>{cookies['profile_first_name']} {cookies['profile_last_name']}</span>
+                    <span>{user.first_name} {user.last_name}</span>
                 </div>
             </div>
             <div className={"post_container"}>
-                <textarea placeholder={`What's on your mind, ${cookies['profile_first_name']}?`} onChange={(event) => setContent(event.target.value)}/>
+                <textarea placeholder={`What's on your mind, ${user.first_name}?`} onChange={(event) => setContent(event.target.value)}/>
             </div>
             <div className={"post_button"}>
                 <button onClick={() => submitPost()}>Post</button>

@@ -9,7 +9,8 @@ const Friendships = () => {
 
     const [cookies] = useCookies()
     const dispatch = useDispatch()
-    const profile = useSelector((state) => state.profiles.profiles.find(x => x.id === cookies['profile_id']))
+    const user = useSelector((state) => state.profiles.main_profile)
+    const profile = useSelector((state) => state.profiles.profiles.find(x => x.id === user.id))
     const all_profiles = useSelector((state) => state.profiles.profiles)
     const [filter, setFilter] = useState(/.*/i)
     const [friends, setFriends] = useState([])
@@ -17,7 +18,7 @@ const Friendships = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        dispatch(getFriendships(cookies['profile_id']))
+        dispatch(getFriendships(user.id))
     }, [])
 
     useEffect(() => {

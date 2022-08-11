@@ -2,7 +2,7 @@ import '../styles/ProfilePicture.scss'
 import {useRef, useState} from "react";
 import { Buffer } from 'buffer'
 import {useCookies} from "react-cookie";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {getProfiles} from "../redux/reducers/profileReducer";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
@@ -13,7 +13,7 @@ window.Buffer = window.Buffer || Buffer
 const ProfilePicture = ({ profile, setAddProfilePicture } ) => {
 
     const [file, setFile] = useState(null)
-    const [cookies] = useCookies()
+    const user = useSelector((state) => state.profiles.main_profile)
     const dispatch = useDispatch()
     const [temporaryImage, setTemporaryImage] = useState(profile.image)
     const navigate = useNavigate()
@@ -27,14 +27,14 @@ const ProfilePicture = ({ profile, setAddProfilePicture } ) => {
                 const params = {
                     Body: file,
                     Bucket: process.env.REACT_APP_AWS_BUCKET_NAME,
-                    Key: cookies['profile_id'],
+                    Key: user.id,
                     ContentType: 'image/jpeg',
                     ACL: 'public-read'
                 }
 
                 await bucket.putObject(params).promise().then(async () => {
-                        await axios.patch(`http://localhost:5000/api/profiles/${cookies['profile_id']}`, {
-                            url: `${process.env.REACT_APP_AWS_IMAGE_URL}/${cookies['profile_id']}`
+                        await axios.patch(`http://localhost:5000/api/profiles/${user.id}`, {
+                            url: `${process.env.REACT_APP_AWS_IMAGE_URL}/${user.id}`
                         })
                             .then(() => {
                                 dispatch(getProfiles)

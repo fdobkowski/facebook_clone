@@ -11,14 +11,13 @@ import axios from 'axios'
 
 const Profile = ( { socket } ) => {
 
-    const [cookies] = useCookies(['user'])
     const navigate = useNavigate()
     const [createPost, setCreatePost] = useState(false)
     const [addProfilePicture, setAddProfilePicture] = useState(false)
 
     const { id } = useParams()
     const profile = useSelector((state) => state.profiles.profiles.find(x => x.id === id))
-    const own_profile = useSelector((state) => state.profiles.profiles.find(x => x.id === cookies['profile_id']))
+    const user = useSelector((state) => state.profiles.main_profile)
     const profile_posts = useSelector((state) => state.posts.posts.filter(x => x.profile_id === id))
 
     const [edit, setEdit] = useState(false)
@@ -26,7 +25,7 @@ const Profile = ( { socket } ) => {
     const handleChat = () => {
         if (socket) {
             socket.emit('join_chat', {
-                sender_id: cookies['profile_id'],
+                sender_id: user.id,
                 receiver_id: id
             })
         }
@@ -35,7 +34,7 @@ const Profile = ( { socket } ) => {
     const handleDelete = async (id) => {
         await axios.delete('http://localhost:5000/api/friendships', {
             data: {
-                receiver_id: cookies['profile_id'],
+                receiver_id: user.id,
                 sender_id: id
             }
         }).then(() => {
@@ -46,23 +45,23 @@ const Profile = ( { socket } ) => {
 
 
     return (
-        (profile && own_profile) ?
+        (profile && user) ?
         <div className={'profile_container'}>
             <div className={'profile_header'}>
-                <div className={'profile_img_container'} id={(id === cookies['profile_id']) ? 'users_profile_picture' : null}>
+                <div className={'profile_img_container'} id={(id === user.id) ? 'users_profile_picture' : null}>
                     <img alt={'profile img'} src={profile.image} onClick={() => {
-                        if (id === cookies['profile_id']) setAddProfilePicture(true);
-                    }} id={'profile_img'} style={((id === cookies['profile_id'])) ? {cursor: "pointer"} : null}/>
-                    {(id === cookies['profile_id']) ? <p className={'profile_picture_edit'}
+                        if (id === user.id) setAddProfilePicture(true);
+                    }} id={'profile_img'} style={((id === user.id)) ? {cursor: "pointer"} : null}/>
+                    {(id === user.id) ? <p className={'profile_picture_edit'}
                     onClick={() => setAddProfilePicture(true)}>Edit profile picture</p> : null}
                 </div>
                 <div className={'profile_header_data'}>
                     <div>
                         <span>{profile.first_name} {profile.last_name}</span>
-                        {(own_profile.friendships && own_profile.friendships.map(x => x.friend).includes(id)) ?
+                        {(user.friendships && user.friendships.map(x => x.friend).includes(id)) ?
                         <img alt={'friend'} src={require('../assets/added.png')}/> : null}
                     </div>
-                    {(id !== cookies['profile_id'] && own_profile && own_profile.friendships && own_profile.friendships.map(y => {
+                    {(id !== user.id && user && user.friendships && user.friendships.map(y => {
                         return y.friend
                     }).includes(id)) ?
                     <div className={'profile_header_buttons'}>
@@ -82,21 +81,21 @@ const Profile = ( { socket } ) => {
                             (profile.custom_gender ? profile.custom_gender : profile.gender) : profile.gender}</span>
                         <span>Pronoun: {profile.pronoun}</span>
                     </div>
-                    {(id === cookies['profile_id']) ?
+                    {(id === user.id) ?
                         <div className={'profile_buttons'}>
                             <button onClick={() => setEdit(true)}>Edit data</button>
                             <button
-                                onClick={() => navigate(`/profile/${cookies['profile_id']}/friends`)}>
+                                onClick={() => navigate(`/profile/${user.id}/friends`)}>
                                 Friends
                             </button>
                         </div> : null}
                 </div>
                 <div className={'profile_posts'}>
-                    {(id === cookies['profile_id']) ?
+                    {(id === user.id) ?
                     <div className={"create_post"}>
                         <img alt={'profile_picture'} src={profile.image}/>
                         <div>
-                            <span onClick={() => setCreatePost(!createPost)}>What's on your mind, {cookies['profile_first_name']}?</span>
+                            <span onClick={() => setCreatePost(!createPost)}>What's on your mind, {user.first_name}?</span>
                         </div>
                     </div> : null}
                     {(profile_posts.length !== 0 ?

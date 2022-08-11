@@ -8,7 +8,7 @@ const Chat = ( { id, chat_id, socket, disableChat, container }) => {
 
     const [allMessages, setAllMessages] = useState([])
     const [message, setMessage] = useState('')
-    const [cookies] = useCookies()
+    const user = useSelector((state) => state.profiles.main_profile)
     const receiver = useSelector((state) => state.profiles.profiles.find(x => x.id === id))
     const input_ref = useRef(null)
 
@@ -28,7 +28,7 @@ const Chat = ( { id, chat_id, socket, disableChat, container }) => {
             const data = {
                 id: chat_id,
                 message: message,
-                sender_id: cookies['profile_id'],
+                sender_id: user.id,
                 date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
             }
 
@@ -63,9 +63,9 @@ const Chat = ( { id, chat_id, socket, disableChat, container }) => {
                                 {(i !== 0 && allMessages[i].sender_id === allMessages[i - 1].sender_id
                                     && checkDateDiff(new Date(allMessages[i].date), new Date(allMessages[i - 1].date))) ? null :
                                 <p>{new Date(x.date).toLocaleString()}</p>}
-                                <div className={"message_data"} id={(x.sender_id === cookies['profile_id']) ? 'sender' : 'receiver'}>
+                                <div className={"message_data"} id={(x.sender_id === user.id) ? 'sender' : 'receiver'}>
                                     <div>{x.message}</div>
-                                    {(x.sender_id !== cookies['profile_id']) ?
+                                    {(x.sender_id !== user.id) ?
                                     <img alt={'profile_picture'} src={receiver.image} />
                                     : null}
                                 </div>
