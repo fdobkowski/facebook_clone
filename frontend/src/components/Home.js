@@ -19,7 +19,7 @@ const Home = ( { socket } ) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(getFriendships(user.id))
+        if (user && !user.friendships) dispatch(getFriendships(user.id))
     }, [user])
 
     return (
