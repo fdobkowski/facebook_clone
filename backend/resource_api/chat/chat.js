@@ -2,6 +2,9 @@ const { Router } = require('express')
 const router = Router()
 const pool = require('../Pool')
 const queries = require('./chat_queries')
+const middleware = require('../authMiddleware')
+
+router.use(middleware)
 
 router.post('/', async (req, res) => {
     await pool.query(queries.create_chat(req.body), (err, result) => {

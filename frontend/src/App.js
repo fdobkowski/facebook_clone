@@ -60,9 +60,12 @@ function App() {
     }, [location.pathname, user])
 
 
-    if (socket) {
+    if (socket && user) {
         socket.on('connect', () => {
-            socket.emit('user_connected', (id || user.id))
+            socket.emit('user_connected', ({
+                id: user.id,
+                token: user.token || cookies['token']
+            }))
         })
 
         socket.on('enable_chat', (data) => {

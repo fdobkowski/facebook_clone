@@ -18,10 +18,20 @@ const io = new Server(server, {
 
 client.connect()
     .then(() => {
+
+        let token = ''
+
         io.sockets.on('connection', (socket) => {
-            socket.on('user_connected', (id) => {
-                client.set(id, socket.id).then().catch(err => console.error(err))
-                axios.get(`http://localhost:5000/api/notifications/${id}`).then(response => {
+            socket.on('user_connected', (data) => {
+
+                token = data.token
+                client.set(data.id, socket.id).then().catch(err => console.error(err))
+
+                axios.get(`http://localhost:5000/api/notifications/${data.id}`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + data.token
+                    }
+                }).then(response => {
                     io.to(socket.id).emit('receive_old_notifications', response.data.reverse())
                 })
             })
@@ -39,9 +49,17 @@ client.connect()
                             receiver_id: data.receiver_id,
                             date: `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`,
                             type: 'friend_request'
+                        }, {
+                            headers: {
+                                'Authorization': 'Bearer ' + token
+                            }
                         }).then(() => {
                             if (response !== 'disconnected') {
-                                axios.get(`http://localhost:5000/api/notifications/single/${notification_id}`)
+                                axios.get(`http://localhost:5000/api/notifications/single/${notification_id}`, {
+                                    headers: {
+                                        'Authorization': 'Bearer ' + token
+                                    }
+                                })
                                     .then((result => {
                                         io.to(response).emit('receive_notification', {
                                             id: result.data.id,
@@ -58,7 +76,11 @@ client.connect()
             })
 
             socket.on('join_chat', async (data) => {
-                axios.get(`http://localhost:5000/api/chat/${data.sender_id}/${data.receiver_id}`)
+                axios.get(`http://localhost:5000/api/chat/${data.sender_id}/${data.receiver_id}`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                })
                     .then(async response => {
                         if (response.data.length === 0) {
                             const id = uuid()
@@ -66,11 +88,19 @@ client.connect()
                                 id: id,
                                 sender_id: data.sender_id,
                                 receiver_id: data.receiver_id
+                            }, {
+                                headers: {
+                                    'Authorization': 'Bearer ' + token
+                                }
                             }).then(() => {
                                 io.to(socket.id).emit('enable_chat', {receiver_id: data.receiver_id, chat_id: id})
                             }).catch(err => console.error(err))
                         } else {
-                            await axios.get(`http://localhost:5000/api/messages/${response.data.id}`)
+                            await axios.get(`http://localhost:5000/api/messages/${response.data.id}`, {
+                                headers: {
+                                    'Authorization': 'Bearer ' + token
+                                }
+                            })
                                 .then((result) => {
                                     io.to(socket.id).emit('enable_chat', {receiver_id: data.receiver_id, chat_id: response.data.id})
                                     io.to(socket.id).emit('receive_old_messages', {data: result.data, chat_id: response.data.id})
@@ -81,7 +111,11 @@ client.connect()
             })
 
             socket.on('send_message', async (data) => {
-                await axios.post('http://localhost:5000/api/messages', data.data)
+                await axios.post('http://localhost:5000/api/messages', data.data, {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                })
                     .then((response) => console.log(response.data)).catch(err => console.error(err))
 
                 client.get(data.receiver_id).then(async response => {
