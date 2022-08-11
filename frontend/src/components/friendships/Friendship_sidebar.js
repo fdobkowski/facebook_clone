@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 const Friendship_sidebar = ( { id, socket }) => {
 
     const all_profiles = useSelector((state) => state.profiles.profiles)
-    const profile = useSelector((state) => state.profiles.profiles.find(x => x.id === id))
+    const user = useSelector((state) => state.profiles.main_profile)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -27,15 +27,15 @@ const Friendship_sidebar = ( { id, socket }) => {
     return (
         <div className={"friends_list"} onClick={() => {
         }}>
-            {(profile && profile.friendships) ?
+            {(user && user.friendships && user.friendships.length > 0) ?
                 <ul>
-                    {profile.friendships.map((x, i) => {
+                    {user.friendships.map((x, i) => {
                         return (
                             <li key={i}>
                                 <img onClick={() => navigate(`/profile/${x.friend}`)}
                                      alt={'profile_picture'}
                                      src={all_profiles.find(y => y.id === x.friend).image}
-                                     title={`${profile.first_name} ${profile.last_name}`}/>
+                                     title={`${x.first_name} ${x.last_name}`}/>
                                 <span onClick={() => handleChat(id, x.friend)}>{all_profiles.find(y => y.id === x.friend).first_name} {all_profiles.find(y => y.id === x.friend).last_name}</span>
                             </li>
                         )
