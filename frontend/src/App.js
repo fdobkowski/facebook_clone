@@ -57,7 +57,7 @@ function App() {
         if (location.pathname !== '/login' && !socket && (id || user.id) ) {
             setSocket(io.connect("http://localhost:4000"))
         }
-    }, [location.pathname])
+    }, [location.pathname, user])
 
 
     if (socket) {
