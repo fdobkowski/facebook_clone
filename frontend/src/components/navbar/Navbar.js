@@ -22,9 +22,8 @@ const Navbar = ( { socket, setSocket, setChats }) => {
     const dispatch = useDispatch()
 
     const handleLogout = () => {
-        removeCookies('profile_id', { path: '/' })
-        removeCookies('profile_first_name', { path: '/' })
-        removeCookies('profile_last_name', { path: '/' })
+        removeCookies('token', { path: '/' })
+        removeCookies('status', { path: '/' })
         setNotifications([])
         socket.emit('user_disconnected', cookies['profile_id'])
         setSocket(null)
