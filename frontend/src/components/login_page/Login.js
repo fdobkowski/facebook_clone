@@ -6,6 +6,8 @@ import Register from "./Register";
 import {useNavigate} from "react-router-dom";
 import {useCookies} from "react-cookie";
 import { Buffer } from 'buffer'
+import {login} from "../../redux/reducers/authReducer";
+import {useDispatch} from "react-redux";
 
 const Login = ( { setId }) => {
 
@@ -13,6 +15,7 @@ const Login = ( { setId }) => {
     const navigate = useNavigate()
     const [register, setRegister] = useState(false)
     const [cookies, setCookies] = useCookies(['user'])
+    const dispatch = useDispatch()
 
     const handleLogin = async (values) => {
 
@@ -25,9 +28,9 @@ const Login = ( { setId }) => {
                 'Authorization': 'Bearer ' + token
             }
         }).then(response => {
-            setCookies("profile_id", response.data.id)
-            setCookies('profile_first_name', response.data.first_name)
-            setCookies('profile_last_name', response.data.last_name)
+            dispatch(login(response.data))
+            setCookies('status', 'authenticated')
+            setCookies('token', response.data.token)
             setId(response.data.id)
             navigate('/')
         }).catch(error => alert(error.response.data))

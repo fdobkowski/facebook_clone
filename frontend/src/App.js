@@ -23,13 +23,9 @@ function App() {
     const [cookies] = useCookies()
     const [chats, setChats] = useState([])
     const navigate = useNavigate()
-    const auth = useSelector((state) => state.auth.token !== '')
 
     useEffect(() => {
-
-        console.log(auth)
-
-        if (!cookies['status'] || cookies['status'] !== 'authenticated' || !auth) {
+        if (!cookies['token'] || !cookies['status'] || cookies['status'] === 'logged_out') {
             navigate('/login')
         }
     }, [])
