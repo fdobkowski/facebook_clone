@@ -58,7 +58,7 @@ const ProfilePicture = ({ profile, setAddProfilePicture } ) => {
                 <h1>Change profile picture</h1>
                 <img alt={'exit'} src={require('../assets/close.png')} onClick={() => setAddProfilePicture(false)}/>
             </div>
-            <img alt={'picture'} src={temporaryImage} />
+            <img alt={'picture'} src={temporaryImage} className={'temporary_image'}/>
             <div>
                 <input type={'file'} name={'image'} accept={'image/png,image/jpeg,image/bmp,image/gif,image/tiff'} onChange={e => imageChange(e)}/>
                 <button type={"submit"} onClick={handleUpload}>Upload</button>
