@@ -6,9 +6,9 @@ import {getFriendships} from "../../redux/reducers/profileReducer";
 const Searchbar = ({ id, socket, notification_ref }) => {
 
     const [profileFilter, setProfileFilter] = useState(/^.*/i)
-    const profiles = useSelector((state) => state.profiles.profiles.filter(x => profileFilter.test(x.first_name) || profileFilter.test(x.last_name)
-        || profileFilter.test(`${x.first_name} ${x.last_name}`)))
-    const main_profile = useSelector((state) => state.profiles.profiles.find(x => x.id === id))
+    const main_profile = useSelector((state) => state.profiles.main_profile)
+    const profiles = useSelector((state) => state.profiles.profiles.filter(x => x.id !== main_profile.id &&
+        (profileFilter.test(x.first_name) || profileFilter.test(x.last_name) || profileFilter.test(`${x.first_name} ${x.last_name}`))))
 
     const [focused, setFocused] = useState(false)
     const navigate = useNavigate()
