@@ -70,7 +70,7 @@ const Navbar = ( { socket, setSocket, setChats }) => {
     }, [])
 
     const handleDecline = (notification) => {
-        axios.patch(`http://localhost:5000/api/notifications/${notification.id}`, null, {
+        axios.patch(`http://localhost:5000/api/notifications/${notification.id}`, {status: 'declined'}, {
             headers: {
                 'Authorization': 'Bearer ' + cookies['token']
             }
@@ -86,7 +86,7 @@ const Navbar = ( { socket, setSocket, setChats }) => {
     }
 
     const handleAccept = (notification) => {
-        axios.patch(`http://localhost:5000/api/notifications/${notification.id}`, null, {
+        axios.patch(`http://localhost:5000/api/notifications/${notification.id}`, {status: 'accepted'}, {
             headers: {
                 'Authorization': 'Bearer ' + cookies['token']
             }

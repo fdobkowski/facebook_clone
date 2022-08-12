@@ -42,6 +42,25 @@ export const getFriendships = createAsyncThunk('profiles/getFriendships', async 
     }
 })
 
+export const getNotificationStatus = createAsyncThunk('profiles/getNotificationStatus', async (user, thunkAPI) => {
+
+    try {
+       return await axios.get(`http://localhost:5000/api/notifications/${user.id}/user`, {
+                headers: {
+                    'Authorization': 'Bearer ' + user.token
+                }
+            })
+            .then(response => {
+                return response.data
+            }).catch(err => {
+                return err
+            })
+    } catch (err) {
+        return err.message
+    }
+})
+
+
 const profileReducer = createSlice({
     name: 'profiles',
     initialState: {
@@ -67,6 +86,15 @@ const profileReducer = createSlice({
             state.profiles = state.profiles.map(x => {
                 if (x.id === action.payload.id) {
                     x.friendships = action.payload.data
+                }
+                return x
+            })
+        }).addCase(getNotificationStatus.fulfilled, (state, action) => {
+            state.main_profile.notifications = 'loaded'
+            const notifications = action.payload.filter(x => x.status === 'pending').map(x => x.receiver_id)
+            state.profiles = state.profiles.map(x => {
+                if (notifications.includes(x.id)) {
+                    x.sent_notification = true
                 }
                 return x
             })

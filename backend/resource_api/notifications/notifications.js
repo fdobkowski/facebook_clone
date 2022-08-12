@@ -20,6 +20,13 @@ router.get("/:id", async (req, res) => {
     })
 })
 
+router.get('/:id/user', async (req, res) => {
+    await pool.query(queries.get_sent_notifications(req.params.id), (err, result) => {
+        if (err) throw err
+        res.send(result.rows)
+    })
+})
+
 router.get('/single/:id', async (req, res) => {
     await pool.query(queries.get_single_notification(req.params.id), (err, result) => {
         if (err) throw err
@@ -28,7 +35,7 @@ router.get('/single/:id', async (req, res) => {
 })
 
 router.patch('/:id', async (req, res) => {
-    await pool.query(queries.patch_seen_notification(req.params.id), (err) => {
+    await pool.query(queries.patch_seen_notification(req.params.id, req.body.status), (err) => {
         if (err) throw err
         res.send('OK')
     })

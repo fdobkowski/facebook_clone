@@ -16,6 +16,7 @@ router.get('/auth', async (req, res) => {
 
     jwt.verify(token, process.env.HASH_KEY, (err, user) => {
         if (err) return res.sendStatus(403)
+        user.token = token
         res.send(user)
     })
 })

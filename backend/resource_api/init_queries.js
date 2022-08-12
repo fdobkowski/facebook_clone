@@ -32,6 +32,7 @@ const notifications_table = 'CREATE TABLE IF NOT EXISTS notifications (\n' +
     '\ttype VARCHAR(255),\n' +
     '\tdate DATE,\n' +
     '\tseen BOOLEAN\n' +
+    '\tstatus VARCHAR(255)\n' +
     ');'
 
 const friendships_table = 'CREATE TABLE IF NOT EXISTS friendships (\n' +

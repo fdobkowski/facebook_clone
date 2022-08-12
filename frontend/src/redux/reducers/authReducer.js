@@ -6,7 +6,8 @@ const authReducer = createSlice({
         auth: false,
         first_name: '',
         last_name: '',
-        id: ''
+        id: '',
+        token: ''
     },
     reducers: {
         login: (state, action) => {
@@ -14,12 +15,15 @@ const authReducer = createSlice({
             state.first_name = action.payload.first_name
             state.last_name = action.payload.last_name
             state.id = action.payload.id
+            state.token = action.payload.token
+
         },
         authenticated: (state, action) => {
             state.auth = true
             state.first_name = action.payload.first_name
             state.last_name = action.payload.last_name
             state.id = action.payload.id
+            state.token = action.payload.token
         }
     }
 })

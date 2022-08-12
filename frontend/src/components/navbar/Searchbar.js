@@ -1,12 +1,13 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {getFriendships} from "../../redux/reducers/profileReducer";
+import {getFriendships, getNotificationStatus} from "../../redux/reducers/profileReducer";
 
 const Searchbar = ({ id, socket, notification_ref }) => {
 
     const [profileFilter, setProfileFilter] = useState(/^.*/i)
     const main_profile = useSelector((state) => state.profiles.main_profile)
+    const auth = useSelector((state) => state.auth)
     const profiles = useSelector((state) => state.profiles.profiles.filter(x => x.id !== main_profile.id &&
         (profileFilter.test(x.first_name) || profileFilter.test(x.last_name) || profileFilter.test(`${x.first_name} ${x.last_name}`))))
 
@@ -16,6 +17,11 @@ const Searchbar = ({ id, socket, notification_ref }) => {
     const friend_ref = useRef([])
     const dispatch = useDispatch()
 
+
+    useEffect(() => {
+        console.log(auth)
+        if (auth.auth && !main_profile.notifications) dispatch(getNotificationStatus(auth))
+    }, [auth])
 
     useEffect(() => {
         friend_ref.current = friend_ref.current.slice(0, profiles.length)
@@ -38,8 +44,8 @@ const Searchbar = ({ id, socket, notification_ref }) => {
     }
 
     useEffect(() => {
-        dispatch(getFriendships(id))
-    }, [])
+        if (main_profile && !main_profile.friendships) dispatch(getFriendships(main_profile.id))
+    }, [main_profile])
 
     return (
         <div className={'searchbar'}>
@@ -58,7 +64,7 @@ const Searchbar = ({ id, socket, notification_ref }) => {
                             </div>
                             <span onClick={() => navigate(`/profile/${x.id}`)}>{x.first_name} {x.last_name}</span>
                             {(main_profile && main_profile.friendships && main_profile.friendships.filter(y => y.friend === x.id).length === 0) ?
-                            <img id={`sent_false`}
+                            <img id={(x.sent_notification) ? 'sent_true' : 'sent_false'}
                                  alt={'add_friend'}
                                  src={require('../../assets/add.png')} onClick={() => handleFriendRequest(x.id, i)}
                                  ref={el => friend_ref.current[i] = el}
