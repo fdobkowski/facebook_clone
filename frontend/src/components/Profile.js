@@ -1,7 +1,7 @@
 import '../styles/Profile.scss'
 import '../styles/Posts.scss'
 import {useNavigate, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {useCookies} from "react-cookie";
 import CreatePost from "./CreatePost";
 import {useSelector} from "react-redux";
@@ -14,7 +14,7 @@ const Profile = ( { socket } ) => {
     const navigate = useNavigate()
     const [createPost, setCreatePost] = useState(false)
     const [addProfilePicture, setAddProfilePicture] = useState(false)
-
+    const [cookies] = useCookies()
     const { id } = useParams()
     const profile = useSelector((state) => state.profiles.profiles.find(x => x.id === id))
     const user = useSelector((state) => state.profiles.main_profile)
@@ -41,6 +41,18 @@ const Profile = ( { socket } ) => {
             alert(`${profile.first_name} ${profile.last_name} isn't your friend anymore`)
             navigate(0)
         }).catch(err => console.error(err))
+    }
+
+    const handlePostDelete = (post) => {
+        axios.delete(`http://localhost:5000/api/posts/${post.id}`, {
+            headers: {
+                'Authorization': 'Bearer ' + cookies['token']
+            }
+        })
+            .then(() => navigate(0)).catch(err => {
+                alert('Something went wrong')
+                console.error(err)
+        })
     }
 
 
@@ -108,7 +120,13 @@ const Profile = ( { socket } ) => {
                                             <img alt={'profile_picture'} src={profile.image}/>
                                             {profile.first_name} {profile.last_name}
                                         </span>
-                                        <span>{new Date(x.date).toLocaleString()}</span>
+                                        <span className={'post_date'}>
+                                            {new Date(x.date).toLocaleString()}
+                                            {(id === user.id) ?
+                                            <button onClick={() => handlePostDelete(x)}>
+                                                Delete
+                                            </button> : null}
+                                        </span>
                                     </div>
                                     <div className={'post_content'}>
                                         {x.content}

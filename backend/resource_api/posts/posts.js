@@ -2,6 +2,7 @@ const { Router } = require('express')
 const router = Router()
 const pool = require('../Pool')
 const queries = require('./post_queries')
+const middleware = require('../authMiddleware')
 
 router.post('/', async (req, res) => {
     await pool.query(queries.post_user(req.body), (err, result) => {
@@ -25,10 +26,10 @@ router.get("/:id", async (req, res) => {
 })
 
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", middleware, async (req, res) => {
     await pool.query(queries.delete_post(req.params.id), (err) => {
         if (err) throw err
-        res.send("User deleted")
+        res.send("Post deleted")
     })
 })
 

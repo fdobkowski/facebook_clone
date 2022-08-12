@@ -38,10 +38,32 @@
           height: 80px;
           object-fit: cover;
           clip-path: circle();
-          //width: 6vw;
-          //height: 100%;
           margin: 10px;
         }
+      }
+
+      .post_date {
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: center;
+        text-align: right;
+
+        button {
+          background-color: transparent;
+          border: 1px solid black;
+          border-radius: 10px;
+          padding: 2px 15px;
+          margin-top: 5px;
+          font-size: 1.1rem;
+          font-weight: bold;
+          color: rgb(1, 101, 225);
+          cursor: pointer;
+        }
+
+        button:hover {
+          background-color: rgb(245, 246, 247);
+        }
+
       }
 
       #foreign_post:hover {
@@ -85,4 +107,18 @@
   background-color: white;
   border-radius: 20px;
   box-shadow: 0 0 10px rgb(219, 221, 224);
+}
+
+@media (max-width: 768px) {
+  .posts {
+    li {
+      .post_data {
+        .post_date {
+          button {
+            font-size: 0.8rem;
+          }
+        }
+      }
+    }
+  }
 }
