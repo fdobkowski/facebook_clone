@@ -47,7 +47,7 @@ client.connect()
                             id: notification_id,
                             sender_id: data.sender_id,
                             receiver_id: data.receiver_id,
-                            date: `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`,
+                            date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
                             type: 'friend_request'
                         }, {
                             headers: {
