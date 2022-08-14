@@ -28,7 +28,6 @@ const Login = ( { setId }) => {
                 'Authorization': 'Bearer ' + token
             }
         }).then(response => {
-            console.log(response.data)
             dispatch(login(response.data))
             setCookies('status', 'authenticated')
             setCookies('token', response.data.token)

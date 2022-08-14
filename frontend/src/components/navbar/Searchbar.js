@@ -3,7 +3,7 @@ import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {getFriendships, getNotificationStatus} from "../../redux/reducers/profileReducer";
 
-const Searchbar = ({ id, socket, notification_ref }) => {
+const Searchbar = ({ socket, notification_ref }) => {
 
     const [profileFilter, setProfileFilter] = useState(/^.*/i)
     const main_profile = useSelector((state) => state.profiles.main_profile)
@@ -19,7 +19,6 @@ const Searchbar = ({ id, socket, notification_ref }) => {
 
 
     useEffect(() => {
-        console.log(auth)
         if (auth.auth && !main_profile.notifications) dispatch(getNotificationStatus(auth))
     }, [auth])
 
@@ -39,7 +38,7 @@ const Searchbar = ({ id, socket, notification_ref }) => {
     }, [])
 
     const handleFriendRequest = (receiver_id, ref_id) => {
-        socket.emit('send_friend_request', ({sender_id: id, receiver_id: receiver_id}))
+        socket.emit('send_friend_request', ({sender_id: main_profile.id, receiver_id: receiver_id}))
         friend_ref.current[ref_id].id = 'sent_true'
     }
 

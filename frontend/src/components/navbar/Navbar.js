@@ -116,7 +116,7 @@ const Navbar = ( { socket, setSocket, setChats }) => {
         {(location.pathname !== '/login') ?
             <nav className={"navbar_container"}>
                 <img alt={'home'} src={homeLogo} onClick={() => navigate("/")} title={'Home'}/>
-                <Searchbar id={user.id} socket={socket} notification_ref={notification_ref}/>
+                <Searchbar socket={socket} notification_ref={notification_ref}/>
                 <div className={'nav_buttons'}>
                     <img id={`notification_${notification_focus}`}
                          alt={'notifications'} ref={notification_ref}
