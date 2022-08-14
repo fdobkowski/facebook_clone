@@ -2,3 +2,6 @@
 /backend/resource_api/.env
 node_modules
 /k8s/postgres/data/
+**/Dockerfile
+**/.dockerignore
+docker-compose.yml
