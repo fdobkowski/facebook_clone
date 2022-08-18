@@ -14,7 +14,7 @@ const profiles_table = 'CREATE TABLE IF NOT EXISTS profiles (\n' +
     '\tbirthday DATE NOT NULL,\n' +
     '\tgender VARCHAR(255) NOT NULL,\n' +
     '\tcustom_gender VARCHAR(255),\n' +
-    '\tpronoun VARCHAR(255) NOT NULL\n' +
+    '\tpronoun VARCHAR(255) NOT NULL,\n' +
     '\timage VARCHAR(255) NOT NULL\n' +
     ');'
 
@@ -31,7 +31,7 @@ const notifications_table = 'CREATE TABLE IF NOT EXISTS notifications (\n' +
     '\treceiver_id VARCHAR(255) REFERENCES profiles(id),\n' +
     '\ttype VARCHAR(255),\n' +
     '\tdate DATE,\n' +
-    '\tseen BOOLEAN\n' +
+    '\tseen BOOLEAN,\n' +
     '\tstatus VARCHAR(255)\n' +
     ');'
 
@@ -45,11 +45,11 @@ const friendships_table = 'CREATE TABLE IF NOT EXISTS friendships (\n' +
 const chat_table = 'CREATE TABLE IF NOT EXISTS chat (\n' +
     '\tid VARCHAR(255) PRIMARY KEY,\n' +
     '\tsender_id VARCHAR(255) REFERENCES profiles(id),\n' +
-    '\treceiver_id VARCHAR(255) REFERENCES profiles(id),\n' +
+    '\treceiver_id VARCHAR(255) REFERENCES profiles(id)\n' +
     ');'
 
 const messages_table = 'CREATE TABLE IF NOT EXISTS messages (\n' +
-    '\tid VARCHAR(255) REFERENCES chat_table(id),\n' +
+    '\tid VARCHAR(255) REFERENCES chat(id),\n' +
     '\tmessage VARCHAR(255),\n' +
     '\tsender_id VARCHAR(255) REFERENCES profiles(id),\n' +
     '\tdate TIMESTAMP NOT NULL\n' +
