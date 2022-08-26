@@ -33,7 +33,7 @@ client.connect()
                     }
                 }).then(response => {
                     io.to(socket.id).emit('receive_old_notifications', response.data.reverse())
-                })
+                }).catch(err => console.error(err))
             })
 
             socket.on('send_friend_request', (data) => {
