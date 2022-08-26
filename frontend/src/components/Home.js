@@ -56,14 +56,13 @@ const Home = ( { socket } ) => {
                             )
                         }) : null}
                     </ul> : <span className={'empty_posts'}>Such empty</span>)}
-                <button onClick={() => navigate('/protected')}>Administration panel</button>
                 {(createPost) ?
                 <div>
                     <div className={'click_filter'} onClick={() => setCreatePost(false)}></div>
                     <CreatePost visible={setCreatePost}/>
                 </div> : null }
             </div>
-           <Friendship_sidebar id={user.id} socket={socket}/>
+            {(user) ? <Friendship_sidebar id={user.id} socket={socket}/> : null}
         </div>
     )
 }
