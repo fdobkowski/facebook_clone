@@ -33,3 +33,8 @@ This website allows you to make an account, create posts, add friends and much m
   - REDUX toolkit - v1.8.3
 - styling:
   - scss
+
+##### Cloud:
+- docker - v20.10.12
+- proxy server:
+  - nginx:alpine
