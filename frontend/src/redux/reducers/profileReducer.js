@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export const getProfiles = createAsyncThunk('profiles/getProfiles', async () => {
     try {
-        return await axios.get('http://localhost:5000/api/profiles')
+        return await axios.get('/api/api/profiles')
             .then(response => {
                 return response.data
             }).catch(err => {
@@ -16,7 +16,7 @@ export const getProfiles = createAsyncThunk('profiles/getProfiles', async () => 
 
 export const getFriendships = createAsyncThunk('profiles/getFriendships', async (id, thunkAPI) => {
     try {
-        return await axios.get(`http://localhost:5000/api/friendships/${id}`)
+        return await axios.get(`/api/api/friendships/${id}`)
             .then(response => {
                 return {
                     id: id,
@@ -45,7 +45,7 @@ export const getFriendships = createAsyncThunk('profiles/getFriendships', async 
 export const getNotificationStatus = createAsyncThunk('profiles/getNotificationStatus', async (user, thunkAPI) => {
 
     try {
-       return await axios.get(`http://localhost:5000/api/notifications/${user.id}/user`, {
+       return await axios.get(`/api/api/notifications/${user.id}/user`, {
                 headers: {
                     'Authorization': 'Bearer ' + user.token
                 }

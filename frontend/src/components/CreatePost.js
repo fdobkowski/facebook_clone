@@ -15,7 +15,7 @@ const CreatePost = ({ visible }) => {
 
     const submitPost = async () => {
         const date = new Date()
-        await axios.post('http://localhost:5000/api/posts', {
+        await axios.post('/api/api/posts', {
             id: uuid(),
             profile_id: user.id,
             content: content,

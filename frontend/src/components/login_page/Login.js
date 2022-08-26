@@ -23,7 +23,7 @@ const Login = ( { setId }) => {
 
         const token = Buffer.from(`${values.login}:${values.password}`, 'utf8').toString('base64')
 
-        await axios.get("http://localhost:5000/api/login", {
+        await axios.get("/api/api/login", {
             headers: {
                 'Authorization': 'Bearer ' + token
             }

@@ -32,7 +32,7 @@ const Profile = ( { socket } ) => {
     }
 
     const handleDelete = async (id) => {
-        await axios.delete('http://localhost:5000/api/friendships', {
+        await axios.delete('/api/api/friendships', {
             data: {
                 receiver_id: user.id,
                 sender_id: id
@@ -44,7 +44,7 @@ const Profile = ( { socket } ) => {
     }
 
     const handlePostDelete = (post) => {
-        axios.delete(`http://localhost:5000/api/posts/${post.id}`, {
+        axios.delete(`/api/api/posts/${post.id}`, {
             headers: {
                 'Authorization': 'Bearer ' + cookies['token']
             }

@@ -5,7 +5,6 @@ import Home from "./components/Home";
 import Profile from "./components/Profile";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer";
-import Protected from "./components/Protected";
 import {useEffect, useState} from "react";
 import io from "socket.io-client";
 import { useBeforeunload } from 'react-beforeunload'
@@ -26,12 +25,12 @@ function App() {
     const [chats, setChats] = useState([])
     const navigate = useNavigate()
     const user = useSelector((state) => state.auth)
-    const profile_status = useSelector((state) => state.profiles.profile_status)
+    const profiles = useSelector((state) => state.profiles)
     const dispatch = useDispatch()
 
     useEffect(() => {
         if (!user.auth && cookies['token']) {
-            axios.get('http://localhost:5000/api/profiles/auth', {
+            axios.get('/api/api/profiles/auth', {
                 headers: {
                     'Authorization': 'Bearer ' + cookies['token']
                 }
@@ -42,10 +41,10 @@ function App() {
     }, [])
 
     useEffect(() => {
-        if (user.auth && profile_status === 'idle') {
+        if (user && user.auth && profiles.status === 'loaded' && profiles.profile_status === 'idle') {
             dispatch(get_main_profile(user.id))
         }
-    }, [user.auth])
+    }, [user, profiles.status])
 
     useEffect(() => {
         if (!cookies['token'] || !cookies['status']) {
@@ -55,7 +54,7 @@ function App() {
 
     useEffect(() => {
         if (location.pathname !== '/login' && !socket && (id || user.id) ) {
-            setSocket(io.connect("http://localhost:4000"))
+            setSocket(io.connect())
         }
     }, [location.pathname, user])
 
@@ -113,7 +112,6 @@ function App() {
             <Route path={"/"} element={<Home socket={socket}/>}/>
             <Route path={"/profile/:id"} element={<Profile socket={socket}/>}/>
             <Route path={"/profile/:id/friends"} element={<Friendships/>}/>
-            <Route path={"/protected"} element={<Protected/>}/>
         </Routes>
           {(chats) ? chats.map((x, i) => {
               return (

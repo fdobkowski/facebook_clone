@@ -33,7 +33,7 @@ const ProfilePicture = ({ profile, setAddProfilePicture } ) => {
                 }
 
                 await bucket.putObject(params).promise().then(async () => {
-                        await axios.patch(`http://localhost:5000/api/profiles/${user.id}`, {
+                        await axios.patch(`/api/api/profiles/${user.id}`, {
                             url: `${process.env.REACT_APP_AWS_IMAGE_URL}/${user.id}`
                         })
                             .then(() => {

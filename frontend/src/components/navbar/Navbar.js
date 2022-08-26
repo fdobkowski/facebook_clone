@@ -2,7 +2,6 @@ import '../../styles/Navbar.scss'
 import homeLogo from '../../assets/home_icon.svg'
 import {useLocation, useNavigate} from 'react-router-dom'
 import {useCookies} from "react-cookie";
-import {useKeycloak} from "@react-keycloak/web";
 import {useEffect, useRef, useState} from "react";
 import Searchbar from "./Searchbar";
 import {v4 as uuid} from 'uuid'
@@ -13,7 +12,6 @@ const Navbar = ( { socket, setSocket, setChats }) => {
 
     const navigate = useNavigate()
     const location = useLocation()
-    const { keycloak } = useKeycloak()
     const [notifications, setNotifications] = useState([])
     const [notification_focus, setNotification_focus] = useState(false)
     const notification_ref = useRef(null)
@@ -31,7 +29,6 @@ const Navbar = ( { socket, setSocket, setChats }) => {
         setSocket(null)
         setChats([])
         socket.disconnect()
-        if (keycloak.authenticated) keycloak.logout()
         navigate(0)
     }
 
@@ -70,7 +67,7 @@ const Navbar = ( { socket, setSocket, setChats }) => {
     }, [])
 
     const handleDecline = (notification) => {
-        axios.patch(`http://localhost:5000/api/notifications/${notification.id}`, {status: 'declined'}, {
+        axios.patch(`/api/api/notifications/${notification.id}`, {status: 'declined'}, {
             headers: {
                 'Authorization': 'Bearer ' + cookies['token']
             }
@@ -86,7 +83,7 @@ const Navbar = ( { socket, setSocket, setChats }) => {
     }
 
     const handleAccept = (notification) => {
-        axios.patch(`http://localhost:5000/api/notifications/${notification.id}`, {status: 'accepted'}, {
+        axios.patch(`/api/api/notifications/${notification.id}`, {status: 'accepted'}, {
             headers: {
                 'Authorization': 'Bearer ' + cookies['token']
             }
@@ -100,7 +97,7 @@ const Navbar = ( { socket, setSocket, setChats }) => {
                 }))
 
                 const date = new Date()
-                axios.post('http://localhost:5000/api/friendships', {
+                axios.post('/api/api/friendships', {
                     sender_id: notification.from,
                     receiver_id: user.id,
                     date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`

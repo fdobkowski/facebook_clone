@@ -19,7 +19,7 @@ const ProfileDataForm = ( { data, setEdit } ) => {
     const navigate = useNavigate()
 
     const handleSubmit = (values) => {
-        axios.patch(`http://localhost:5000/api/profiles/${data.id}/data`, {
+        axios.patch(`/api/api/profiles/${data.id}/data`, {
             first_name: values.first_name,
             last_name: values.last_name,
             birthday: `${values.year}-${values.month}-${values.day}`,

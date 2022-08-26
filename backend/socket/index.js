@@ -5,15 +5,23 @@ const { Server } = require('socket.io')
 
 const app = express()
 const server = http.createServer(app)
-const client = redis.createClient()
+
+const client = redis.createClient({
+    socket: {
+        host: 'cache'
+    }
+})
+
 const axios = require('axios')
 
 const uuid = require('uuid').v4
 
 const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:3000'
-    }
+        origin: 'http://localhost:9090',
+        credentials: true
+    },
+    path: '/socket.io'
 })
 
 client.connect()
@@ -23,17 +31,16 @@ client.connect()
 
         io.sockets.on('connection', (socket) => {
             socket.on('user_connected', (data) => {
-
                 token = data.token
                 client.set(data.id, socket.id).then().catch(err => console.error(err))
 
-                axios.get(`http://localhost:5000/api/notifications/${data.id}`, {
+                axios.get(`http://172.21.0.4:5000/api/notifications/${data.id}`, {
                     headers: {
                         'Authorization': 'Bearer ' + data.token
                     }
                 }).then(response => {
                     io.to(socket.id).emit('receive_old_notifications', response.data.reverse())
-                })
+                }).catch(err => console.error(err))
             })
 
             socket.on('send_friend_request', (data) => {
@@ -43,7 +50,8 @@ client.connect()
                 client.get(data.receiver_id).then(response => {
                     if (response) {
                         const notification_id = uuid()
-                        axios.post('http://localhost:5000/api/notifications', {
+
+                        axios.post('http://172.21.0.4:5000/api/notifications', {
                             id: notification_id,
                             sender_id: data.sender_id,
                             receiver_id: data.receiver_id,
@@ -55,7 +63,7 @@ client.connect()
                             }
                         }).then(() => {
                             if (response !== 'disconnected') {
-                                axios.get(`http://localhost:5000/api/notifications/single/${notification_id}`, {
+                                axios.get(`http://172.21.0.4:5000/api/notifications/single/${notification_id}`, {
                                     headers: {
                                         'Authorization': 'Bearer ' + token
                                     }
@@ -76,7 +84,7 @@ client.connect()
             })
 
             socket.on('join_chat', async (data) => {
-                axios.get(`http://localhost:5000/api/chat/${data.sender_id}/${data.receiver_id}`, {
+                axios.get(`http://172.21.0.4:5000/api/chat/${data.sender_id}/${data.receiver_id}`, {
                     headers: {
                         'Authorization': 'Bearer ' + token
                     }
@@ -84,7 +92,7 @@ client.connect()
                     .then(async response => {
                         if (response.data.length === 0) {
                             const id = uuid()
-                            await axios.post('http://localhost:5000/api/chat', {
+                            await axios.post('http://172.21.0.4:5000/api/chat', {
                                 id: id,
                                 sender_id: data.sender_id,
                                 receiver_id: data.receiver_id
@@ -96,7 +104,7 @@ client.connect()
                                 io.to(socket.id).emit('enable_chat', {receiver_id: data.receiver_id, chat_id: id})
                             }).catch(err => console.error(err))
                         } else {
-                            await axios.get(`http://localhost:5000/api/messages/${response.data.id}`, {
+                            await axios.get(`http://172.21.0.4:5000/api/messages/${response.data.id}`, {
                                 headers: {
                                     'Authorization': 'Bearer ' + token
                                 }
@@ -111,12 +119,12 @@ client.connect()
             })
 
             socket.on('send_message', async (data) => {
-                await axios.post('http://localhost:5000/api/messages', data.data, {
+                await axios.post('http://172.21.0.4:5000/api/messages', data.data, {
                     headers: {
                         'Authorization': 'Bearer ' + token
                     }
                 })
-                    .then((response) => console.log(response.data)).catch(err => console.error(err))
+                    .then().catch(err => console.error(err))
 
                 client.get(data.receiver_id).then(async response => {
                     if (response) {
@@ -136,7 +144,7 @@ client.connect()
         })
     }).catch(error => console.error(error))
 
-server.listen(4000, () => {
+server.listen(4000, '0.0.0.0', () => {
     console.log('Socket server listening on port 4000')
 })
 
