@@ -2,7 +2,6 @@ import '../../styles/Navbar.scss'
 import homeLogo from '../../assets/home_icon.svg'
 import {useLocation, useNavigate} from 'react-router-dom'
 import {useCookies} from "react-cookie";
-import {useKeycloak} from "@react-keycloak/web";
 import {useEffect, useRef, useState} from "react";
 import Searchbar from "./Searchbar";
 import {v4 as uuid} from 'uuid'
@@ -13,7 +12,6 @@ const Navbar = ( { socket, setSocket, setChats }) => {
 
     const navigate = useNavigate()
     const location = useLocation()
-    const { keycloak } = useKeycloak()
     const [notifications, setNotifications] = useState([])
     const [notification_focus, setNotification_focus] = useState(false)
     const notification_ref = useRef(null)
@@ -31,7 +29,6 @@ const Navbar = ( { socket, setSocket, setChats }) => {
         setSocket(null)
         setChats([])
         socket.disconnect()
-        if (keycloak.authenticated) keycloak.logout()
         navigate(0)
     }
 
