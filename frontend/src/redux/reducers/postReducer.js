@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export const getPosts = createAsyncThunk('posts/getPosts', async () => {
     try {
-        return await axios.get('http://localhost:5000/api/posts')
+        return await axios.get('/api/api/posts')
             .then(response => {
                 return response.data
             }).catch(err => {
