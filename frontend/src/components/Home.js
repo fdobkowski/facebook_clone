@@ -47,7 +47,7 @@ const Home = ( { socket } ) => {
                                             <img alt={'profile_picture'} src={all_profiles.find(y => y.id === x.profile_id).image}/>
                                             {all_profiles.find(y => y.id === x.profile_id).first_name} {all_profiles.find(y => y.id === x.profile_id).last_name}
                                         </span>
-                                        <span>{new Date(x.date).toLocaleString()}</span>
+                                        <span>{new Date(x.date).toLocaleString(undefined, {timeZone: 'UTC'})}</span>
                                     </div>
                                     <div className={'post_content'}>
                                         {x.content}

@@ -121,7 +121,7 @@ const Profile = ( { socket } ) => {
                                             {profile.first_name} {profile.last_name}
                                         </span>
                                         <span className={'post_date'}>
-                                            {new Date(x.date).toLocaleString()}
+                                            {new Date(x.date).toLocaleString(undefined, {timeZone: 'UTC'})}
                                             {(id === user.id) ?
                                             <button onClick={() => handlePostDelete(x)}>
                                                 Delete
