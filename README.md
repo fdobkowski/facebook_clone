@@ -2,7 +2,7 @@
 > Social media app highly inspired by facebook.com
 
 
-## [Live DEMO](http://fb-app.tech)
+## [Live DEMO](http://fb-app.tech) or [Live DEMO](http://51.120.4.141)
 
 
 ## Table of contents
